@@ -87,7 +87,10 @@ export class OpenRouterAPI {
     }
 
     async generateVisualization(prompt, model, format) {
-        const apiKey = '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';
+        const apiKey = import.meta.env.VITE_OPENROUTER_API_KEY;
+        if (!apiKey) {
+            throw new Error('API密钥未配置，请检查环境变量 VITE_OPENROUTER_API_KEY');
+        }
         this.client.defaults.headers['Authorization'] = `Bearer ${apiKey}`;
 
         // 生成缓存键 - 基于prompt、model和format
