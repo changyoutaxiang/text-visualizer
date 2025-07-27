@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文本视觉化工具 - AI驱动的文本转图表</title>
+    <link rel="stylesheet" href="./src/styles/main.css">
+</head>
+<body>
+    <div id="app">
+        <header class="app-header">
+            <h1>文本视觉化工具</h1>
+            <p class="subtitle">使用AI将文本转换为精美的可视化图表</p>
+        </header>
+
+        <main class="app-main">
+            <div class="input-section">
+                <div class="input-panel">
+                    <h2>输入文本</h2>
+                    <textarea id="textInput" placeholder="请输入要可视化的文本内容..." rows="8"></textarea>
+                    
+                    <div class="controls">
+                        <div class="control-group">
+                            <label>选择AI模型</label>
+                            <select id="modelSelect">
+                                <option value="moonshotai/kimi-k2">Kimi K2</option>
+                                <option value="x-ai/grok-4">Grok-4</option>
+                                <option value="anthropic/claude-sonnet-4">Claude Sonnet 4</option>
+                                <option value="google/gemini-2.5-pro">Gemini 2.5 Pro</option>
+                                <option value="deepseek/deepseek-r1-0528">DeepSeek R1</option>
+                                <option value="deepseek/deepseek-chat-v3-0324">DeepSeek Chat V3</option>
+                            </select>
+                        </div>
+                        
+                        <div class="control-group">
+                            <label>输出格式</label>
+                            <div class="radio-group">
+                                <label><input type="radio" name="format" value="svg" checked> SVG</label>
+                                <label><input type="radio" name="format" value="html"> HTML</label>
+                            </div>
+                        </div>
+                        
+                        <div class="control-group">
+                            <label>选择提示词模板</label>
+                            <select id="promptSelect">
+                                <option value="data-analysis">数据分析图表</option>
+                                <option value="network">网络关系图</option>
+                                <option value="timeline">时间轴</option>
+                                <option value="wordcloud">词云</option>
+                                <option value="flowchart">流程图</option>
+                                <option value="comparison">对比分析</option>
+                                <option value="hierarchy">层次结构</option>
+                                <option value="geographic">地理信息</option>
+                                <option value="dashboard">进度仪表盘</option>
+                                <option value="report">综合报告</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <button id="generateBtn" class="primary-btn">生成可视化</button>
+                </div>
+            </div>
+
+            <div class="preview-section">
+                <div class="preview-panel">
+                    <div class="preview-header">
+                        <h2>预览结果</h2>
+                        <div class="preview-actions">
+                            <button id="fullscreenBtn" class="icon-btn">全屏</button>
+                            <button id="downloadBtn" class="icon-btn">下载</button>
+                            <button id="editBtn" class="icon-btn">编辑</button>
+                        </div>
+                    </div>
+                    <div id="previewContainer" class="preview-container">
+                        <div class="placeholder">
+                            <p>生成结果将在这里显示</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="codeEditor" class="code-editor" style="display: none;">
+                    <div class="editor-header">
+                        <h3>代码编辑器</h3>
+                        <button id="closeEditorBtn" class="icon-btn">关闭</button>
+                    </div>
+                    <div id="editorContainer"></div>
+                </div>
+            </div>
+        </main>
+
+        <div id="loading" class="loading-overlay" style="display: none;">
+            <div class="loading-spinner">
+                <div class="spinner"></div>
+                <p id="loadingText">正在生成可视化...</p>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="./src/main.js"></script>
+</body>
+</html>

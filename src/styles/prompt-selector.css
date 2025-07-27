@@ -1,0 +1,280 @@
+/* Markdown提示词选择器样式 */
+
+.prompt-selector {
+    margin: 1rem 0;
+}
+
+.prompt-selector label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+}
+
+.prompt-selector-wrapper {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.prompt-select {
+    flex: 1;
+    padding: 0.75rem;
+    background: var(--background);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text-primary);
+    font-size: 0.875rem;
+}
+
+.prompt-select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+}
+
+.preview-btn,
+.refresh-btn {
+    padding: 0.75rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 1rem;
+}
+
+.preview-btn:hover,
+.refresh-btn:hover {
+    background: var(--border);
+    color: var(--text-primary);
+    transform: translateY(-1px);
+}
+
+.category-filter {
+    margin-bottom: 1rem;
+}
+
+.category-select {
+    width: 100%;
+    padding: 0.5rem;
+    margin-top: 0.25rem;
+    background: var(--background);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text-primary);
+    font-size: 0.875rem;
+}
+
+.prompt-info {
+    margin-top: 0.75rem;
+    padding: 0.75rem;
+    background: var(--background);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    font-size: 0.875rem;
+}
+
+.prompt-details h4 {
+    margin: 0 0 0.5rem 0;
+    color: var(--text-primary);
+    font-size: 1rem;
+}
+
+.prompt-details .description {
+    margin: 0 0 0.5rem 0;
+    color: var(--text-secondary);
+    line-height: 1.4;
+}
+
+.prompt-details .variables {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    align-items: center;
+}
+
+.prompt-details .variables strong {
+    margin-right: 0.5rem;
+    color: var(--text-primary);
+}
+
+.prompt-details .variables code {
+    padding: 0.125rem 0.375rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
+    color: var(--text-primary);
+}
+
+/* 模态框样式 */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 1rem;
+}
+
+.modal-content {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    max-width: 600px;
+    width: 100%;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: var(--shadow-lg);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    background: var(--background);
+    border-radius: var(--radius) var(--radius) 0 0;
+}
+
+.modal-header h3 {
+    margin: 0;
+    color: var(--text-primary);
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--text-muted);
+    padding: 0;
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.close-btn:hover {
+    color: var(--text-primary);
+    background: var(--border);
+    border-radius: var(--radius);
+}
+
+.modal-body {
+    padding: 1.5rem;
+}
+
+.template-preview {
+    margin-bottom: 1.5rem;
+}
+
+.template-preview h4 {
+    margin: 0 0 0.5rem 0;
+    color: var(--text-primary);
+}
+
+.template-content {
+    background: var(--background);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.template-meta {
+    padding: 1rem;
+    background: var(--background);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+}
+
+.template-meta h4 {
+    margin: 0 0 0.5rem 0;
+    color: var(--text-primary);
+}
+
+.template-meta p {
+    margin: 0.25rem 0;
+    color: var(--text-secondary);
+}
+
+.modal-footer {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+    padding: 1rem 1.5rem;
+    border-top: 1px solid var(--border);
+    background: var(--background);
+    border-radius: 0 0 var(--radius) var(--radius);
+}
+
+.use-template-btn,
+.close-modal-btn {
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.use-template-btn {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+.use-template-btn:hover {
+    background: var(--primary-hover);
+    transform: translateY(-1px);
+}
+
+.close-modal-btn {
+    background: var(--surface);
+    color: var(--text-secondary);
+}
+
+.close-modal-btn:hover {
+    background: var(--border);
+    color: var(--text-primary);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .prompt-selector-wrapper {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .preview-btn,
+    .refresh-btn {
+        align-self: flex-end;
+    }
+    
+    .modal-content {
+        margin: 0.5rem;
+        max-height: 90vh;
+    }
+    
+    .template-content {
+        font-size: 0.75rem;
+        max-height: 200px;
+    }
+}
