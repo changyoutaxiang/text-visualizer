@@ -82,21 +82,8 @@ class SmartPreloader {
         try {
             console.log('🔄 预加载代码编辑器...');
             
-            // 使用 modulepreload 预加载
-            const modules = [
-                'codemirror',
-                '@codemirror/lang-html',
-                '@codemirror/lang-xml', 
-                '@codemirror/theme-one-dark'
-            ];
-
-            modules.forEach(moduleName => {
-                const link = document.createElement('link');
-                link.rel = 'modulepreload';
-                link.href = `/node_modules/${moduleName}/dist/index.js`;
-                document.head.appendChild(link);
-            });
-
+            // 在生产环境中，模块已经被Vite打包，无需单独预加载
+            // 这里只是标记为已预加载，避免重复处理
             this.preloadedModules.add('codemirror');
             console.log('✅ 代码编辑器预加载完成');
         } catch (error) {
