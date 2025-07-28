@@ -5,7 +5,7 @@
 
 export class MarkdownPromptLoader {
     constructor() {
-        this.basePath = '/templates';
+        this.basePath = '/prompts/templates';
         this.cache = new Map();
         this.metadataCache = new Map();
     }
