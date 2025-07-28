@@ -5,7 +5,8 @@
 
 export class MarkdownPromptLoader {
     constructor() {
-        this.basePath = '/prompts/templates';
+        // 使用相对路径，适配本地开发环境
+        this.basePath = './prompts/templates';
         this.cache = new Map();
         this.metadataCache = new Map();
     }

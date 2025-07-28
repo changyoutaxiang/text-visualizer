@@ -33,10 +33,18 @@ export class TemplateSelector {
      */
     async loadTemplates() {
         try {
+            console.log('🔄 开始加载模板...');
             this.templates = await this.loader.getAvailableTemplates();
-            console.log('✅ 已加载模板:', this.templates.length);
+            console.log('✅ 已加载模板:', this.templates.length, '个');
+            
+            if (this.templates.length === 0) {
+                console.warn('⚠️ 没有加载到任何模板文件');
+            } else {
+                console.log('📋 模板列表:', this.templates.map(t => `${t.name} (${t.filename})`));
+            }
         } catch (error) {
-            console.error('加载模板失败:', error);
+            console.error('❌ 加载模板失败:', error);
+            console.error('错误详情:', error.stack);
             this.templates = [];
         }
     }
@@ -50,10 +58,24 @@ export class TemplateSelector {
         // 清空现有选项
         this.selectElement.innerHTML = '';
 
+        if (this.templates.length === 0) {
+            // 显示错误状态
+            const errorOption = document.createElement('option');
+            errorOption.value = '';
+            errorOption.textContent = '模板加载失败，请刷新页面';
+            errorOption.disabled = true;
+            this.selectElement.appendChild(errorOption);
+            this.selectElement.disabled = true;
+            return;
+        }
+
+        // 启用选择器
+        this.selectElement.disabled = false;
+
         // 添加默认选项
         const defaultOption = document.createElement('option');
         defaultOption.value = '';
-        defaultOption.textContent = '请选择模板...';
+        defaultOption.textContent = `请选择模板... (共${this.templates.length}个)`;
         this.selectElement.appendChild(defaultOption);
 
         // 按分类分组模板
