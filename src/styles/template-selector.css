@@ -94,37 +94,46 @@
 
 /* 暗色主题支持 */
 @media (prefers-color-scheme: dark) {
+    :root {
+        --surface: var(--gray-800);
+        --background: var(--gray-900);
+        --border: var(--gray-600);
+        --text-primary: var(--gray-100);
+        --text-secondary: var(--gray-300);
+        --text-tertiary: var(--gray-400);
+    }
+    
     .template-info {
-        background: var(--surface-dark, #2d3748);
-        border-color: var(--border-dark, #4a5568);
+        background: var(--surface);
+        border-color: var(--border);
     }
     
     .template-details h4 {
-        color: var(--text-primary-dark, #f7fafc);
+        color: var(--text-primary);
     }
     
     .template-details .description {
-        color: var(--text-secondary-dark, #a0aec0);
+        color: var(--text-secondary);
     }
     
     .template-details .variables strong {
-        color: var(--text-primary-dark, #f7fafc);
+        color: var(--text-primary);
     }
     
     .template-details .variables code {
-        background: var(--background-dark, #1a202c);
-        border-color: var(--border-dark, #4a5568);
-        color: var(--accent-dark, #63b3ed);
+        background: var(--background);
+        border-color: var(--border);
+        color: var(--primary-blue);
     }
     
     #promptSelect {
-        background: var(--background-dark, #1a202c);
-        border-color: var(--border-dark, #4a5568);
-        color: var(--text-primary-dark, #f7fafc);
+        background: var(--background);
+        border-color: var(--border);
+        color: var(--text-primary);
     }
     
     #promptSelect:focus {
-        border-color: var(--accent-dark, #63b3ed);
-        box-shadow: 0 0 0 0.2rem rgba(99, 179, 237, 0.25);
+        border-color: var(--primary-blue);
+        box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.25);
     }
 }

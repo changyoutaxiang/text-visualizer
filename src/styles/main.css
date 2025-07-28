@@ -13,16 +13,16 @@
 
 /* 应用特定变量映射 - 基于设计令牌系统 */
 :root {
-    /* 颜色映射到设计令牌 */
+    /* 颜色映射到设计令牌 - 修复亮色主题 */
     --primary-color: var(--primary-blue);
     --primary-hover: var(--blue-700);
     --secondary-color: var(--gray-500);
-    --background: var(--bg-dark);
-    --surface: var(--bg-dark-alt);
+    --background: var(--bg-light);        /* 修复：亮色背景 */
+    --surface: var(--bg-light-alt);       /* 修复：亮面色板 */
     --border: var(--border-medium);
-    --text-primary: var(--gray-50);
-    --text-secondary: var(--gray-300);
-    --text-muted: var(--gray-400);
+    --text-primary: var(--text-primary);  /* 修复：深色文字 */
+    --text-secondary: var(--text-secondary);
+    --text-muted: var(--text-tertiary);
     --error: var(--error-red);
     --success: var(--success-green);
     --warning: var(--warning-yellow);
