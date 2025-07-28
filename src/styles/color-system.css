@@ -1,0 +1,175 @@
+/**
+ * 统一颜色系统
+ * 彻底修复颜色混乱问题
+ */
+
+/* 基础主题定义 */
+:root {
+    /* 亮色主题 */
+    --light-bg: #ffffff;
+    --light-surface: #f8fafc;
+    --light-border: #e2e8f0;
+    --light-text: #1e293b;
+    --light-text-soft: #475569;
+    --light-text-muted: #64748b;
+    --light-primary: #3b82f6;
+    --light-primary-hover: #2563eb;
+    --light-success: #10b981;
+    --light-warning: #f59e0b;
+    --light-error: #ef4444;
+    
+    /* 暗色主题 */
+    --dark-bg: #0f172a;
+    --dark-surface: #1e293b;
+    --dark-border: #334155;
+    --dark-text: #f1f5f9;
+    --dark-text-soft: #cbd5e1;
+    --dark-text-muted: #94a3b8;
+    --dark-primary: #60a5fa;
+    --dark-primary-hover: #3b82f6;
+    --dark-success: #34d399;
+    --dark-warning: #fbbf24;
+    --dark-error: #f87171;
+    
+    /* 默认使用亮色主题 */
+    --bg: var(--light-bg);
+    --surface: var(--light-surface);
+    --border: var(--light-border);
+    --text: var(--light-text);
+    --text-soft: var(--light-text-soft);
+    --text-muted: var(--light-text-muted);
+    --primary: var(--light-primary);
+    --primary-hover: var(--light-primary-hover);
+    --success: var(--light-success);
+    --warning: var(--light-warning);
+    --error: var(--light-error);
+}
+
+/* 暗色主题媒体查询 */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg: var(--dark-bg);
+        --surface: var(--dark-surface);
+        --border: var(--dark-border);
+        --text: var(--dark-text);
+        --text-soft: var(--dark-text-soft);
+        --text-muted: var(--dark-text-muted);
+        --primary: var(--dark-primary);
+        --primary-hover: var(--dark-primary-hover);
+        --success: var(--dark-success);
+        --warning: var(--dark-warning);
+        --error: var(--dark-error);
+    }
+}
+
+/* 全局应用 */
+body {
+    background: var(--bg);
+    color: var(--text);
+}
+
+/* 组件颜色映射 */
+.app-header {
+    background: var(--surface);
+    border-color: var(--border);
+}
+
+.input-panel,
+.preview-panel {
+    background: var(--surface);
+    border-color: var(--border);
+}
+
+#textInput {
+    background: var(--bg);
+    border-color: var(--border);
+    color: var(--text);
+}
+
+#textInput:focus {
+    border-color: var(--primary);
+}
+
+#promptSelect {
+    background: var(--bg);
+    border-color: var(--border);
+    color: var(--text);
+}
+
+#promptSelect:focus {
+    border-color: var(--primary);
+}
+
+.template-info {
+    background: var(--surface);
+    border-color: var(--border);
+}
+
+.template-details h4 {
+    color: var(--text);
+}
+
+.template-details .description {
+    color: var(--text-soft);
+}
+
+.template-details .variables strong {
+    color: var(--text);
+}
+
+.template-details .variables code {
+    background: var(--bg);
+    border-color: var(--border);
+    color: var(--primary);
+}
+
+.subtitle {
+    color: var(--text-soft);
+}
+
+.control-group label {
+    color: var(--text);
+}
+
+.logout-btn {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--error);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.logout-btn:hover {
+    background: rgba(239, 68, 68, 0.2);
+    border-color: rgba(239, 68, 68, 0.5);
+}
+
+.char-count {
+    color: var(--text-muted);
+}
+
+.char-count.warning {
+    color: var(--warning);
+}
+
+.char-count.error {
+    color: var(--error);
+}
+
+/* 确保下拉选项在任何背景都清晰可见 */
+#promptSelect option {
+    background: var(--bg);
+    color: var(--text);
+}
+
+#promptSelect option:hover,
+#promptSelect option:focus {
+    background: var(--surface);
+    color: var(--text);
+}
+
+/* 修复渐变文字 */
+.app-header h1 {
+    background: linear-gradient(135deg, var(--primary), #8b5cf6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}

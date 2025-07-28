@@ -1,23 +1,21 @@
-/* 模板选择器样式 */
+/* 模板选择器样式 - 由color-system.css统一管理颜色 */
+/* 只保留布局和响应式样式 */
+
 .template-info {
     margin-top: 0.75rem;
     padding: 0.75rem;
-    background: var(--surface, #f8f9fa);
-    border: 1px solid var(--border, #e9ecef);
-    border-radius: var(--radius, 0.375rem);
+    border-radius: var(--radius);
     font-size: 0.875rem;
 }
 
 .template-details h4 {
     margin: 0 0 0.5rem 0;
-    color: var(--text-primary, #212529);
     font-size: 1rem;
     font-weight: 600;
 }
 
 .template-details .description {
     margin: 0 0 0.75rem 0;
-    color: var(--text-secondary, #6c757d);
     line-height: 1.4;
 }
 
@@ -30,46 +28,36 @@
 
 .template-details .variables strong {
     margin-right: 0.5rem;
-    color: var(--text-primary, #212529);
     font-weight: 600;
 }
 
 .template-details .variables code {
     padding: 0.125rem 0.375rem;
-    background: var(--background, #ffffff);
-    border: 1px solid var(--border, #e9ecef);
     border-radius: 0.25rem;
     font-size: 0.75rem;
-    color: var(--accent, #0d6efd);
     font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
 }
 
-/* 选择器样式增强 */
+/* 选择器样式 */
 #promptSelect {
     width: 100%;
     padding: 0.5rem;
-    border: 1px solid var(--border, #e9ecef);
-    border-radius: var(--radius, 0.375rem);
-    background: var(--background, #ffffff);
-    color: var(--text-primary, #212529);
+    border-radius: var(--radius);
     font-size: 0.875rem;
     transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
 #promptSelect:focus {
     outline: none;
-    border-color: var(--accent, #0d6efd);
-    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+    box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.25);
 }
 
 #promptSelect optgroup {
     font-weight: 600;
-    color: var(--text-primary, #212529);
 }
 
 #promptSelect option {
     padding: 0.25rem 0.5rem;
-    color: var(--text-secondary, #6c757d);
 }
 
 /* 响应式设计 */
@@ -89,51 +77,5 @@
     .template-details .variables strong {
         margin-right: 0;
         margin-bottom: 0.25rem;
-    }
-}
-
-/* 暗色主题支持 */
-@media (prefers-color-scheme: dark) {
-    :root {
-        --surface: var(--gray-800);
-        --background: var(--gray-900);
-        --border: var(--gray-600);
-        --text-primary: var(--gray-100);
-        --text-secondary: var(--gray-300);
-        --text-tertiary: var(--gray-400);
-    }
-    
-    .template-info {
-        background: var(--surface);
-        border-color: var(--border);
-    }
-    
-    .template-details h4 {
-        color: var(--text-primary);
-    }
-    
-    .template-details .description {
-        color: var(--text-secondary);
-    }
-    
-    .template-details .variables strong {
-        color: var(--text-primary);
-    }
-    
-    .template-details .variables code {
-        background: var(--background);
-        border-color: var(--border);
-        color: var(--primary-blue);
-    }
-    
-    #promptSelect {
-        background: var(--background);
-        border-color: var(--border);
-        color: var(--text-primary);
-    }
-    
-    #promptSelect:focus {
-        border-color: var(--primary-blue);
-        box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.25);
     }
 }

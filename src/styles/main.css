@@ -1,9 +1,5 @@
-/* 导入设计令牌系统 */
-@import './design-tokens.css';
-
-/* 导入组件样式 */
-@import './prompt-selector.css';
-@import './template-selector.css';
+/* 导入统一颜色系统 */
+@import './color-system.css';
 
 * {
     margin: 0;
@@ -11,32 +7,9 @@
     box-sizing: border-box;
 }
 
-/* 应用特定变量映射 - 基于设计令牌系统 */
-:root {
-    /* 颜色映射到设计令牌 - 修复亮色主题 */
-    --primary-color: var(--primary-blue);
-    --primary-hover: var(--blue-700);
-    --secondary-color: var(--gray-500);
-    --background: var(--bg-light);        /* 修复：亮色背景 */
-    --surface: var(--bg-light-alt);       /* 修复：亮面色板 */
-    --border: var(--border-medium);
-    --text-primary: var(--text-primary);  /* 修复：深色文字 */
-    --text-secondary: var(--text-secondary);
-    --text-muted: var(--text-tertiary);
-    --error: var(--error-red);
-    --success: var(--success-green);
-    --warning: var(--warning-yellow);
-    
-    /* 几何属性映射 */
-    --radius: var(--radius-md);
-    --shadow: var(--shadow-md);
-    --shadow-lg: var(--shadow-lg);
-}
 
 body {
     font-family: var(--font-sans);
-    background: var(--background);
-    color: var(--text-primary);
     line-height: var(--leading-normal);
     min-height: 100vh;
 }
@@ -48,9 +21,9 @@ body {
 }
 
 .app-header {
-    background: var(--surface);
+    background: var(--app-surface);
     padding: 2rem;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid var(--app-border);
     box-shadow: var(--shadow);
 }
 
@@ -77,14 +50,14 @@ body {
     font-size: 2.5rem;
     font-weight: 700;
     margin-bottom: 0.5rem;
-    background: linear-gradient(135deg, var(--primary-color), #8b5cf6);
+    background: linear-gradient(135deg, var(--app-primary), #8b5cf6);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
 }
 
 .subtitle {
-    color: var(--text-secondary);
+    color: var(--app-text-soft);
     font-size: 1.1rem;
 }
 
@@ -131,8 +104,8 @@ body {
 
 .input-panel,
 .preview-panel {
-    background: var(--surface);
-    border: 1px solid var(--border);
+    background: var(--app-surface);
+    border: 1px solid var(--app-border);
     border-radius: var(--radius);
     padding: 1.5rem;
     box-shadow: var(--shadow);
@@ -142,7 +115,7 @@ body {
 .preview-panel h2,
 .editor-header h3 {
     margin-bottom: 1rem;
-    color: var(--text-primary);
+    color: var(--app-text);
     font-size: 1.25rem;
     font-weight: 600;
 }
@@ -151,10 +124,10 @@ body {
     width: 100%;
     min-height: 200px;
     padding: 1rem;
-    background: var(--background);
-    border: 1px solid var(--border);
+    background: var(--app-bg);
+    border: 1px solid var(--app-border);
     border-radius: var(--radius);
-    color: var(--text-primary);
+    color: var(--app-text);
     font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
     font-size: 0.9rem;
     resize: vertical;
@@ -163,26 +136,26 @@ body {
 
 #textInput:focus {
     outline: none;
-    border-color: var(--primary-color);
+    border-color: var(--app-primary);
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
 #textInput.error {
-    border-color: var(--error);
+    border-color: var(--app-error);
 }
 
 .char-count {
     margin-top: 0.5rem;
     font-size: 0.875rem;
-    color: var(--text-muted);
+    color: var(--app-text-muted);
 }
 
 .char-count.warning {
-    color: var(--warning);
+    color: var(--app-warning);
 }
 
 .char-count.error {
-    color: var(--error);
+    color: var(--app-error);
     font-weight: 600;
 }
 
