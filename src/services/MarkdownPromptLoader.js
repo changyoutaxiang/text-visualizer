@@ -20,6 +20,7 @@ export class MarkdownPromptLoader {
             const templateFiles = [
                 '数据分析图表.md',
                 '文章视觉化.md',
+                '文章视觉化-简化版.md',
                 '网络关系图.md', 
                 '时间轴.md',
                 '流程图.md',
