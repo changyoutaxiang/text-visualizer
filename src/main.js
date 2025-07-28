@@ -1,6 +1,8 @@
 import './styles/main.css';
 // 启动智能预加载器
 import { smartPreloader } from './utils/preloader.js';
+// 身份验证守卫
+import { AuthGuard } from './components/AuthGuard.js';
 
 // 核心组件 - 立即加载
 import { TextInput } from './components/TextInput.js';
@@ -28,16 +30,40 @@ class TextVisualizerApp {
         this.templateSelector = null;
         this.codeEditor = null;
         
+        // 初始化身份验证，传递回调函数
+        this.authGuard = new AuthGuard(() => {
+            this.continueInit();
+        });
+        
         this.init();
     }
 
     async init() {
         console.log('文本视觉化工具已启动');
         
+        // 如果已经认证，立即继续初始化
+        if (this.authGuard.isUserAuthenticated()) {
+            await this.continueInit();
+        } else {
+            console.log('⏳ 等待用户身份验证...');
+        }
+    }
+
+    async continueInit() {
+        console.log('🚀 继续应用初始化...');
+        
         this.setupEventListeners();
         await this.loadInitialData();
+        this.showLogoutButton();
         
-        console.log('应用初始化完成');
+        console.log('✅ 应用初始化完成');
+    }
+
+    showLogoutButton() {
+        const logoutBtn = document.getElementById('logoutBtn');
+        if (logoutBtn && import.meta.env.VITE_APP_PASSWORD) {
+            logoutBtn.style.display = 'block';
+        }
     }
 
     setupEventListeners() {
@@ -74,6 +100,13 @@ class TextVisualizerApp {
         if (closeEditorBtn) {
             closeEditorBtn.addEventListener('click', () => {
                 this.toggleCodeEditor();
+            });
+        }
+
+        const logoutBtn = document.getElementById('logoutBtn');
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', () => {
+                this.handleLogout();
             });
         }
     }
@@ -214,6 +247,19 @@ class TextVisualizerApp {
         }
 
         this.storage.downloadFile(currentResult, format);
+    }
+
+    handleLogout() {
+        if (confirm('确定要退出登录吗？')) {
+            // 隐藏退出按钮
+            const logoutBtn = document.getElementById('logoutBtn');
+            if (logoutBtn) {
+                logoutBtn.style.display = 'none';
+            }
+            
+            // 调用认证守卫的退出方法
+            this.authGuard.logout();
+        }
     }
 
     showLoading(show, progress = 0, text = null) {
