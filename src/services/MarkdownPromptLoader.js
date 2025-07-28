@@ -19,6 +19,7 @@ export class MarkdownPromptLoader {
             // 定义已知的模板文件列表
             const templateFiles = [
                 '数据分析图表.md',
+                '文章视觉化.md',
                 '网络关系图.md', 
                 '时间轴.md',
                 '流程图.md',
