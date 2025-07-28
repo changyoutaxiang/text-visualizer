@@ -181,6 +181,11 @@ body {
     color: var(--warning);
 }
 
+.char-count.error {
+    color: var(--error);
+    font-weight: 600;
+}
+
 .controls {
     display: grid;
     gap: 1rem;

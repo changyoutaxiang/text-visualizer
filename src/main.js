@@ -161,6 +161,29 @@ class TextVisualizerApp {
             return;
         }
 
+        // 检查输入长度限制
+        const charCount = text.length;
+        const MAX_CHARS = 8000; // 大约6000-7000 tokens
+        
+        if (charCount > MAX_CHARS) {
+            const truncateChoice = confirm(
+                `输入文本过长 (${charCount.toLocaleString()} 字符)\n` +
+                `建议控制在 ${MAX_CHARS.toLocaleString()} 字符以内以获得最佳效果。\n\n` +
+                `点击"确定"自动截取前 ${MAX_CHARS.toLocaleString()} 字符，点击"取消"返回编辑。`
+            );
+            
+            if (!truncateChoice) {
+                return; // 用户选择取消
+            }
+            
+            // 截取文本并更新输入框
+            const truncatedText = text.substring(0, MAX_CHARS);
+            this.textInput.setValue(truncatedText);
+            
+            // 显示截取提示
+            alert(`文本已自动截取至 ${MAX_CHARS.toLocaleString()} 字符`);
+        }
+
         const model = this.modelSelector.getValue();
         const format = this.formatSelector.getValue();
         

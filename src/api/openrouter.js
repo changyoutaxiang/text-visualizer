@@ -170,6 +170,8 @@ export class OpenRouterAPI {
                 if (attempt === maxRetries) {
                     if (error.response?.status === 401) {
                         throw new Error('API密钥无效或已过期');
+                    } else if (error.response?.status === 400) {
+                        throw new Error('请求参数错误，可能是输入文本过长或格式不正确。建议缩短文本内容或尝试其他模型。');
                     } else if (error.response?.status === 429) {
                         throw new Error('API调用频率限制，请稍后再试');
                     } else if (error.code === 'ECONNABORTED' || !error.response) {

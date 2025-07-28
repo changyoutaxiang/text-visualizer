@@ -38,8 +38,9 @@ export class TextInput {
             this.element.parentNode.insertBefore(counter, this.element.nextSibling);
         }
         
-        counter.textContent = `${count} 字符`;
-        counter.classList.toggle('warning', count > 2000);
+        counter.textContent = `${count.toLocaleString()} 字符`;
+        counter.classList.toggle('warning', count > 6000);
+        counter.classList.toggle('error', count > 8000);
     }
 
     validate() {
