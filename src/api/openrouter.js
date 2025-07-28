@@ -12,7 +12,7 @@ export class OpenRouterAPI {
                 'HTTP-Referer': window.location.origin,
                 'X-Title': 'TextVisualizer'
             },
-            timeout: 30000 // 30秒超时
+            timeout: 60000 // 默认60秒超时
         });
         
         // 设置请求拦截器用于性能监控
@@ -150,7 +150,13 @@ export class OpenRouterAPI {
                     requestParams.presence_penalty = modelConfig.presence_penalty;
                 }
 
-                const response = await this.client.post('/chat/completions', requestParams);
+                // 使用动态超时设置
+                const dynamicTimeout = this.getDynamicTimeout(model, format);
+                console.log(`🕐 使用动态超时: ${dynamicTimeout}ms (模型: ${model}, 格式: ${format})`);
+
+                const response = await this.client.post('/chat/completions', requestParams, {
+                    timeout: dynamicTimeout
+                });
 
                 const content = response.data.choices[0]?.message?.content;
                 if (!content) {
@@ -174,8 +180,8 @@ export class OpenRouterAPI {
                         throw new Error('请求参数错误，可能是输入文本过长或格式不正确。建议缩短文本内容或尝试其他模型。');
                     } else if (error.response?.status === 429) {
                         throw new Error('API调用频率限制，请稍后再试');
-                    } else if (error.code === 'ECONNABORTED' || !error.response) {
-                        throw new Error('网络连接超时，请检查网络后重试');
+                    } else if (error.code === 'ECONNABORTED') {
+                        throw new Error('请求超时，可能是图表较复杂。建议：1) 缩短输入文本 2) 切换到SVG格式 3) 使用更快的模型');
                     } else {
                         throw new Error(`API调用失败: ${error.message}`);
                     }
@@ -196,6 +202,34 @@ export class OpenRouterAPI {
         }
         
         return content.trim();
+    }
+
+    /**
+     * 根据模型和格式动态计算超时时间
+     */
+    getDynamicTimeout(model, format) {
+        const baseTimeout = 60000; // 基础60秒
+        
+        // 根据模型复杂度调整
+        const modelMultipliers = {
+            'deepseek/deepseek-chat-v3-0324': 1.5,  // DeepSeek较慢，需要更多时间
+            'deepseek/deepseek-r1-0528': 2.0,       // 推理模型更慢
+            'anthropic/claude-sonnet-4': 1.2,      // Claude速度中等
+            'google/gemini-2.5-pro': 1.3,          // Gemini速度中等
+            'moonshotai/kimi-k2': 1.1,             // Kimi速度较快
+            'x-ai/grok-4': 1.0                     // Grok速度较快
+        };
+        
+        // 根据格式复杂度调整
+        const formatMultipliers = {
+            'html': 1.4,    // HTML生成更复杂
+            'svg': 1.0      // SVG生成相对简单
+        };
+        
+        const modelMultiplier = modelMultipliers[model] || 1.0;
+        const formatMultiplier = formatMultipliers[format] || 1.0;
+        
+        return Math.round(baseTimeout * modelMultiplier * formatMultiplier);
     }
 
     /**
