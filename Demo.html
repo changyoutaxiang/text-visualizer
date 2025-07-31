@@ -1,0 +1,672 @@
+<!DOCTYPE html><html lang="zh"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文本视觉化工具</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&amp;display=swap" rel="stylesheet">
+    <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <style>
+        :root {
+            --deep-space: #1E1E1E;
+            --elctric-blue: #00FFFF;
+            --light-gray: #F5F5F5;
+            --navy-blue: #0A2647;
+            --success: #00FF88;
+            --error: #FF4D4D;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(to bottom, #0F0F0F, #2A2A2A);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            padding: 40px 0;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            width: 1440px;
+            background: var(--light-gray);
+            border-radius: 8px;
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.2);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            overflow: hidden;
+        }
+        
+        header {
+            background: var(--deep-space);
+            padding: 20px 40px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+        }
+        
+        .logo {
+            color: var(--elctric-blue);
+            font-size: 28px;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+        
+        .title {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: white;
+            flex-grow: 1;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+        
+        .nav-link {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+            text-decoration: none;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            color: var(--elctric-blue);
+        }
+        
+        .main-content {
+            display: flex;
+            height: 670px;
+        }
+        
+        .input-section {
+            flex: 0 0 520px;
+            padding: 30px;
+            background: rgba(245, 245, 245, 0.95);
+            border-right: 1px solid rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .text-input {
+            flex-grow: 1;
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid var(--elctric-blue);
+            border-radius: 4px;
+            padding: 15px;
+            font-size: 15px;
+            resize: none;
+            backdrop-filter: blur(10px);
+            margin-bottom: 25px;
+            transition: all 0.3s;
+        }
+        
+        .text-input:focus {
+            outline: none;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+        }
+        
+        .settings-panel {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+        
+        .setting-row {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            font-size: 14px;
+            color: var(--navy-blue);
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        select, .prompt-input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: white;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        
+        select:focus, .prompt-input:focus {
+            outline: none;
+            border-color: var(--elctric-blue);
+            box-shadow: 0 0 0 2px rgba(0, 255, 255, 0.2);
+        }
+        
+        .btn-generate {
+            background: var(--navy-blue);
+            color: white;
+            border: none;
+            padding: 15px 0;
+            font-size: 16px;
+            font-weight: 700;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .btn-generate:hover {
+            background: var(--elctric-blue);
+            color: var(--deep-space);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 255, 255, 0.4);
+        }
+        
+        .preview-section {
+            flex: 1;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .preview-header {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 20px;
+        }
+        
+        .preview-tab {
+            padding: 12px 25px;
+            background: none;
+            border: none;
+            font-size: 15px;
+            cursor: pointer;
+            position: relative;
+            color: #888;
+            font-weight: 500;
+        }
+        
+        .preview-tab.active {
+            color: var(--navy-blue);
+        }
+        
+        .preview-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--elctric-blue);
+        }
+        
+        .preview-content {
+            flex-grow: 1;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #eee;
+        }
+        
+        .visualization-area {
+            flex-grow: 1;
+            background-image: 
+                linear-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .x-axis, .y-axis {
+            position: absolute;
+            color: rgba(0, 0, 0, 0.3);
+            font-size: 11px;
+        }
+        
+        .x-axis {
+            bottom: 10px;
+            left: 0;
+            right: 0;
+            text-align: center;
+        }
+        
+        .y-axis {
+            bottom: 0;
+            top: 0;
+            left: 10px;
+            writing-mode: vertical-lr;
+            transform: rotate(180deg);
+            display: flex;
+            align-items: center;
+        }
+        
+        .chart-placeholder {
+            text-align: center;
+            padding: 40px;
+            color: #888;
+        }
+        
+        .chart-placeholder .icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+            color: var(--navy-blue);
+        }
+        
+        #visualizationChart {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .code-editor {
+            width: 100%;
+            height: 100%;
+            padding: 20px;
+            background: #f6f8fa;
+            font-family: monospace;
+            font-size: 14px;
+            border: none;
+            resize: none;
+            white-space: pre;
+            display: none;
+        }
+        
+        .code-editor:focus {
+            outline: none;
+        }
+        
+        .footer {
+            background: var(--deep-space);
+            padding: 20px 40px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid rgba(0, 255, 255, 0.2);
+        }
+        
+        .download-group {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .btn-download {
+            background: var(--navy-blue);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+        
+        .btn-download:hover {
+            background: var(--elctric-blue);
+            color: var(--deep-space);
+        }
+        
+        .copyright {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+            letter-spacing: 0.5px;
+        }
+        
+        /* Particle effects */
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        
+        .particle {
+            position: absolute;
+            background: var(--elctric-blue);
+            border-radius: 50%;
+            opacity: 0.7;
+            animation: float 15s infinite linear;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0) translateX(0); opacity: 0; }
+            10% { opacity: 0.7; }
+            90% { opacity: 0.7; }
+            100% { transform: translateY(-1000px) translateX(100px); opacity: 0; }
+        }
+        
+        /* Loading overlay */
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            display: none;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--elctric-blue);
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <iconify-icon icon="carbon:data-vis-1" class="logo"></iconify-icon>
+            <h1 class="title">文本视觉化工具</h1>
+            <div class="nav-links">
+                <a href="#" class="nav-link">生成记录</a>
+                <a href="#" class="nav-link">帮助</a>
+            </div>
+        </header>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Input Section -->
+            <section class="input-section">
+                <textarea class="text-input" placeholder="在此处粘贴或输入文本内容...">文本可视化技术通过图形和图表将复杂数据转化为直观的视觉表示。核心是识别文本中的关键信息，并选择最合适的方式展现其内在关系和模式。本工具支持高级自然语言处理和实时渲染功能，结合强大的AI模型，为各种文本创建富有意义的视觉展示。</textarea>
+                
+                <div class="settings-panel">
+                    <div class="setting-row">
+                        <label>输出格式</label>
+                        <select id="format-select">
+                            <option value="svg">SVG（矢量图形）</option>
+                            <option value="html">HTML（交互图表）</option>
+                        </select>
+                    </div>
+                    <div class="setting-row">
+                        <label>模型选择</label>
+                        <select id="model-select">
+                            <option value="gpt-4">GPT-4 增强版（推荐）</option>
+                            <option value="claude">Claude 2</option>
+                            <option value="llama">Llama 2</option>
+                        </select>
+                    </div>
+                    <div class="setting-row">
+                        <label>自定义提示词</label>
+                        <select id="prompt-select">
+                            <option value="default">默认提示</option>
+                            <option value="technical">技术分析</option>
+                            <option value="business">商业解读</option>
+                            <option value="educational">教育教学</option>
+                            <option value="creative">创意展示</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <button id="generate-btn" class="btn-generate">
+                    <iconify-icon icon="ph:sparkle"></iconify-icon>
+                    生成可视化
+                </button>
+            </section>
+            
+            <!-- Preview Section -->
+            <section class="preview-section">
+                <div class="preview-header">
+                    <button class="preview-tab active" data-tab="preview">预览</button>
+                    <button class="preview-tab" data-tab="code">代码</button>
+                </div>
+                
+                <div class="preview-content">
+                    <div class="visualization-area">
+                        <div class="particles" id="particles"></div>
+                        <div class="x-axis">横坐标 | Knowledge Pattern</div>
+                        <div class="y-axis">纵坐标 | Relevance Impact</div>
+                        
+                        <div class="chart-placeholder" id="placeholder">
+                            <iconify-icon class="icon" icon="carbon:chart-line-data"></iconify-icon>
+                            <p>输入文本并点击"生成可视化"按钮查看结果</p>
+                        </div>
+                        
+                        <div id="visualizationChart" style="display:none;"></div>
+                        <textarea class="code-editor" id="codeEditor" spellcheck="false"></textarea>
+                    </div>
+                </div>
+            </section>
+        </div>
+        
+        <!-- Loading Overlay -->
+        <div class="overlay" id="loadingOverlay">
+            <div class="spinner"></div>
+        </div>
+        
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="download-group">
+                <button id="download-svg" class="btn-download">
+                    <iconify-icon icon="ic:round-download"></iconify-icon>
+                    下载SVG
+                </button>
+                <button id="download-html" class="btn-download">
+                    <iconify-icon icon="ic:round-download"></iconify-icon>
+                    下载HTML
+                </button>
+            </div>
+            <div class="copyright">© 2025 数据视觉工作室 | 生成时间：<span id="time"></span></div>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize the page
+            createParticles();
+            updateTime();
+            
+            // Tab switching
+            const tabs = document.querySelectorAll('.preview-tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    
+                    if (tab.dataset.tab === 'preview') {
+                        document.getElementById('visualizationChart').style.display = 'block';
+                        document.getElementById('codeEditor').style.display = 'none';
+                        document.getElementById('placeholder').style.display = tab.dataset.tab === 'preview' && !document.getElementById('visualizationChart').innerHTML ? 'block' : 'none';
+                    } else {
+                        document.getElementById('visualizationChart').style.display = 'none';
+                        document.getElementById('codeEditor').style.display = 'block';
+                        document.getElementById('placeholder').style.display = 'none';
+                    }
+                });
+            });
+            
+            // Generate button click
+            document.getElementById('generate-btn').addEventListener('click', function() {
+                const text = document.querySelector('.text-input').value;
+                if (!text.trim()) {
+                    alert('请输入文本内容');
+                    return;
+                }
+                
+                showLoading();
+                
+                // Simulate processing delay
+                setTimeout(() => {
+                    hideLoading();
+                    generateVisualization(text);
+                }, 1500);
+            });
+            
+            // Download buttons
+            document.getElementById('download-svg').addEventListener('click', function() {
+                alert('SVG文件已开始下载');
+                // In a real implementation, this would generate and download SVG
+            });
+            
+            document.getElementById('download-html').addEventListener('click', function() {
+                alert('HTML文件已开始下载');
+                // In a real implementation, this would generate and download HTML
+            });
+        });
+        
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 30;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Randomize properties
+                const size = Math.random() * 3 + 1;
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100 + 100;
+                const animationDuration = Math.random() * 20 + 10;
+                const delay = Math.random() * 5;
+                
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${posX}%`;
+                particle.style.top = `${posY}%`;
+                particle.style.animationDuration = `${animationDuration}s`;
+                particle.style.animationDelay = `${delay}s`;
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+        
+        function updateTime() {
+            const now = new Date();
+            const dateStr = `${now.getFullYear()}-${(now.getMonth()+1).toString().padStart(2, '0')}-${now.getDate().toString().padStart(2, '0')} ${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+            document.getElementById('time').textContent = dateStr;
+        }
+        
+        function showLoading() {
+            document.getElementById('loadingOverlay').style.display = 'flex';
+        }
+        
+        function hideLoading() {
+            document.getElementById('loadingOverlay').style.display = 'none';
+        }
+        
+        function generateVisualization(text) {
+            const chartDom = document.getElementById('visualizationChart');
+            const chart = echarts.init(chartDom);
+            const placeholder = document.getElementById('placeholder');
+            
+            // Hide placeholder and show chart
+            placeholder.style.display = 'none';
+            chartDom.style.display = 'block';
+            
+            // Generate a sample visualization
+            const wordCounts = calculateWordFrequencies(text);
+            
+            // Create chart options
+            const option = {
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+                grid: {
+                    left: '10%',
+                    right: '10%',
+                    bottom: '15%',
+                    top: '10%',
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'category',
+                    data: wordCounts.map(item => item.word),
+                    axisLabel: {
+                        interval: 0,
+                        rotate: 30
+                    }
+                },
+                yAxis: {
+                    type: 'value',
+                    name: '频率'
+                },
+                series: [{
+                    data: wordCounts.map(item => item.count),
+                    type: 'bar',
+                    itemStyle: {
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                            {offset: 0, color: '#00FFFF'},
+                            {offset: 1, color: '#0A2647'}
+                        ])
+                    },
+                    emphasis: {
+                        itemStyle: {
+                            shadowBlur: 10,
+                            shadowColor: 'rgba(0, 255, 255, 0.5)'
+                        }
+                    }
+                }]
+            };
+            
+            chart.setOption(option);
+            
+            // Show code editor content
+            document.getElementById('codeEditor').value = JSON.stringify(option, null, 2);
+            
+            // Show the preview tab by default
+            document.querySelector('.preview-tab[data-tab="preview"]').classList.add('active');
+            document.querySelector('.preview-tab[data-tab="code"]').classList.remove('active');
+            chartDom.style.display = 'block';
+            document.getElementById('codeEditor').style.display = 'none';
+        }
+        
+        function calculateWordFrequencies(text) {
+            // Simple word frequency analysis (for demo purposes)
+            const words = text.toLowerCase().match(/\b\w+\b/g) || [];
+            const freqMap = {};
+            
+            words.forEach(word => {
+                if (word.length > 3) { // Only include words longer than 3 characters
+                    freqMap[word] = (freqMap[word] || 0) + 1;
+                }
+            });
+            
+            // Convert to array and sort
+            const result = Object.keys(freqMap)
+                .map(word => ({ word, count: freqMap[word] }))
+                .sort((a, b) => b.count - a.count)
+                .slice(0, 8);
+            
+            return result;
+        }
+    </script>
+
+</body></html>

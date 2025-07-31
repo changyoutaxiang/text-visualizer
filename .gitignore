@@ -7,6 +7,7 @@ yarn-error.log*
 # 构建产物
 dist/
 build/
+out/
 
 # 环境变量文件
 .env
@@ -45,7 +46,11 @@ Thumbs.db
 coverage/
 .nyc_output
 
+# 依赖目录
+jspm_packages/
+
 # 缓存目录
+.npm
 .cache/
 .parcel-cache/
 
@@ -55,6 +60,18 @@ coverage/
 
 # Vite 缓存
 .vite/
+
+# 历史文件
+.node_repl_history
+
+# 打包文件
+*.tgz
+
+# Yarn 完整性文件
+.yarn-integrity
+
+# VSCode 测试文件
+.vscode-test
 
 # 备份文件（可选 - 如果想保留备份文件请移除这行）
 # backups/
