@@ -4,18 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>文本视觉化工具 - AI驱动的文本转图表 v1.1</title>
+    <link rel="stylesheet" href="./src/styles/design-tokens.css">
+    <link rel="stylesheet" href="./src/styles/background-system.css">
+    <link rel="stylesheet" href="./src/styles/modern-cards.css">
+    <link rel="stylesheet" href="./src/styles/modern-buttons.css">
+    <link rel="stylesheet" href="./src/styles/typography-system.css">
+    <link rel="stylesheet" href="./src/styles/form-controls.css">
+    <link rel="stylesheet" href="./src/styles/animations.css">
+    <link rel="stylesheet" href="./src/styles/optimizations.css">
     <link rel="stylesheet" href="./src/styles/main.css">
 </head>
-<body>
+<body class="app-background app-background-enhanced page-enter">
+    <!-- 装饰性背景元素 -->
+    <div class="decorative-circles">
+        <div class="decorative-circle animate-float"></div>
+        <div class="decorative-circle animate-float delay-2"></div>
+        <div class="decorative-circle animate-float delay-4"></div>
+    </div>
+    <!-- 装饰线条已移除 -->
+    <div class="decorative-grid"></div>
+    
     <div id="app">
         <header class="app-header">
             <div class="header-content">
                 <div class="header-main">
-                    <h1>文本视觉化工具</h1>
-                    <p class="subtitle">使用AI将文本转换为精美的可视化图表</p>
+                    <h1 class="heading-h1 heading-brand text-animate-in">文本视觉化工具</h1>
+
                 </div>
                 <div class="header-actions">
-                    <button id="logoutBtn" class="logout-btn" style="display: none;" title="退出登录">
+                    <button id="logoutBtn" class="btn-danger-modern btn-small" style="display: none;" title="退出登录">
                         🔒 退出
                     </button>
                 </div>
@@ -24,14 +41,23 @@
 
         <main class="app-main">
             <div class="input-section">
-                <div class="input-panel">
-                    <h2>输入文本</h2>
-                    <textarea id="textInput" placeholder="请输入要可视化的文本内容..." rows="8"></textarea>
+                <div class="input-panel card-input card-enter animate-fade-in-left">
+                    <div class="card-decorator"></div>
+                    <div class="card-header">
+                        <div>
+                            <h2 class="card-title heading-h4 text-primary">📝 输入文本</h2>
+                            <p class="card-subtitle text-body-small text-secondary">
+                                输入要转换为可视化图表的文本内容，支持多种格式和复杂数据结构
+                            </p>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                    <textarea id="textInput" class="textarea-modern" placeholder="请输入要可视化的文本内容..." rows="8"></textarea>
                     
                     <div class="controls">
                         <div class="control-group">
-                            <label>选择AI模型</label>
-                            <select id="modelSelect">
+                            <label class="text-body font-medium text-primary">🤖 选择AI模型</label>
+                            <select id="modelSelect" class="select-modern">
                                 <option value="moonshotai/kimi-k2">Kimi K2</option>
                                 <option value="x-ai/grok-4">Grok-4</option>
                                 <option value="anthropic/claude-sonnet-4">Claude Sonnet 4</option>
@@ -42,46 +68,86 @@
                         </div>
                         
                         <div class="control-group">
-                            <label>输出格式</label>
+                            <label class="text-body font-medium text-primary">📋 输出格式</label>
                             <div class="radio-group">
-                                <label><input type="radio" name="format" value="svg" checked> SVG</label>
-                                <label><input type="radio" name="format" value="html"> HTML</label>
+                                <div class="form-group-inline">
+                                    <input type="radio" id="format-svg" name="format" value="svg" class="radio-modern" checked>
+                                    <label for="format-svg" class="form-label-inline">SVG</label>
+                                </div>
+                                <div class="form-group-inline">
+                                    <input type="radio" id="format-html" name="format" value="html" class="radio-modern">
+                                    <label for="format-html" class="form-label-inline">HTML</label>
+                                </div>
                             </div>
                         </div>
                         
                         <div class="control-group">
-                            <label>选择提示词模板</label>
-                            <select id="promptSelect">
+                            <label class="text-body font-medium text-primary">🎨 选择提示词模板</label>
+                            <select id="promptSelect" class="select-modern">
                                 <option value="">正在加载模板...</option>
                             </select>
                         </div>
                     </div>
+                    </div>
                     
-                    <button id="generateBtn" class="primary-btn">生成可视化</button>
+                    <div class="card-footer">
+                        <button id="generateBtn" class="btn-primary-modern btn-glow ripple-effect">
+                            ✨ 生成可视化
+                        </button>
+                        <span class="text-caption text-tertiary">
+                            💡 支持多种文本格式和图表类型，包括流程图、数据分析图、网络关系图等
+                        </span>
+                    </div>
                 </div>
             </div>
 
             <div class="preview-section">
-                <div class="preview-panel">
-                    <div class="preview-header">
-                        <h2>预览结果</h2>
-                        <div class="preview-actions">
-                            <button id="fullscreenBtn" class="icon-btn">全屏</button>
-                            <button id="downloadBtn" class="icon-btn">下载</button>
-                            <button id="editBtn" class="icon-btn">编辑</button>
+                <div class="preview-panel card-preview card-enter animate-fade-in-right delay-1">
+                    <div class="card-decorator"></div>
+                    <div class="card-header preview-header">
+                        <div>
+                            <h2 class="card-title heading-h4 text-primary">📊 预览结果</h2>
+                            <p class="card-subtitle text-body-small text-secondary">
+                                AI生成的精美可视化图表将在这里实时显示和预览
+                            </p>
+                        </div>
+                        <div class="card-actions preview-actions btn-group">
+                            <button id="fullscreenBtn" class="btn-icon-modern hover-scale" title="全屏查看">
+                                🔍 全屏
+                            </button>
+                            <button id="downloadBtn" class="btn-icon-modern hover-scale" title="下载文件">
+                                📥 下载
+                            </button>
+                            <button id="editBtn" class="btn-icon-modern hover-scale" title="编辑代码">
+                                ✏️ 编辑
+                            </button>
                         </div>
                     </div>
+                    <div class="card-body">
                     <div id="previewContainer" class="preview-container">
                         <div class="placeholder">
-                            <p>生成结果将在这里显示</p>
+                            <p class="text-body text-tertiary">🎯 生成结果将在这里显示</p>
+                            <p class="text-caption text-muted">
+                                选择AI模型和提示词模板，然后点击"生成可视化"开始创作
+                            </p>
                         </div>
+                    </div>
                     </div>
                 </div>
                 
-                <div id="codeEditor" class="code-editor" style="display: none;">
-                    <div class="editor-header">
-                        <h3>代码编辑器</h3>
-                        <button id="closeEditorBtn" class="icon-btn">关闭</button>
+                <div id="codeEditor" class="code-editor card-modern" style="display: none;">
+                    <div class="editor-header card-header">
+                        <div>
+                            <h3 class="card-title heading-h5 text-primary">⚡ 代码编辑器</h3>
+                            <p class="card-subtitle text-body-small text-secondary">
+                                实时编辑可视化代码，支持语法高亮和即时预览
+                            </p>
+                        </div>
+                        <div class="card-actions">
+                            <button id="closeEditorBtn" class="btn-secondary-modern btn-small">
+                                ✕ 关闭
+                            </button>
+                        </div>
                     </div>
                     <div id="editorContainer"></div>
                 </div>

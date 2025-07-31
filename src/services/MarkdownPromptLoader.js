@@ -126,6 +126,7 @@ export class MarkdownPromptLoader {
 
         let currentSection = null;
         let templateStart = false;
+        let hasTemplateSection = false;
 
         for (let i = 0; i < lines.length; i++) {
             const line = lines[i].trim();
@@ -154,10 +155,11 @@ export class MarkdownPromptLoader {
                 continue;
             }
 
-            // 解析提示词模板
-            if (line.startsWith('## 提示词模板')) {
+            // 解析提示词模板 - 支持多种格式
+            if (line.startsWith('## 提示词模板') || line.startsWith('## 📝 专业提示词模板')) {
                 currentSection = 'template';
                 templateStart = true;
+                hasTemplateSection = true;
                 continue;
             }
 
@@ -171,13 +173,34 @@ export class MarkdownPromptLoader {
             }
 
             if (currentSection === 'template' && templateStart) {
-                if (line === '```') {
-                    templateStart = false;
+                if (line === '```markdown' || line === '```') {
+                    if (line === '```' && result.template) {
+                        templateStart = false;
+                        continue;
+                    }
                     continue;
                 }
-                if (result.template || line !== '```') {
+                if (templateStart) {
                     result.template += line + '\n';
                 }
+            }
+        }
+
+        // 如果没有找到专门的模板节，将整个内容作为模板
+        if (!hasTemplateSection) {
+            result.template = content;
+            // 从第一行提取名称（如果还没有）
+            if (!result.name && lines.length > 0) {
+                const firstLine = lines[0].trim();
+                if (firstLine.startsWith('# ')) {
+                    result.name = firstLine.substring(2).trim();
+                } else {
+                    result.name = firstLine || '未命名模板';
+                }
+            }
+            // 设置默认描述
+            if (!result.description) {
+                result.description = '数据可视化模板';
             }
         }
 

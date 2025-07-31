@@ -1,0 +1,39 @@
+{
+  "cdn": {
+    "providers": [
+      {
+        "name": "cloudflare",
+        "zone_id": "your-zone-id",
+        "api_token": "your-api-token",
+        "domains": [
+          "cdn.yourdomain.com",
+          "static.yourdomain.com"
+        ]
+      },
+      {
+        "name": "aws-cloudfront",
+        "distribution_id": "your-distribution-id",
+        "region": "us-east-1"
+      }
+    ],
+    "cache_policies": {
+      "static_assets": {
+        "max_age": 31536000,
+        "s_maxage": 31536000,
+        "immutable": true
+      },
+      "html_files": {
+        "max_age": 3600,
+        "s_maxage": 3600
+      },
+      "api_responses": {
+        "max_age": 300,
+        "s_maxage": 300
+      }
+    },
+    "compression": {
+      "algorithms": ["br", "gzip"],
+      "minimum_size": 1024
+    }
+  }
+}

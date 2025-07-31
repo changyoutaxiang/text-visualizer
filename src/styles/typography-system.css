@@ -1,0 +1,614 @@
+/**
+ * 现代化文字层次系统 - 从"发灰"到清晰有层次
+ * 建立科学的文字层次体系，确保信息传达的清晰性和美观性
+ */
+
+/* ========================================
+   字体基础设置
+   ======================================== */
+
+/* 优化字体渲染 */
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-feature-settings: "kern" 1, "liga" 1;
+  font-optical-sizing: auto;
+}
+
+/* ========================================
+   标题层次系统 - 清晰的视觉层级
+   ======================================== */
+
+.heading-display {
+  /* 展示级标题 - 用于Landing页面 */
+  font-size: 3.5rem;          /* 56px */
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+}
+
+.heading-h1 {
+  /* 一级标题 - 页面主标题 */
+  font-size: 2.75rem;         /* 44px */
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+  margin-bottom: 1.25rem;
+}
+
+.heading-h2 {
+  /* 二级标题 - 章节标题 */
+  font-size: 2.25rem;         /* 36px */
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.025em;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
+
+.heading-h3 {
+  /* 三级标题 - 子章节标题 */
+  font-size: 1.875rem;        /* 30px */
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  margin-bottom: 0.875rem;
+}
+
+.heading-h4 {
+  /* 四级标题 - 小节标题 */
+  font-size: 1.5rem;          /* 24px */
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: -0.015em;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+}
+
+.heading-h5 {
+  /* 五级标题 - 段落标题 */
+  font-size: 1.25rem;         /* 20px */
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+  margin-bottom: 0.625rem;
+}
+
+.heading-h6 {
+  /* 六级标题 - 最小标题 */
+  font-size: 1.125rem;        /* 18px */
+  font-weight: 600;
+  line-height: 1.45;
+  letter-spacing: -0.005em;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+/* ========================================
+   品牌标题样式 - 特殊视觉效果
+   ======================================== */
+
+.heading-brand {
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 700;
+  position: relative;
+}
+
+
+
+.heading-glow {
+  text-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
+}
+
+.heading-outlined {
+  -webkit-text-stroke: 2px var(--brand-primary);
+  -webkit-text-fill-color: transparent;
+}
+
+/* ========================================
+   正文文字层次系统
+   ======================================== */
+
+.text-lead {
+  /* 引导文字 - 重要段落 */
+  font-size: 1.25rem;         /* 20px */
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+}
+
+.text-body-large {
+  /* 大号正文 */
+  font-size: 1.125rem;        /* 18px */
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--text-primary);
+  margin-bottom: 1.25rem;
+}
+
+.text-body {
+  /* 标准正文 */
+  font-size: 1rem;            /* 16px */
+  font-weight: 400;
+  line-height: 1.65;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
+
+.text-body-small {
+  /* 小号正文 */
+  font-size: 0.875rem;        /* 14px */
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  margin-bottom: 0.875rem;
+}
+
+.text-caption {
+  /* 说明文字 */
+  font-size: 0.75rem;         /* 12px */
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--text-tertiary);
+  margin-bottom: 0.75rem;
+}
+
+/* ========================================
+   语义化文字颜色系统
+   ======================================== */
+
+/* 主要文字层次 */
+.text-primary {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.text-secondary {
+  color: var(--text-secondary);
+  font-weight: 400;
+}
+
+.text-tertiary {
+  color: var(--text-tertiary);
+  font-weight: 400;
+}
+
+.text-muted {
+  color: var(--text-muted);
+  font-weight: 400;
+  opacity: 0.8;
+}
+
+/* 品牌和强调色文字 */
+.text-brand {
+  color: var(--brand-primary);
+  font-weight: 600;
+}
+
+.text-accent {
+  color: var(--brand-accent);
+  font-weight: 600;
+}
+
+.text-gradient {
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 600;
+}
+
+/* 状态文字颜色 */
+.text-success {
+  color: var(--text-success);
+  font-weight: 500;
+}
+
+.text-warning {
+  color: var(--text-warning);
+  font-weight: 500;
+}
+
+.text-error {
+  color: var(--text-error);
+  font-weight: 500;
+}
+
+.text-info {
+  color: var(--text-info);
+  font-weight: 500;
+}
+
+/* 反色文字 */
+.text-inverse {
+  color: var(--text-inverse);
+}
+
+/* ========================================
+   字重系统
+   ======================================== */
+
+.font-light {
+  font-weight: 300;
+}
+
+.font-normal {
+  font-weight: 400;
+}
+
+.font-medium {
+  font-weight: 500;
+}
+
+.font-semibold {
+  font-weight: 600;
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+.font-extrabold {
+  font-weight: 800;
+}
+
+/* ========================================
+   特殊文字效果
+   ======================================== */
+
+.text-shadow-sm {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.text-shadow-md {
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+.text-shadow-lg {
+  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.text-glow {
+  text-shadow: 0 0 10px rgba(102, 126, 234, 0.5);
+}
+
+.text-outline {
+  -webkit-text-stroke: 1px var(--text-primary);
+  -webkit-text-fill-color: transparent;
+}
+
+/* ========================================
+   链接样式系统
+   ======================================== */
+
+.link {
+  color: var(--link-color);
+  text-decoration: none;
+  font-weight: 500;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.link:hover {
+  color: var(--link-hover);
+}
+
+.link:visited {
+  color: var(--link-visited);
+}
+
+.link-underline {
+  border-bottom: 1px solid var(--link-color);
+  padding-bottom: 1px;
+}
+
+.link-underline:hover {
+  border-bottom-color: var(--link-hover);
+}
+
+.link-animated {
+  position: relative;
+  overflow: hidden;
+}
+
+.link-animated::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--gradient-primary);
+  transition: width 0.3s ease;
+}
+
+.link-animated:hover::after {
+  width: 100%;
+}
+
+/* ========================================
+   列表和引用样式
+   ======================================== */
+
+.list-styled {
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.list-styled li {
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+  color: var(--text-primary);
+}
+
+.list-styled li::marker {
+  color: var(--brand-primary);
+}
+
+.list-unstyled {
+  list-style: none;
+  padding-left: 0;
+}
+
+.blockquote {
+  border-left: 4px solid var(--brand-primary);
+  padding-left: 1.5rem;
+  margin: 1.5rem 0;
+  font-style: italic;
+  color: var(--text-secondary);
+  font-size: 1.125rem;
+  line-height: 1.6;
+}
+
+.blockquote::before {
+  content: '"';
+  font-size: 3rem;
+  color: var(--brand-primary);
+  opacity: 0.3;
+  line-height: 1;
+}
+
+/* ========================================
+   代码和技术文字
+   ======================================== */
+
+.text-mono {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  background: rgba(102, 126, 234, 0.08);
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+  color: var(--text-primary);
+}
+
+.code-block {
+  font-family: var(--font-mono);
+  background: rgba(102, 126, 234, 0.05);
+  border: 1px solid rgba(102, 126, 234, 0.1);
+  border-radius: 8px;
+  padding: 1rem;
+  overflow-x: auto;
+  line-height: 1.5;
+  color: var(--text-primary);
+  margin: 1rem 0;
+}
+
+/* ========================================
+   响应式文字系统
+   ======================================== */
+
+@media (max-width: 768px) {
+  .heading-display {
+    font-size: 2.5rem;
+    line-height: 1.15;
+  }
+  
+  .heading-h1 {
+    font-size: 2.25rem;
+    line-height: 1.25;
+  }
+  
+  .heading-h2 {
+    font-size: 1.875rem;
+    line-height: 1.3;
+  }
+  
+  .heading-h3 {
+    font-size: 1.5rem;
+    line-height: 1.35;
+  }
+  
+  .text-lead {
+    font-size: 1.125rem;
+  }
+  
+  .text-body-large {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .heading-display {
+    font-size: 2rem;
+    line-height: 1.2;
+  }
+  
+  .heading-h1 {
+    font-size: 1.875rem;
+    line-height: 1.3;
+  }
+  
+  .heading-h2 {
+    font-size: 1.5rem;
+    line-height: 1.35;
+  }
+  
+  .text-lead {
+    font-size: 1rem;
+  }
+  
+  .blockquote {
+    padding-left: 1rem;
+    margin: 1rem 0;
+  }
+}
+
+/* ========================================
+   可读性增强
+   ======================================== */
+
+/* 优化长文本阅读 */
+.text-readable {
+  max-width: 65ch; /* 理想阅读宽度 */
+  line-height: 1.7;
+  font-size: 1.125rem;
+  color: var(--text-primary);
+}
+
+/* 提升对比度的文字 */
+.text-high-contrast {
+  color: #000000;
+  font-weight: 500;
+}
+
+/* 柔和文字 */
+.text-soft {
+  color: var(--text-secondary);
+  font-weight: 400;
+}
+
+/* ========================================
+   动画和过渡效果
+   ======================================== */
+
+.text-animate-in {
+  animation: text-fade-in-up 0.6s ease-out;
+}
+
+@keyframes text-fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.text-typing {
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 2px solid var(--brand-primary);
+  animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite;
+}
+
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes blink-caret {
+  from, to {
+    border-color: transparent;
+  }
+  50% {
+    border-color: var(--brand-primary);
+  }
+}
+
+/* ========================================
+   高对比度和可访问性支持
+   ======================================== */
+
+@media (prefers-contrast: high) {
+  .text-primary,
+  .heading-h1,
+  .heading-h2,
+  .heading-h3,
+  .heading-h4,
+  .heading-h5,
+  .heading-h6 {
+    color: #000000;
+    font-weight: 600;
+  }
+  
+  .text-secondary {
+    color: #333333;
+    font-weight: 500;
+  }
+  
+  .text-tertiary {
+    color: #666666;
+    font-weight: 500;
+  }
+  
+  .heading-brand,
+  .text-gradient {
+    background: none;
+    -webkit-text-fill-color: #000000;
+    color: #000000;
+  }
+  
+  .link {
+    color: #0000FF;
+    text-decoration: underline;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .text-animate-in {
+    animation: none;
+  }
+  
+  .text-typing {
+    animation: none;
+    border-right: none;
+    white-space: normal;
+    overflow: visible;
+  }
+  
+  .link-animated::after {
+    transition: none;
+  }
+}
+
+/* ========================================
+   语言特定优化
+   ======================================== */
+
+/* 中文字体优化 */
+:lang(zh) {
+  font-family: 'PingFang SC', 'Microsoft YaHei', 'Hiragino Sans GB', sans-serif;
+  line-height: 1.7; /* 中文需要更大行高 */
+}
+
+/* 英文字体优化 */
+:lang(en) {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.6;
+}
+
+/* 等宽字体优化 */
+.font-mono {
+  font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', 'Courier New', monospace;
+  font-variant-ligatures: none; /* 禁用连字 */
+}

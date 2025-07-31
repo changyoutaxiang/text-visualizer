@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UI设计系统升级展示 - 从业余到商业级的完美蜕变</title>
+    <link rel="stylesheet" href="./src/styles/design-tokens.css">
+    <link rel="stylesheet" href="./src/styles/background-system.css">
+    <link rel="stylesheet" href="./src/styles/modern-cards.css">
+    <link rel="stylesheet" href="./src/styles/modern-buttons.css">
+    <link rel="stylesheet" href="./src/styles/typography-system.css">
+    <link rel="stylesheet" href="./src/styles/form-controls.css">
+    <link rel="stylesheet" href="./src/styles/animations.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-sans);
+            color: var(--text-primary);
+            line-height: 1.6;
+            position: relative;
+        }
+        
+        .showcase-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* 英雄区域 */
+        .hero-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-content {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(30px);
+            padding: 4rem 3rem;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 
+                0 20px 40px -12px rgba(102, 126, 234, 0.25),
+                0 8px 16px -4px rgba(102, 126, 234, 0.1);
+            max-width: 800px;
+            position: relative;
+        }
+        
+        .hero-badge {
+            background: var(--gradient-primary);
+            color: var(--text-inverse);
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 2rem;
+            animation: pulse 2s infinite;
+        }
+        
+        .progress-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* 阶段展示区域 */
+        .stages-section {
+            padding: 6rem 2rem;
+        }
+        
+        .stages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 3rem;
+            margin: 4rem 0;
+        }
+        
+        .stage-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 24px;
+            padding: 2.5rem;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.4s var(--ease-out-cubic);
+        }
+        
+        .stage-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: var(--gradient-primary);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s var(--ease-out-cubic);
+        }
+        
+        .stage-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 
+                0 20px 40px -12px rgba(102, 126, 234, 0.35),
+                0 8px 24px -4px rgba(102, 126, 234, 0.2);
+        }
+        
+        .stage-card:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .stage-number {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            width: 60px;
+            height: 60px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-inverse);
+            font-size: 1.5rem;
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        
+        .stage-content {
+            margin-right: 80px;
+        }
+        
+        .stage-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin: 1.5rem 0;
+        }
+        
+        .feature-tag {
+            background: rgba(102, 126, 234, 0.1);
+            color: var(--brand-primary);
+            padding: 0.375rem 0.875rem;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border: 1px solid rgba(102, 126, 234, 0.2);
+        }
+        
+        .stage-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--brand-primary);
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            transition: all 0.2s ease;
+        }
+        
+        .stage-link:hover {
+            transform: translateX(4px);
+        }
+        
+        /* 对比展示 */
+        .comparison-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 6rem 2rem;
+            margin: 4rem 0;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            margin: 4rem 0;
+        }
+        
+        .comparison-side {
+            text-align: center;
+        }
+        
+        .comparison-image {
+            width: 100%;
+            height: 300px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .before-image {
+            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+            color: #9ca3af;
+            border: 2px dashed #d1d5db;
+        }
+        
+        .after-image {
+            background: var(--gradient-primary);
+            color: var(--text-inverse);
+            box-shadow: 
+                0 10px 25px -5px rgba(102, 126, 234, 0.25),
+                0 20px 40px -10px rgba(102, 126, 234, 0.15);
+        }
+        
+        .improvement-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+        
+        .metric-card {
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(102, 126, 234, 0.1);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+        }
+        
+        .metric-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--color-success);
+            margin-bottom: 0.5rem;
+        }
+        
+        /* 技术栈展示 */
+        .tech-section {
+            padding: 6rem 2rem;
+            text-align: center;
+        }
+        
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+        
+        .tech-category {
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(102, 126, 234, 0.1);
+            border-radius: 20px;
+            padding: 2rem;
+            position: relative;
+        }
+        
+        .tech-items {
+            list-style: none;
+            margin: 1.5rem 0;
+        }
+        
+        .tech-items li {
+            padding: 0.5rem 0;
+            color: var(--text-secondary);
+            position: relative;
+        }
+        
+        .tech-items li::before {
+            content: '✨';
+            margin-right: 0.5rem;
+        }
+        
+        /* 行动号召 */
+        .cta-section {
+            background: var(--gradient-primary);
+            color: var(--text-inverse);
+            padding: 6rem 2rem;
+            text-align: center;
+            border-radius: 30px;
+            margin: 4rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+        
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 3rem;
+        }
+        
+        .btn-cta {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            color: var(--text-inverse);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            padding: 1.25rem 2.5rem;
+            border-radius: 16px;
+            font-size: 1.125rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .btn-cta:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 255, 255, 0.2);
+        }
+        
+        .btn-cta-primary {
+            background: var(--text-inverse);
+            color: var(--brand-primary);
+            border-color: var(--text-inverse);
+        }
+        
+        .btn-cta-primary:hover {
+            background: rgba(255, 255, 255, 0.9);
+            transform: translateY(-2px) scale(1.05);
+        }
+        
+        @media (max-width: 768px) {
+            .hero-content {
+                padding: 3rem 2rem;
+                margin: 1rem;
+            }
+            
+            .progress-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .stages-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .comparison-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .stage-content {
+                margin-right: 0;
+            }
+            
+            .stage-number {
+                position: static;
+                margin-bottom: 1rem;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body class="app-background app-background-enhanced page-enter">
+    <!-- 装饰性背景元素 -->
+    <div class="decorative-circles">
+        <div class="decorative-circle animate-float"></div>
+        <div class="decorative-circle animate-float delay-2"></div>
+        <div class="decorative-circle animate-float delay-4"></div>
+    </div>
+    <div class="decorative-lines">
+        <div class="decorative-line"></div>
+        <div class="decorative-line"></div>
+    </div>
+    <div class="decorative-grid"></div>
+    
+    <div class="showcase-container">
+        <!-- 英雄区域 -->
+        <section class="hero-section">
+            <div class="hero-content animate-scale-in">
+                <div class="hero-badge animate-bounce-in delay-1">🎉 UI设计系统升级完成</div>
+                
+                <h1 class="heading-display heading-brand text-animate-in">
+                    从业余级到商业级
+                </h1>
+                
+                <p class="text-lead text-secondary animate-fade-in-up delay-1" style="max-width: 600px; margin: 0 auto;">
+                    通过8个系统性阶段，将普通界面升级为现代化的专业级UI设计系统，
+                    全面提升用户体验和视觉品质
+                </p>
+                
+                <div class="progress-stats animate-fade-in-up delay-2">
+                    <div class="stat-item">
+                        <div class="stat-number">8</div>
+                        <div class="text-body-small text-tertiary">升级阶段</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">50+</div>
+                        <div class="text-body-small text-tertiary">设计组件</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">100%</div>
+                        <div class="text-body-small text-tertiary">现代化升级</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">∞</div>
+                        <div class="text-body-small text-tertiary">用户体验</div>
+                    </div>
+                </div>
+                
+                <div class="animate-fade-in-up delay-3">
+                    <a href="#stages" class="btn-primary-modern btn-large btn-glow ripple-effect">
+                        🚀 开始探索
+                    </a>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 阶段展示 -->
+        <section id="stages" class="stages-section">
+            <div class="text-center animate-fade-in-up">
+                <h2 class="heading-h1 heading-brand">8个阶段的完美蜕变</h2>
+                <p class="text-lead text-secondary" style="max-width: 800px; margin: 2rem auto;">
+                    每个阶段都经过精心设计，从基础的颜色系统到高级的动画交互，
+                    系统性地提升界面的专业度和用户体验
+                </p>
+            </div>
+            
+            <div class="stages-grid">
+                <div class="stage-card animate-fade-in-up delay-1" onclick="window.open('test-colors.html', '_blank')">
+                    <div class="stage-number">1</div>
+                    <div class="stage-content">
+                        <h3 class="heading-h3 text-primary">颜色系统升级</h3>
+                        <p class="text-body text-secondary">
+                            建立科学的品牌色彩体系，从单调灰色升级为丰富的渐变色彩系统
+                        </p>
+                        <div class="stage-features">
+                            <span class="feature-tag">品牌色彩</span>
+                            <span class="feature-tag">渐变系统</span>
+                            <span class="feature-tag">语义化颜色</span>
+                            <span class="feature-tag">深浅主题</span>
+                        </div>
+                        <a href="test-colors.html" class="stage-link" target="_blank">
+                            查看详情 →
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="stage-card animate-fade-in-up delay-2" onclick="window.open('test-backgrounds.html', '_blank')">
+                    <div class="stage-number">2</div>
+                    <div class="stage-content">
+                        <h3 class="heading-h3 text-primary">背景系统重构</h3>
+                        <p class="text-body text-secondary">
+                            创建层次丰富的背景效果，添加装饰元素和动态背景
+                        </p>
+                        <div class="stage-features">
+                            <span class="feature-tag">多层背景</span>
+                            <span class="feature-tag">装饰元素</span>
+                            <span class="feature-tag">glassmorphism</span>
+                            <span class="feature-tag">响应式</span>
+                        </div>
+                        <a href="test-backgrounds.html" class="stage-link" target="_blank">
+                            查看详情 →
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="stage-card animate-fade-in-up delay-3" onclick="window.open('test-cards.html', '_blank')">
+                    <div class="stage-number">3</div>
+                    <div class="stage-content">
+                        <h3 class="heading-h3 text-primary">卡片系统升级</h3>
+                        <p class="text-body text-secondary">
+                            设计现代化的卡片组件，支持多种样式和交互状态
+                        </p>
+                        <div class="stage-features">
+                            <span class="feature-tag">立体阴影</span>
+                            <span class="feature-tag">毛玻璃效果</span>
+                            <span class="feature-tag">悬停动画</span>
+                            <span class="feature-tag">渐变边框</span>
+                        </div>
+                        <a href="test-cards.html" class="stage-link" target="_blank">
+                            查看详情 →
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="stage-card animate-fade-in-up delay-4" onclick="window.open('test-buttons.html', '_blank')">
+                    <div class="stage-number">4</div>
+                    <div class="stage-content">
+                        <h3 class="heading-h3 text-primary">按钮系统重构</h3>
+                        <p class="text-body text-secondary">
+                            从单调按钮升级为具有吸引力的立体交互设计
+                        </p>
+                        <div class="stage-features">
+                            <span class="feature-tag">多层阴影</span>
+                            <span class="feature-tag">悬停效果</span>
+                            <span class="feature-tag">状态管理</span>
+                            <span class="feature-tag">尺寸变体</span>
+                        </div>
+                        <a href="test-buttons.html" class="stage-link" target="_blank">
+                            查看详情 →
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="stage-card animate-fade-in-up delay-5" onclick="window.open('test-typography.html', '_blank')">
+                    <div class="stage-number">5</div>
+                    <div class="stage-content">
+                        <h3 class="heading-h3 text-primary">文字层次优化</h3>
+                        <p class="text-body text-secondary">
+                            从"发灰"文字升级为清晰有层次的现代化文字系统
+                        </p>
+                        <div class="stage-features">
+                            <span class="feature-tag">层次清晰</span>
+                            <span class="feature-tag">对比度优化</span>
+                            <span class="feature-tag">特殊效果</span>
+                            <span class="feature-tag">可读性强</span>
+                        </div>
+                        <a href="test-typography.html" class="stage-link" target="_blank">
+                            查看详情 →
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="stage-card animate-fade-in-up delay-6" onclick="window.open('test-forms.html', '_blank')">
+                    <div class="stage-number">6</div>
+                    <div class="stage-content">
+                        <h3 class="heading-h3 text-primary">表单控件美化</h3>
+                        <p class="text-body text-secondary">
+                            从基础表单升级为具有现代感和交互性的精美控件
+                        </p>
+                        <div class="stage-features">
+                            <span class="feature-tag">立体输入框</span>
+                            <span class="feature-tag">状态反馈</span>
+                            <span class="feature-tag">验证系统</span>
+                            <span class="feature-tag">触控友好</span>
+                        </div>
+                        <a href="test-forms.html" class="stage-link" target="_blank">
+                            查看详情 →
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="stage-card animate-fade-in-up delay-7" onclick="window.open('test-animations.html', '_blank')">
+                    <div class="stage-number">7</div>
+                    <div class="stage-content">
+                        <h3 class="heading-h3 text-primary">动画和微交互</h3>
+                        <p class="text-body text-secondary">
+                            为界面注入生动的动画效果和精致的微交互体验
+                        </p>
+                        <div class="stage-features">
+                            <span class="feature-tag">入场动画</span>
+                            <span class="feature-tag">微交互</span>
+                            <span class="feature-tag">Loading动画</span>
+                            <span class="feature-tag">性能优化</span>
+                        </div>
+                        <a href="test-animations.html" class="stage-link" target="_blank">
+                            查看详情 →
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="stage-card animate-fade-in-up delay-8" onclick="window.open('index.html', '_blank')">
+                    <div class="stage-number">8</div>
+                    <div class="stage-content">
+                        <h3 class="heading-h3 text-primary">整体优化和测试</h3>
+                        <p class="text-body text-secondary">
+                            最终整合所有升级成果，全面优化性能和用户体验
+                        </p>
+                        <div class="stage-features">
+                            <span class="feature-tag">性能优化</span>
+                            <span class="feature-tag">可访问性</span>
+                            <span class="feature-tag">响应式</span>
+                            <span class="feature-tag">完整测试</span>
+                        </div>
+                        <a href="index.html" class="stage-link" target="_blank">
+                            查看最终效果 →
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 对比展示 -->
+        <section class="comparison-section animate-fade-in-up">
+            <div class="text-center">
+                <h2 class="heading-h1 text-primary">升级前后对比</h2>
+                <p class="text-lead text-secondary">
+                    看看我们是如何将普通界面转变为现代化专业设计的
+                </p>
+            </div>
+            
+            <div class="comparison-grid">
+                <div class="comparison-side">
+                    <div class="comparison-image before-image">
+                        😴
+                    </div>
+                    <h3 class="heading-h3 text-tertiary">升级前</h3>
+                    <ul class="text-body text-secondary" style="text-align: left; max-width: 300px; margin: 0 auto;">
+                        <li>单调的灰色系统</li>
+                        <li>平面化的设计</li>
+                        <li>缺乏层次感</li>
+                        <li>交互反馈不足</li>
+                        <li>视觉冲击力弱</li>
+                    </ul>
+                </div>
+                
+                <div class="comparison-side">
+                    <div class="comparison-image after-image animate-gradient">
+                        🎉
+                    </div>
+                    <h3 class="heading-h3 text-success">升级后</h3>
+                    <ul class="text-body text-primary" style="text-align: left; max-width: 300px; margin: 0 auto;">
+                        <li>丰富的品牌色彩系统</li>
+                        <li>立体化的现代设计</li>
+                        <li>清晰的视觉层次</li>
+                        <li>流畅的动画交互</li>
+                        <li>专业的视觉效果</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="improvement-metrics">
+                <div class="metric-card animate-scale-in delay-1">
+                    <div class="metric-icon">🎨</div>
+                    <div class="metric-value">+300%</div>
+                    <div class="text-body text-primary">视觉美观度</div>
+                    <div class="text-caption text-tertiary">专业级设计品质</div>
+                </div>
+                
+                <div class="metric-card animate-scale-in delay-2">
+                    <div class="metric-icon">⚡</div>
+                    <div class="metric-value">+250%</div>
+                    <div class="text-body text-primary">交互体验</div>
+                    <div class="text-caption text-tertiary">流畅动画反馈</div>
+                </div>
+                
+                <div class="metric-card animate-scale-in delay-3">
+                    <div class="metric-icon">🛡️</div>
+                    <div class="metric-value">+400%</div>
+                    <div class="text-body text-primary">可访问性</div>
+                    <div class="text-caption text-tertiary">无障碍友好设计</div>
+                </div>
+                
+                <div class="metric-card animate-scale-in delay-4">
+                    <div class="metric-icon">📱</div>
+                    <div class="metric-value">+200%</div>
+                    <div class="text-body text-primary">响应式适配</div>
+                    <div class="text-caption text-tertiary">全设备完美体验</div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 技术栈 -->
+        <section class="tech-section">
+            <div class="animate-fade-in-up">
+                <h2 class="heading-h1 text-primary">现代化技术栈</h2>
+                <p class="text-lead text-secondary">
+                    采用最新的前端技术和设计标准，确保系统的可维护性和扩展性
+                </p>
+            </div>
+            
+            <div class="tech-grid">
+                <div class="tech-category animate-fade-in-up delay-1">
+                    <h3 class="heading-h4 text-brand">🎨 设计系统</h3>
+                    <ul class="tech-items">
+                        <li>Design Tokens</li>
+                        <li>Component Library</li>
+                        <li>Style Guide</li>
+                        <li>Color Palette</li>
+                        <li>Typography Scale</li>
+                    </ul>
+                </div>
+                
+                <div class="tech-category animate-fade-in-up delay-2">
+                    <h3 class="heading-h4 text-brand">💫 CSS技术</h3>
+                    <ul class="tech-items">
+                        <li>CSS Grid & Flexbox</li>
+                        <li>CSS Custom Properties</li>
+                        <li>Backdrop Filter</li>
+                        <li>CSS Animations</li>
+                        <li>Media Queries</li>
+                    </ul>
+                </div>
+                
+                <div class="tech-category animate-fade-in-up delay-3">
+                    <h3 class="heading-h4 text-brand">🚀 现代特性</h3>
+                    <ul class="tech-items">
+                        <li>Glassmorphism</li>
+                        <li>Micro-interactions</li>
+                        <li>GPU Acceleration</li>
+                        <li>Progressive Enhancement</li>
+                        <li>Performance Optimization</li>
+                    </ul>
+                </div>
+                
+                <div class="tech-category animate-fade-in-up delay-4">
+                    <h3 class="heading-h4 text-brand">♿ 可访问性</h3>
+                    <ul class="tech-items">
+                        <li>WCAG 2.1 AA</li>
+                        <li>Semantic HTML</li>
+                        <li>Keyboard Navigation</li>
+                        <li>Screen Reader Support</li>
+                        <li>High Contrast Mode</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 行动号召 -->
+        <section class="cta-section animate-fade-in-up">
+            <div style="position: relative; z-index: 1;">
+                <h2 class="heading-h1" style="color: var(--text-inverse);">
+                    准备好升级你的界面了吗？
+                </h2>
+                <p class="text-lead" style="color: rgba(255, 255, 255, 0.9); max-width: 600px; margin: 2rem auto;">
+                    使用这套完整的UI设计系统，让你的项目从业余级瞬间提升到商业级专业水准
+                </p>
+                
+                <div class="cta-buttons">
+                    <a href="index.html" class="btn-cta btn-cta-primary ripple-effect" target="_blank">
+                        🚀 体验最终效果
+                    </a>
+                    <a href="#stages" class="btn-cta ripple-effect">
+                        📚 查看所有阶段
+                    </a>
+                </div>
+                
+                <div class="progress-stats" style="margin-top: 4rem;">
+                    <div class="stat-item">
+                        <div class="text-body" style="color: rgba(255, 255, 255, 0.9);">🎯 100% 现代化</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="text-body" style="color: rgba(255, 255, 255, 0.9);">⚡ 零配置使用</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="text-body" style="color: rgba(255, 255, 255, 0.9);">📱 完全响应式</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="text-body" style="color: rgba(255, 255, 255, 0.9);">♿ 无障碍友好</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <script>
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        
+        // 滚动动画触发
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-fade-in-up');
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+        
+        // 观察所有需要动画的元素
+        document.querySelectorAll('.animate-fade-in-up, .animate-scale-in').forEach(element => {
+            observer.observe(element);
+        });
+        
+        // 涟漪效果
+        document.addEventListener('click', (e) => {
+            if (!e.target.classList.contains('ripple-effect')) return;
+            
+            const ripple = document.createElement('span');
+            const rect = e.target.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            const x = e.clientX - rect.left - size / 2;
+            const y = e.clientY - rect.top - size / 2;
+            
+            ripple.classList.add('ripple-wave');
+            ripple.style.width = ripple.style.height = size + 'px';
+            ripple.style.left = x + 'px';
+            ripple.style.top = y + 'px';
+            
+            e.target.appendChild(ripple);
+            
+            setTimeout(() => {
+                ripple.remove();
+            }, 600);
+        });
+        
+        // 统计数字动画
+        function animateNumbers() {
+            const statNumbers = document.querySelectorAll('.stat-number');
+            statNumbers.forEach(stat => {
+                const target = stat.textContent;
+                if (target === '∞') return;
+                
+                const finalNumber = parseInt(target.replace(/[^\d]/g, ''));
+                let current = 0;
+                const increment = finalNumber / 50;
+                const suffix = target.replace(/[0-9]/g, '');
+                
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= finalNumber) {
+                        stat.textContent = finalNumber + suffix;
+                        clearInterval(timer);
+                    } else {
+                        stat.textContent = Math.floor(current) + suffix;
+                    }
+                }, 30);
+            });
+        }
+        
+        // 页面加载完成后启动数字动画
+        window.addEventListener('load', () => {
+            setTimeout(animateNumbers, 1000);
+        });
+    </script>
+</body>
+</html>

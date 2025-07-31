@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>卡片系统测试 - 阶段3</title>
+    <link rel="stylesheet" href="./src/styles/design-tokens.css">
+    <link rel="stylesheet" href="./src/styles/background-system.css">
+    <link rel="stylesheet" href="./src/styles/modern-cards.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'PingFang SC', sans-serif;
+            color: var(--text-primary);
+            line-height: 1.6;
+            position: relative;
+        }
+        
+        .test-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .test-header {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            padding: 2rem;
+            border-radius: 20px;
+            margin-bottom: 3rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            text-align: center;
+        }
+        
+        .test-title {
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        .section-title {
+            color: var(--text-primary);
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin: 3rem 0 1.5rem 0;
+            text-align: center;
+        }
+        
+        .demo-input {
+            width: 100%;
+            padding: 0.75rem;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(102, 126, 234, 0.1);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            transition: all 0.2s ease-in-out;
+            margin: 0.5rem 0;
+        }
+        
+        .demo-input:focus {
+            outline: none;
+            border-color: var(--brand-primary);
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+            background: rgba(255, 255, 255, 1);
+        }
+        
+        .demo-textarea {
+            width: 100%;
+            min-height: 120px;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(102, 126, 234, 0.1);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            resize: vertical;
+            transition: all 0.2s ease-in-out;
+            line-height: 1.6;
+        }
+        
+        .btn-modern {
+            background: var(--gradient-primary);
+            color: var(--text-inverse);
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 14px 0 rgba(102, 126, 234, 0.4);
+            transition: all 0.2s ease-in-out;
+            margin: 0.5rem;
+        }
+        
+        .btn-modern:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px 0 rgba(102, 126, 234, 0.6);
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            color: var(--text-secondary);
+            border: 1px solid rgba(102, 126, 234, 0.1);
+            border-radius: 12px;
+            padding: 0.75rem 1.5rem;
+            transition: all 0.2s ease-in-out;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            cursor: pointer;
+            margin: 0.5rem;
+        }
+        
+        .btn-secondary:hover {
+            background: var(--gradient-primary);
+            color: var(--text-inverse);
+            border-color: transparent;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+        
+        .placeholder-content {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: var(--text-tertiary);
+            background: rgba(102, 126, 234, 0.02);
+            border-radius: 12px;
+            border: 2px dashed rgba(102, 126, 234, 0.1);
+            margin: 1rem 0;
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin: 0.25rem;
+        }
+        
+        .status-success {
+            background: var(--color-success-light);
+            color: var(--text-success);
+        }
+        
+        .status-warning {
+            background: var(--color-warning-light);
+            color: var(--text-warning);
+        }
+        
+        .status-error {
+            background: var(--color-error-light);
+            color: var(--text-error);
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        @media (max-width: 768px) {
+            .test-container {
+                padding: 1rem;
+            }
+            
+            .test-title {
+                font-size: 2rem;
+            }
+            
+            .feature-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body class="app-background app-background-enhanced">
+    <!-- 装饰性背景元素 -->
+    <div class="decorative-circles">
+        <div class="decorative-circle"></div>
+        <div class="decorative-circle"></div>
+        <div class="decorative-circle"></div>
+    </div>
+    <div class="decorative-lines">
+        <div class="decorative-line"></div>
+        <div class="decorative-line"></div>
+    </div>
+    <div class="decorative-grid"></div>
+    
+    <div class="test-container">
+        <div class="test-header">
+            <h1 class="test-title">🎨 卡片系统升级测试</h1>
+            <p style="color: var(--text-secondary); font-size: 1.1rem;">
+                从平面设计升级为立体感现代化卡片系统
+            </p>
+        </div>
+        
+        <h2 class="section-title">基础卡片类型</h2>
+        <div class="cards-grid">
+            <div class="card-modern card-enter">
+                <div class="card-decorator"></div>
+                <div class="card-header">
+                    <div>
+                        <h3 class="card-title">标准现代卡片</h3>
+                        <p class="card-subtitle">基础的现代化卡片设计</p>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p style="color: var(--text-secondary); margin-bottom: 1rem;">
+                        这是标准的现代化卡片，具有毛玻璃背景、多层阴影系统和微妙的装饰元素。
+                    </p>
+                    <div class="status-indicator status-success">多层阴影</div>
+                    <div class="status-indicator status-success">毛玻璃效果</div>
+                    <div class="status-indicator status-success">悬停动画</div>
+                </div>
+                <div class="card-footer">
+                    <button class="btn-secondary">查看详情</button>
+                </div>
+            </div>
+            
+            <div class="card-input card-enter">
+                <div class="card-decorator"></div>
+                <div class="card-header">
+                    <div>
+                        <h3 class="card-title">输入专用卡片</h3>
+                        <p class="card-subtitle">专门用于表单和输入区域</p>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <input 
+                        type="text" 
+                        class="demo-input" 
+                        placeholder="这是一个现代化输入框"
+                    >
+                    <textarea 
+                        class="demo-textarea" 
+                        placeholder="多行文本输入框
+具有更高的背景透明度和更强的边框强调..."></textarea>
+                </div>
+                <div class="card-footer">
+                    <button class="btn-modern">提交内容</button>
+                    <span style="color: var(--text-tertiary); font-size: 0.75rem;">
+                        输入框具有增强的视觉反馈
+                    </span>
+                </div>
+            </div>
+            
+            <div class="card-preview card-enter">
+                <div class="card-decorator"></div>
+                <div class="card-header">
+                    <div>
+                        <h3 class="card-title">预览专用卡片</h3>
+                        <p class="card-subtitle">专门用于结果展示区域</p>
+                    </div>
+                    <div class="card-actions">
+                        <button class="btn-secondary">全屏</button>
+                        <button class="btn-secondary">下载</button>
+                        <button class="btn-secondary">编辑</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="placeholder-content">
+                        <h4 style="color: var(--text-secondary); margin-bottom: 0.5rem;">
+                            📊 生成结果展示区域
+                        </h4>
+                        <p style="color: var(--text-tertiary);">
+                            AI生成的可视化图表将在这里显示
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <h2 class="section-title">边框光效卡片</h2>
+        <div class="cards-grid">
+            <div class="card-glow card-enter">
+                <div class="card-content">
+                    <div class="card-header">
+                        <div>
+                            <h3 class="card-title">渐变边框光效</h3>
+                            <p class="card-subtitle">悬停时显示渐变边框效果</p>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p style="color: var(--text-secondary); margin-bottom: 1rem;">
+                            这种卡片在悬停时会显示渐变边框光效，使用了CSS mask属性实现。
+                        </p>
+                        <div class="status-indicator status-warning">悬停查看效果</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card-modern card-enter">
+                <div class="card-badge">新功能</div>
+                <div class="card-decorator"></div>
+                <div class="card-header">
+                    <div>
+                        <h3 class="card-title">带角标卡片</h3>
+                        <p class="card-subtitle">支持状态角标显示</p>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p style="color: var(--text-secondary);">
+                        卡片右上角可以显示状态角标，用于重要信息提示。
+                    </p>
+                </div>
+            </div>
+            
+            <div class="card-modern card-loading card-enter">
+                <div class="card-header">
+                    <div>
+                        <h3 class="card-title">加载状态卡片</h3>
+                        <p class="card-subtitle">具有闪烁加载效果</p>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p style="color: var(--text-secondary);">
+                        加载状态的卡片会显示从左到右的闪烁动画效果。
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <h2 class="section-title">状态卡片</h2>
+        <div class="cards-grid">
+            <div class="card-modern card-success card-enter">
+                <div class="card-header">
+                    <div>
+                        <h3 class="card-title">成功状态</h3>
+                        <p class="card-subtitle">操作成功完成</p>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p style="color: var(--text-success);">
+                        ✅ 文本已成功转换为可视化图表
+                    </p>
+                </div>
+            </div>
+            
+            <div class="card-modern card-error card-enter">
+                <div class="card-header">
+                    <div>
+                        <h3 class="card-title">错误状态</h3>
+                        <p class="card-subtitle">操作遇到错误</p>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p style="color: var(--text-error);">
+                        ❌ API调用失败，请检查网络连接
+                    </p>
+                </div>
+            </div>
+            
+            <div class="card-modern card-enter">
+                <div class="card-header">
+                    <div>
+                        <h3 class="card-title">默认状态</h3>
+                        <p class="card-subtitle">正常显示状态</p>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p style="color: var(--text-secondary);">
+                        📋 等待用户输入文本内容
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <h2 class="section-title">响应式网格布局</h2>
+        <div class="cards-grid-2">
+            <div class="card-input card-enter">
+                <div class="card-decorator"></div>
+                <div class="card-header">
+                    <div>
+                        <h3 class="card-title">左侧输入区</h3>
+                        <p class="card-subtitle">占据网格的左半部分</p>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <textarea 
+                        class="demo-textarea" 
+                        placeholder="在移动端会自动调整为单列布局..."></textarea>
+                </div>
+            </div>
+            
+            <div class="card-preview card-enter">
+                <div class="card-decorator"></div>
+                <div class="card-header">
+                    <div>
+                        <h3 class="card-title">右侧预览区</h3>
+                        <p class="card-subtitle">占据网格的右半部分</p>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="placeholder-content">
+                        <p>📱 移动端自适应布局</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card-modern card-enter" style="margin-top: 3rem; text-align: center;">
+            <div class="card-header">
+                <div style="width: 100%;">
+                    <h3 class="card-title" style="color: var(--text-success);">✅ 阶段3完成</h3>
+                    <p class="card-subtitle">卡片系统升级完成，界面具备现代化的立体感和交互性</p>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="feature-grid">
+                    <div>
+                        <h4 style="color: var(--text-brand-primary); margin-bottom: 0.5rem;">视觉升级</h4>
+                        <div class="status-indicator status-success">多层阴影系统</div>
+                        <div class="status-indicator status-success">毛玻璃背景</div>
+                        <div class="status-indicator status-success">装饰性元素</div>
+                    </div>
+                    <div>
+                        <h4 style="color: var(--text-brand-primary); margin-bottom: 0.5rem;">交互增强</h4>
+                        <div class="status-indicator status-success">悬停动画</div>
+                        <div class="status-indicator status-success">边框光效</div>
+                        <div class="status-indicator status-success">状态反馈</div>
+                    </div>
+                    <div>
+                        <h4 style="color: var(--text-brand-primary); margin-bottom: 0.5rem;">布局优化</h4>
+                        <div class="status-indicator status-success">响应式网格</div>
+                        <div class="status-indicator status-success">内容结构化</div>
+                        <div class="status-indicator status-success">移动端适配</div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <p style="color: var(--text-tertiary); font-size: 0.875rem;">
+                    下一步：阶段4 - 按钮系统重构
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

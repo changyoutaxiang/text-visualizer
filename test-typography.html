@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文字层次系统测试 - 阶段5</title>
+    <link rel="stylesheet" href="./src/styles/design-tokens.css">
+    <link rel="stylesheet" href="./src/styles/background-system.css">
+    <link rel="stylesheet" href="./src/styles/modern-cards.css">
+    <link rel="stylesheet" href="./src/styles/modern-buttons.css">
+    <link rel="stylesheet" href="./src/styles/typography-system.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-sans);
+            color: var(--text-primary);
+            line-height: 1.6;
+            position: relative;
+        }
+        
+        .test-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .test-header {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            padding: 3rem 2rem;
+            border-radius: 20px;
+            margin-bottom: 3rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            text-align: center;
+        }
+        
+        .demo-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 
+                0 8px 32px 0 rgba(31, 38, 135, 0.15),
+                0 2px 4px 0 rgba(31, 38, 135, 0.08);
+        }
+        
+        .typography-showcase {
+            display: grid;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .type-sample {
+            padding: 1.5rem;
+            background: rgba(102, 126, 234, 0.02);
+            border: 1px solid rgba(102, 126, 234, 0.1);
+            border-radius: 12px;
+            border-left: 4px solid var(--brand-primary);
+        }
+        
+        .type-info {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--text-tertiary);
+            margin-bottom: 0.5rem;
+            background: rgba(102, 126, 234, 0.08);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            display: inline-block;
+        }
+        
+        .color-palette {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        
+        .color-sample {
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(102, 126, 234, 0.1);
+            border-radius: 12px;
+            text-align: center;
+        }
+        
+        .readability-test {
+            background: linear-gradient(135deg, 
+                rgba(102, 126, 234, 0.05) 0%, 
+                rgba(118, 75, 162, 0.05) 100%);
+            padding: 2rem;
+            border-radius: 16px;
+            margin: 2rem 0;
+        }
+        
+        .contrast-demo {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .contrast-card {
+            padding: 2rem;
+            border-radius: 16px;
+            text-align: center;
+        }
+        
+        .light-bg {
+            background: #ffffff;
+            color: var(--text-primary);
+            border: 1px solid var(--gray-200);
+        }
+        
+        .dark-bg {
+            background: #1f2937;
+            color: #f9fafb;
+            border: 1px solid #374151;
+        }
+        
+        .gradient-bg {
+            background: var(--gradient-primary-light);
+            color: var(--text-primary);
+        }
+        
+        .special-effects {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: center;
+            align-items: center;
+            margin: 2rem 0;
+            padding: 2rem;
+            background: rgba(118, 75, 162, 0.05);
+            border-radius: 16px;
+        }
+        
+        .effect-sample {
+            text-align: center;
+            padding: 1rem;
+        }
+        
+        .responsive-demo {
+            padding: 2rem;
+            background: rgba(16, 185, 129, 0.05);
+            border-radius: 16px;
+            border: 1px solid rgba(16, 185, 129, 0.1);
+            margin: 2rem 0;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .feature-item {
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(102, 126, 234, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+        
+        .feature-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin: 0.25rem;
+        }
+        
+        .status-excellent {
+            background: var(--color-success-light);
+            color: var(--text-success);
+        }
+        
+        .status-good {
+            background: var(--color-info-light);
+            color: var(--text-info);
+        }
+        
+        @media (max-width: 768px) {
+            .test-container {
+                padding: 1rem;
+            }
+            
+            .test-header {
+                padding: 2rem 1.5rem;
+            }
+            
+            .contrast-demo {
+                grid-template-columns: 1fr;
+            }
+            
+            .special-effects {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body class="app-background app-background-enhanced">
+    <!-- 装饰性背景元素 -->
+    <div class="decorative-circles">
+        <div class="decorative-circle"></div>
+        <div class="decorative-circle"></div>
+        <div class="decorative-circle"></div>
+    </div>
+    <div class="decorative-lines">
+        <div class="decorative-line"></div>
+        <div class="decorative-line"></div>
+    </div>
+    <div class="decorative-grid"></div>
+    
+    <div class="test-container">
+        <div class="test-header">
+            <h1 class="heading-display heading-brand text-animate-in">📝 文字层次系统</h1>
+            <p class="text-lead text-secondary text-animate-in" style="animation-delay: 0.2s;">
+                从"发灰"文字升级为清晰有层次的现代化文字系统
+            </p>
+        </div>
+        
+        <div class="demo-section">
+            <h2 class="heading-h2 text-primary">标题层次系统</h2>
+            <p class="text-body text-secondary">
+                建立清晰的标题层次，从展示级标题到最小标题，每个层级都有明确的用途和视觉权重。
+            </p>
+            
+            <div class="typography-showcase">
+                <div class="type-sample">
+                    <div class="type-info">展示级标题 - 56px / 800 weight / 1.1 line-height</div>
+                    <h1 class="heading-display">展示级标题用于Landing页面</h1>
+                </div>
+                
+                <div class="type-sample">
+                    <div class="type-info">一级标题 - 44px / 700 weight / 1.2 line-height</div>
+                    <h1 class="heading-h1">一级标题用于页面主标题</h1>
+                </div>
+                
+                <div class="type-sample">
+                    <div class="type-info">二级标题 - 36px / 600 weight / 1.25 line-height</div>
+                    <h2 class="heading-h2">二级标题用于章节标题</h2>
+                </div>
+                
+                <div class="type-sample">
+                    <div class="type-info">三级标题 - 30px / 600 weight / 1.3 line-height</div>
+                    <h3 class="heading-h3">三级标题用于子章节标题</h3>
+                </div>
+                
+                <div class="type-sample">
+                    <div class="type-info">四级标题 - 24px / 600 weight / 1.35 line-height</div>
+                    <h4 class="heading-h4">四级标题用于小节标题</h4>
+                </div>
+                
+                <div class="type-sample">
+                    <div class="type-info">五级标题 - 20px / 600 weight / 1.4 line-height</div>
+                    <h5 class="heading-h5">五级标题用于段落标题</h5>
+                </div>
+                
+                <div class="type-sample">
+                    <div class="type-info">六级标题 - 18px / 600 weight / 1.45 line-height</div>
+                    <h6 class="heading-h6">六级标题是最小的标题</h6>
+                </div>
+            </div>
+        </div>
+        
+        <div class="demo-section">
+            <h2 class="heading-h2 text-primary">正文文字层次</h2>
+            <p class="text-body text-secondary">
+                从引导文字到说明文字，建立完整的正文层次系统，确保信息传达的清晰性。
+            </p>
+            
+            <div class="typography-showcase">
+                <div class="type-sample">
+                    <div class="type-info">引导文字 - 20px / 400 weight / 1.6 line-height</div>
+                    <p class="text-lead">这是引导文字，用于重要段落的开始，具有更大的字号和适当的行高来吸引读者注意。</p>
+                </div>
+                
+                <div class="type-sample">
+                    <div class="type-info">大号正文 - 18px / 400 weight / 1.6 line-height</div>
+                    <p class="text-body-large">这是大号正文，适用于需要强调的内容段落，比标准正文稍大一些，提升阅读体验。</p>
+                </div>
+                
+                <div class="type-sample">
+                    <div class="type-info">标准正文 - 16px / 400 weight / 1.65 line-height</div>
+                    <p class="text-body">这是标准正文，是最常用的文字大小，具有良好的可读性和适中的行高，适合长篇阅读。</p>
+                </div>
+                
+                <div class="type-sample">
+                    <div class="type-info">小号正文 - 14px / 400 weight / 1.6 line-height</div>
+                    <p class="text-body-small">这是小号正文，用于次要信息或紧凑布局中，颜色稍浅以区分层次。</p>
+                </div>
+                
+                <div class="type-sample">
+                    <div class="type-info">说明文字 - 12px / 400 weight / 1.5 line-height</div>
+                    <p class="text-caption">这是说明文字，用于提示、标签或补充信息，字号最小但仍保持良好的可读性。</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="demo-section">
+            <h2 class="heading-h2 text-primary">文字颜色层次</h2>
+            <p class="text-body text-secondary">
+                建立清晰的颜色对比度系统，确保在任何背景下都有足够的可读性。
+            </p>
+            
+            <div class="color-palette">
+                <div class="color-sample">
+                    <h4 class="heading-h5 text-primary">主要文字</h4>
+                    <p class="text-body text-primary">
+                        这是主要文字颜色 (#111827)，用于标题和重要内容，确保最高的对比度和可读性。
+                    </p>
+                    <div class="status-indicator status-excellent">对比度 AAA</div>
+                </div>
+                
+                <div class="color-sample">
+                    <h4 class="heading-h5 text-secondary">次要文字</h4>
+                    <p class="text-body text-secondary">
+                        这是次要文字颜色 (#374151)，用于辅助信息和说明文字，具有良好的层次感。
+                    </p>
+                    <div class="status-indicator status-excellent">对比度 AA</div>
+                </div>
+                
+                <div class="color-sample">
+                    <h4 class="heading-h5 text-tertiary">三级文字</h4>
+                    <p class="text-body text-tertiary">
+                        这是三级文字颜色 (#6b7280)，用于标签和提示信息，颜色适中。
+                    </p>
+                    <div class="status-indicator status-good">对比度 AA</div>
+                </div>
+                
+                <div class="color-sample">
+                    <h4 class="heading-h5 text-muted">弱化文字</h4>
+                    <p class="text-body text-muted">
+                        这是弱化文字颜色 (#9ca3af)，用于不重要的信息，颜色最浅。
+                    </p>
+                    <div class="status-indicator status-good">对比度 AA</div>
+                </div>
+                
+                <div class="color-sample">
+                    <h4 class="heading-h5 text-brand">品牌文字</h4>
+                    <p class="text-body text-brand">
+                        这是品牌色文字 (#667eea)，用于重要链接和品牌强调，具有品牌识别度。
+                    </p>
+                    <div class="status-indicator status-excellent">品牌色</div>
+                </div>
+                
+                <div class="color-sample">
+                    <h4 class="heading-h5 text-gradient">渐变文字</h4>
+                    <p class="text-body text-gradient">
+                        这是渐变文字效果，用于特殊强调和品牌展示，具有现代感。
+                    </p>
+                    <div class="status-indicator status-excellent">特殊效果</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="demo-section">
+            <h2 class="heading-h2 text-primary">品牌标题样式</h2>
+            <p class="text-body text-secondary">
+                特殊的品牌标题样式，用于重要页面和品牌展示。
+            </p>
+          
+            <div class="typography-showcase">
+                <div class="type-sample">
+                    <div class="type-info">品牌渐变标题 + 下划线装饰</div>
+                    <h2 class="heading-h2 heading-brand">品牌渐变标题样式</h2>
+                </div>
+                
+                <div class="type-sample">
+                    <div class="type-info">发光效果标题</div>
+                    <h2 class="heading-h2 heading-glow text-brand">发光效果标题样式</h2>
+                </div>
+                
+                <div class="type-sample">
+                    <div class="type-info">轮廓描边标题</div>
+                    <h2 class="heading-h2 heading-outlined">轮廓描边标题样式</h2>
+                </div>
+            </div>
+        </div>
+        
+        <div class="demo-section">
+            <h2 class="heading-h2 text-primary">背景适应性测试</h2>
+            <p class="text-body text-secondary">
+                测试文字在不同背景下的可读性和视觉效果。
+            </p>
+            
+            <div class="contrast-demo">
+                <div class="contrast-card light-bg">
+                    <h3 class="heading-h4">亮色背景测试</h3>
+                    <p class="text-body">在白色背景下，深色文字具有最佳的对比度和可读性。</p>
+                    <p class="text-body-small text-secondary">次要文字也保持良好的可读性。</p>
+                    <div class="status-indicator status-excellent">对比度优秀</div>
+                </div>
+                
+                <div class="contrast-card dark-bg">
+                    <h3 class="heading-h4" style="color: #f9fafb;">暗色背景测试</h3>
+                    <p class="text-body" style="color: #f9fafb;">在深色背景下，浅色文字同样具有良好的对比度。</p>
+                    <p class="text-body-small" style="color: #d1d5db;">次要文字使用稍深的浅色。</p>
+                    <div class="status-indicator status-excellent">对比度优秀</div>
+                </div>
+                
+                <div class="contrast-card gradient-bg">
+                    <h3 class="heading-h4">渐变背景测试</h3>
+                    <p class="text-body">在渐变背景下，文字依然保持清晰的可读性。</p>
+                    <p class="text-body-small text-secondary">背景透明度经过精心调整。</p>
+                    <div class="status-indicator status-good">适配良好</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="demo-section">
+            <h2 class="heading-h2 text-primary">特殊文字效果</h2>
+            <p class="text-body text-secondary">
+                展示各种特殊的文字效果和动画。
+            </p>
+            
+            <div class="special-effects">
+                <div class="effect-sample">
+                    <h4 class="heading-h5 text-shadow-lg">阴影文字</h4>
+                    <p class="text-caption text-muted">深度阴影效果</p>
+                </div>
+                
+                <div class="effect-sample">
+                    <h4 class="heading-h5 text-glow">发光文字</h4>
+                    <p class="text-caption text-muted">品牌色发光效果</p>
+                </div>
+                
+                <div class="effect-sample">
+                    <h4 class="heading-h5 text-outline">轮廓文字</h4>
+                    <p class="text-caption text-muted">描边轮廓效果</p>
+                </div>
+                
+                <div class="effect-sample">
+                    <h4 class="heading-h5 text-animate-in">动画文字</h4>
+                    <p class="text-caption text-muted">淡入上升动画</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="demo-section">
+            <h2 class="heading-h2 text-primary">可读性优化</h2>
+            <p class="text-body text-secondary">
+                针对长文本阅读的特殊优化。
+            </p>
+            
+            <div class="readability-test">
+                <div class="text-readable">
+                    <h3 class="heading-h4">优化阅读体验</h3>
+                    <p class="text-body">
+                        这段文字采用了可读性优化的样式，包括理想的行宽（65个字符）、较大的行高（1.7）和适中的字号（18px）。
+                        这样的设置能够显著提升长文本的阅读体验，减少视觉疲劳，提高阅读效率。
+                    </p>
+                    <p class="text-body">
+                        在数字化阅读时代，良好的文字排版不仅仅是美观问题，更是用户体验的核心要素。
+                        通过科学的字体选择、合理的间距设置和恰当的颜色对比，我们能够创造出既美观又实用的阅读界面。
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="demo-section">
+            <h2 class="heading-h2 text-primary">链接和交互文字</h2>
+            <p class="text-body text-secondary">
+                展示链接样式和交互文字的设计。
+            </p>
+            
+            <div class="typography-showcase">
+                <div class="type-sample">
+                    <p class="text-body">
+                        这是包含 <a href="#" class="link">基础链接</a> 的段落文字。
+                    </p>
+                </div>
+                
+                <div class="type-sample">
+                    <p class="text-body">
+                        这是包含 <a href="#" class="link link-underline">下划线链接</a> 的段落文字。
+                    </p>
+                </div>
+                
+                <div class="type-sample">
+                    <p class="text-body">
+                        这是包含 <a href="#" class="link link-animated">动画链接</a> 的段落文字。
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="demo-section">
+            <h2 class="heading-h2 text-primary">响应式文字设计</h2>
+            <p class="text-body text-secondary">
+                文字系统在不同设备上的自适应表现。
+            </p>
+            
+            <div class="responsive-demo">
+                <h3 class="heading-h4 text-success">📱 响应式适配</h3>
+                <p class="text-body">
+                    我们的文字系统会根据设备屏幕大小自动调整：
+                </p>
+                <ul class="list-styled text-body">
+                    <li><strong>桌面端</strong>：使用完整的字号层次，最佳阅读体验</li>
+                    <li><strong>平板端</strong>：适当缩小标题字号，保持层次关系</li>
+                    <li><strong>移动端</strong>：进一步优化字号，确保触屏可读性</li>
+                </ul>
+                
+                <blockquote class="blockquote">
+                    良好的响应式文字设计能够确保内容在任何设备上都具有最佳的可读性和用户体验。
+                </blockquote>
+            </div>
+        </div>
+        
+        <div class="demo-section" style="text-align: center; margin-top: 3rem;">
+            <h3 class="heading-h3 text-success">✅ 阶段5完成</h3>
+            <p class="text-lead text-secondary" style="margin-bottom: 2rem;">
+                文字层次系统优化完成，从"发灰"升级为清晰有层次的现代化文字设计
+            </p>
+            
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <h4 class="heading-h5 text-brand">🎯 层次清晰</h4>
+                    <p class="text-body-small text-secondary">6级标题 + 5级正文 完整层次</p>
+                    <div class="status-indicator status-excellent">科学分级</div>
+                </div>
+                
+                <div class="feature-item">
+                    <h4 class="heading-h5 text-brand">🎨 对比度优化</h4>
+                    <p class="text-body-small text-secondary">WCAG AAA/AA 标准对比度</p>
+                    <div class="status-indicator status-excellent">可读性强</div>
+                </div>
+                
+                <div class="feature-item">
+                    <h4 class="heading-h5 text-brand">📱 响应式设计</h4>
+                    <p class="text-body-small text-secondary">自适应不同设备屏幕</p>
+                    <div class="status-indicator status-excellent">体验一致</div>
+                </div>
+                
+                <div class="feature-item">
+                    <h4 class="heading-h5 text-brand">✨ 特殊效果</h4>
+                    <p class="text-body-small text-secondary">渐变、阴影、动画等</p>
+                    <div class="status-indicator status-excellent">视觉丰富</div>
+                </div>
+                
+                <div class="feature-item">
+                    <h4 class="heading-h5 text-brand">🛡️ 可访问性</h4>
+                    <p class="text-body-small text-secondary">高对比度、减少动画支持</p>
+                    <div class="status-indicator status-excellent">无障碍友好</div>
+                </div>
+                
+                <div class="feature-item">
+                    <h4 class="heading-h5 text-brand">🌍 多语言优化</h4>
+                    <p class="text-body-small text-secondary">中英文字体和行高优化</p>
+                    <div class="status-indicator status-excellent">国际化支持</div>
+                </div>
+            </div>
+            
+            <div style="margin-top: 2rem;">
+                <button class="btn-success-modern btn-large btn-glow">
+                    🎉 继续下一阶段
+                </button>
+            </div>
+            
+            <p class="text-caption text-tertiary" style="margin-top: 1rem;">
+                下一步：阶段6 - 表单控件美化
+            </p>
+        </div>
+    </div>
+</body>
+</html>
