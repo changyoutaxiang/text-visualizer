@@ -1,0 +1,81 @@
+/* 模板选择器样式 - 由color-system.css统一管理颜色 */
+/* 只保留布局和响应式样式 */
+
+.template-info {
+    margin-top: 0.75rem;
+    padding: 0.75rem;
+    border-radius: var(--radius);
+    font-size: 0.875rem;
+}
+
+.template-details h4 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.template-details .description {
+    margin: 0 0 0.75rem 0;
+    line-height: 1.4;
+}
+
+.template-details .variables {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+    align-items: center;
+}
+
+.template-details .variables strong {
+    margin-right: 0.5rem;
+    font-weight: 600;
+}
+
+.template-details .variables code {
+    padding: 0.125rem 0.375rem;
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
+    font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+}
+
+/* 选择器样式 */
+#promptSelect {
+    width: 100%;
+    padding: 0.5rem;
+    border-radius: var(--radius);
+    font-size: 0.875rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+#promptSelect:focus {
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.25);
+}
+
+#promptSelect optgroup {
+    font-weight: 600;
+}
+
+#promptSelect option {
+    padding: 0.25rem 0.5rem;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .template-info {
+        margin-top: 0.5rem;
+        padding: 0.5rem;
+        font-size: 0.8125rem;
+    }
+    
+    .template-details .variables {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.25rem;
+    }
+    
+    .template-details .variables strong {
+        margin-right: 0;
+        margin-bottom: 0.25rem;
+    }
+}

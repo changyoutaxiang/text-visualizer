@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>模板选择器测试</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        select { width: 300px; padding: 10px; font-size: 16px; }
+        .debug { margin-top: 20px; padding: 10px; background: #f0f0f0; }
+    </style>
+</head>
+<body>
+    <h1>模板选择器测试</h1>
+    
+    <label>选择模板：</label>
+    <select id="promptSelect">
+        <option value="">正在加载模板...</option>
+    </select>
+    
+    <div id="templateInfo" class="template-info" style="display: none;"></div>
+    
+    <div class="debug">
+        <h3>调试信息：</h3>
+        <div id="debugInfo">等待加载...</div>
+    </div>
+
+    <script type="module">
+        import { MarkdownPromptLoader } from './src/services/MarkdownPromptLoader.js';
+        import { TemplateSelector } from './src/components/TemplateSelector.js';
+        
+        async function testTemplates() {
+            const debugInfo = document.getElementById('debugInfo');
+            
+            try {
+                debugInfo.innerHTML = '正在测试模板加载...<br>';
+                
+                // 直接测试模板加载器
+                const loader = new MarkdownPromptLoader();
+                debugInfo.innerHTML += '创建加载器实例成功<br>';
+                
+                const templates = await loader.getAvailableTemplates();
+                debugInfo.innerHTML += `找到 ${templates.length} 个模板<br>`;
+                
+                if (templates.length > 0) {
+                    templates.forEach(t => {
+                        debugInfo.innerHTML += `- ${t.name} (${t.filename})<br>`;
+                    });
+                    
+                    // 测试模板选择器
+                    const selector = new TemplateSelector();
+                    await selector.init();
+                    debugInfo.innerHTML += '<br>✅ 模板选择器初始化完成';
+                } else {
+                    debugInfo.innerHTML += '<br>❌ 没有加载到模板';
+                }
+                
+            } catch (error) {
+                debugInfo.innerHTML += `<br>❌ 错误: ${error.message}<br>`;
+                debugInfo.innerHTML += `堆栈: ${error.stack}`;
+            }
+        }
+        
+        testTemplates();
+    </script>
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>设计令牌测试</title>
+    <link rel="stylesheet" href="./src/styles/design-tokens.css">
+    <style>
+        body {
+            font-family: var(--font-sans);
+            padding: 2rem;
+            background: var(--bg-light-alt);
+            color: var(--text-primary);
+        }
+        
+        .color-test {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        
+        .color-card {
+            padding: 1rem;
+            border-radius: var(--radius-md);
+            text-align: center;
+            color: white;
+            font-weight: var(--font-medium);
+        }
+        
+        .primary { background: var(--primary-blue); }
+        .success { background: var(--success-green); }
+        .warning { background: var(--warning-yellow); }
+        .error { background: var(--error-red); }
+        .purple { background: var(--special-purple); }
+        
+        .font-test {
+            margin: 2rem 0;
+        }
+        
+        .title { 
+            font-size: var(--text-3xl); 
+            font-weight: var(--font-bold);
+            color: var(--text-primary);
+        }
+        
+        .subtitle { 
+            font-size: var(--text-xl); 
+            font-weight: var(--font-semibold);
+            color: var(--text-secondary);
+        }
+        
+        .body-text { 
+            font-size: var(--text-base); 
+            font-weight: var(--font-normal);
+            color: var(--text-tertiary);
+        }
+        
+        .spacing-test {
+            margin: var(--space-8) 0;
+            padding: var(--space-6);
+            background: var(--gray-100);
+            border-radius: var(--radius-lg);
+            border: 2px solid var(--border-medium);
+        }
+    </style>
+</head>
+<body>
+    <h1 class="title">🎨 设计令牌测试页面</h1>
+    
+    <h2 class="subtitle">色彩系统测试</h2>
+    <div class="color-test">
+        <div class="color-card primary">主色调 Primary</div>
+        <div class="color-card success">成功色 Success</div>
+        <div class="color-card warning">警告色 Warning</div>
+        <div class="color-card error">错误色 Error</div>
+        <div class="color-card purple">特殊色 Purple</div>
+    </div>
+    
+    <h2 class="subtitle">字体系统测试</h2>
+    <div class="font-test">
+        <div class="title">这是主标题 (text-3xl, font-bold)</div>
+        <div class="subtitle">这是副标题 (text-xl, font-semibold)</div>
+        <div class="body-text">这是正文内容 (text-base, font-normal)</div>
+    </div>
+    
+    <h2 class="subtitle">间距和布局测试</h2>
+    <div class="spacing-test">
+        这个区域使用了标准间距：margin: space-8, padding: space-6
+        <br>圆角: radius-lg, 边框: border-medium
+    </div>
+    
+    <script>
+        // 测试CSS变量是否正确加载
+        function testDesignTokens() {
+            const computedStyle = getComputedStyle(document.documentElement);
+            
+            const tests = [
+                { name: 'primary-blue', value: computedStyle.getPropertyValue('--primary-blue').trim() },
+                { name: 'font-sans', value: computedStyle.getPropertyValue('--font-sans').trim() },
+                { name: 'space-8', value: computedStyle.getPropertyValue('--space-8').trim() },
+                { name: 'radius-md', value: computedStyle.getPropertyValue('--radius-md').trim() }
+            ];
+            
+            console.log('🎨 设计令牌测试结果:');
+            tests.forEach(test => {
+                console.log(`${test.name}: ${test.value || '❌ 未定义'}`);
+            });
+            
+            // 在页面上显示结果
+            const resultDiv = document.createElement('div');
+            resultDiv.innerHTML = `
+                <h2 class="subtitle">CSS变量加载测试</h2>
+                <ul>
+                    ${tests.map(test => 
+                        `<li>${test.name}: <code>${test.value || '❌ 未定义'}</code></li>`
+                    ).join('')}
+                </ul>
+            `;
+            document.body.appendChild(resultDiv);
+        }
+        
+        // 页面加载完成后执行测试
+        window.addEventListener('load', testDesignTokens);
+    </script>
+</body>
+</html>
