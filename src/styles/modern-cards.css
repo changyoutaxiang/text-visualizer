@@ -1,0 +1,459 @@
+/**
+ * 现代化卡片系统 - 立体感与交互性设计
+ * 从平面卡片升级为具有深度层次的现代化设计
+ */
+
+/* ========================================
+   现代化卡片基础样式
+   ======================================== */
+
+.card-modern {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* 多层阴影系统 - 营造立体感 */
+  box-shadow: 
+    0 1px 2px 0 rgba(0, 0, 0, 0.05),        /* 基础阴影 */
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),      /* 主要阴影 */
+    0 10px 15px -3px rgba(0, 0, 0, 0.05),   /* 深度阴影 */
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.1); /* 内部高光 */
+}
+
+.card-modern:hover {
+  transform: translateY(-4px) scale(1.01);
+  border-color: rgba(102, 126, 234, 0.3);
+  
+  /* 悬停时增强阴影 */
+  box-shadow: 
+    0 2px 4px 0 rgba(0, 0, 0, 0.08),
+    0 8px 12px -2px rgba(0, 0, 0, 0.15),
+    0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(102, 126, 234, 0.1),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
+}
+
+/* ========================================
+   卡片边框光效系统
+   ======================================== */
+
+.card-glow {
+  position: relative;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border-radius: 20px;
+  padding: 2px; /* 为边框留出空间 */
+  overflow: hidden;
+}
+
+.card-glow::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  padding: 2px;
+  background: var(--gradient-primary-light);
+  border-radius: inherit;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: xor;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.card-glow:hover::before {
+  opacity: 1;
+}
+
+.card-glow .card-content {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border-radius: 18px;
+  padding: 2rem;
+  position: relative;
+  z-index: 1;
+}
+
+/* ========================================
+   特殊卡片类型
+   ======================================== */
+
+/* 输入卡片 - 专门用于表单区域 */
+.card-input {
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(25px);
+  border: 2px solid rgba(102, 126, 234, 0.08);
+  border-radius: 24px;
+  padding: 2.5rem;
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  box-shadow: 
+    0 2px 4px 0 rgba(0, 0, 0, 0.06),
+    0 8px 16px -4px rgba(0, 0, 0, 0.1),
+    0 16px 24px -8px rgba(102, 126, 234, 0.08);
+}
+
+.card-input:hover {
+  transform: translateY(-2px);
+  border-color: rgba(102, 126, 234, 0.2);
+  
+  box-shadow: 
+    0 4px 8px 0 rgba(0, 0, 0, 0.08),
+    0 12px 20px -4px rgba(0, 0, 0, 0.12),
+    0 20px 32px -8px rgba(102, 126, 234, 0.15);
+}
+
+/* 预览卡片 - 专门用于结果展示 */
+.card-preview {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(30px);
+  border: 1px solid rgba(118, 75, 162, 0.1);
+  border-radius: 20px;
+  padding: 2rem;
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  box-shadow: 
+    0 2px 4px 0 rgba(118, 75, 162, 0.05),
+    0 8px 16px -4px rgba(118, 75, 162, 0.1),
+    0 16px 32px -8px rgba(118, 75, 162, 0.08);
+}
+
+.card-preview:hover {
+  transform: translateY(-3px);
+  border-color: rgba(118, 75, 162, 0.2);
+  
+  box-shadow: 
+    0 4px 8px 0 rgba(118, 75, 162, 0.08),
+    0 12px 24px -4px rgba(118, 75, 162, 0.15),
+    0 24px 40px -8px rgba(118, 75, 162, 0.12);
+}
+
+/* ========================================
+   卡片内容布局优化
+   ======================================== */
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(102, 126, 234, 0.08);
+  position: relative;
+}
+
+.card-header::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 60px;
+  height: 2px;
+  background: var(--gradient-primary);
+  border-radius: 1px;
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+  letter-spacing: -0.025em;
+}
+
+.card-subtitle {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin-top: 0.25rem;
+  font-weight: 400;
+}
+
+.card-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.preview-actions {
+  background: rgba(102, 126, 234, 0.04);
+  padding: 0.5rem;
+  border-radius: 12px;
+  border: 1px solid rgba(102, 126, 234, 0.08);
+  backdrop-filter: blur(10px);
+}
+
+.preview-actions .btn-icon-modern {
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(102, 126, 234, 0.1);
+  backdrop-filter: blur(10px);
+  transition: all 0.2s ease;
+}
+
+.preview-actions .btn-icon-modern:hover {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(102, 126, 234, 0.2);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+}
+
+.card-body {
+  margin-bottom: 1.5rem;
+}
+
+.card-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(102, 126, 234, 0.06);
+  margin-top: auto;
+}
+
+.card-footer .btn-primary-modern {
+  align-self: flex-start;
+}
+
+.card-footer .text-caption {
+  margin-top: 0;
+}
+
+/* ========================================
+   卡片装饰元素
+   ======================================== */
+
+.card-decorator {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100px;
+  height: 100px;
+  background: var(--gradient-primary-light);
+  border-radius: 50%;
+  filter: blur(40px);
+  opacity: 0.3;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.card-modern:hover .card-decorator {
+  opacity: 0.5;
+}
+
+/* 卡片角标 */
+.card-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  padding: 0.25rem 0.75rem;
+  background: var(--gradient-primary);
+  color: var(--text-inverse);
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(102, 126, 234, 0.3);
+}
+
+/* ========================================
+   响应式卡片设计
+   ======================================== */
+
+@media (max-width: 768px) {
+  .card-modern,
+  .card-input,
+  .card-preview {
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin: 1rem;
+  }
+  
+  .card-input {
+    padding: 2rem;
+  }
+  
+  .card-modern:hover,
+  .card-input:hover,
+  .card-preview:hover {
+    transform: translateY(-2px) scale(1.005);
+  }
+  
+  .card-decorator {
+    width: 60px;
+    height: 60px;
+    filter: blur(20px);
+  }
+}
+
+@media (max-width: 480px) {
+  .card-modern,
+  .card-input,
+  .card-preview {
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin: 0.75rem;
+  }
+  
+  .card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .card-actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+  
+  .card-footer .btn-primary-modern {
+    width: 100%;
+    justify-content: center;
+    align-self: stretch;
+  }
+}
+
+/* ========================================
+   卡片网格布局系统
+   ======================================== */
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  padding: 1rem 0;
+}
+
+.cards-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  padding: 1rem 0;
+}
+
+@media (max-width: 768px) {
+  .cards-grid,
+  .cards-grid-2 {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    padding: 0.5rem 0;
+  }
+}
+
+/* ========================================
+   卡片状态样式
+   ======================================== */
+
+.card-loading {
+  position: relative;
+  overflow: hidden;
+}
+
+.card-loading::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(102, 126, 234, 0.1),
+    transparent
+  );
+  animation: card-shimmer 2s infinite;
+}
+
+.card-error {
+  border-color: rgba(220, 38, 38, 0.2);
+  background: rgba(254, 242, 242, 0.8);
+}
+
+.card-error:hover {
+  border-color: rgba(220, 38, 38, 0.3);
+}
+
+.card-success {
+  border-color: rgba(5, 150, 105, 0.2);
+  background: rgba(236, 253, 245, 0.8);
+}
+
+.card-success:hover {
+  border-color: rgba(5, 150, 105, 0.3);
+}
+
+/* ========================================
+   动画定义
+   ======================================== */
+
+@keyframes card-shimmer {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+/* 卡片入场动画 */
+.card-enter {
+  animation: card-slide-in 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes card-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ========================================
+   高对比度和减少动画支持
+   ======================================== */
+
+@media (prefers-contrast: high) {
+  .card-modern,
+  .card-input,
+  .card-preview {
+    background: var(--bg-light);
+    border: 2px solid var(--gray-400);
+    backdrop-filter: none;
+  }
+  
+  .card-decorator {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card-modern,
+  .card-input,
+  .card-preview {
+    transition: none;
+  }
+  
+  .card-modern:hover,
+  .card-input:hover,
+  .card-preview:hover {
+    transform: none;
+  }
+  
+  .card-decorator {
+    display: none;
+  }
+  
+  .card-enter {
+    animation: none;
+  }
+}

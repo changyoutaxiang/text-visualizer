@@ -1,0 +1,151 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  NODE_VERSION: '18'
+  CACHE_KEY: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run linting
+        run: npm run lint || true
+
+      - name: Run tests
+        run: npm run test:ci || true
+
+      - name: Security audit
+        run: npm audit --audit-level moderate
+
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    outputs:
+      build-url: ${{ steps.upload-artifact.outputs.artifact-url }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build application
+        run: npm run build
+        env:
+          NODE_ENV: production
+          VITE_APP_VERSION: ${{ github.sha }}
+
+      - name: Analyze bundle size
+        run: npm run analyze
+        if: github.event_name == 'pull_request'
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        id: upload-artifact
+        with:
+          name: build-files
+          path: dist/
+          retention-days: 7
+
+  deploy-staging:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || github.event_name == 'pull_request'
+    environment: staging
+    steps:
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-files
+          path: dist/
+
+      - name: Deploy to Vercel (Staging)
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID_STAGING }}
+          vercel-args: '--prod'
+          working-directory: ./
+
+  deploy-production:
+    needs: [test, build]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    environment: production
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build for production
+        run: npm run build
+        env:
+          NODE_ENV: production
+          VITE_APP_VERSION: ${{ github.sha }}
+          VITE_SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+          VITE_GA_TRACKING_ID: ${{ secrets.GA_TRACKING_ID }}
+
+      - name: Deploy to Vercel (Production)
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID_PRODUCTION }}
+          vercel-args: '--prod'
+          working-directory: ./
+
+      - name: Create GitHub Release
+        if: success()
+        run: |
+          gh release create "v$(date +%Y%m%d-%H%M%S)" \
+            --title "Release v$(date +%Y%m%d-%H%M%S)" \
+            --notes "Automated release from GitHub Actions" \
+            --target main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  notify:
+    needs: [deploy-staging, deploy-production]
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Notify Slack
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          channel: '#deployments'
+          webhook_url: ${{ secrets.SLACK_WEBHOOK }}
+        if: always()

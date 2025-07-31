@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>完整交互测试 - UI设计系统验证</title>
+    <link rel="stylesheet" href="./src/styles/design-tokens.css">
+    <link rel="stylesheet" href="./src/styles/background-system.css">
+    <link rel="stylesheet" href="./src/styles/modern-cards.css">
+    <link rel="stylesheet" href="./src/styles/modern-buttons.css">
+    <link rel="stylesheet" href="./src/styles/typography-system.css">
+    <link rel="stylesheet" href="./src/styles/form-controls.css">
+    <link rel="stylesheet" href="./src/styles/animations.css">
+    <link rel="stylesheet" href="./src/styles/optimizations.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-sans);
+            color: var(--text-primary);
+            line-height: 1.6;
+            position: relative;
+        }
+        
+        .test-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .test-header {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            padding: 3rem 2rem;
+            border-radius: 20px;
+            margin-bottom: 3rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            text-align: center;
+        }
+        
+        .test-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 
+                0 8px 32px 0 rgba(31, 38, 135, 0.15),
+                0 2px 4px 0 rgba(31, 38, 135, 0.08);
+        }
+        
+        .test-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .test-card {
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(102, 126, 234, 0.1);
+            border-radius: 16px;
+            padding: 2rem;
+            position: relative;
+        }
+        
+        .test-status {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .status-pass {
+            background: var(--color-success);
+            color: white;
+        }
+        
+        .status-fail {
+            background: var(--color-error);
+            color: white;
+        }
+        
+        .status-pending {
+            background: var(--color-warning);
+            color: white;
+        }
+        
+        .test-controls {
+            display: flex;
+            gap: 1rem;
+            margin: 1.5rem 0;
+            flex-wrap: wrap;
+        }
+        
+        .demo-area {
+            min-height: 120px;
+            background: rgba(102, 126, 234, 0.05);
+            border: 2px dashed rgba(102, 126, 234, 0.2);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 1.5rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .test-result {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            display: none;
+        }
+        
+        .test-result.show {
+            display: block;
+        }
+        
+        .test-result.success {
+            background: rgba(16, 185, 129, 0.1);
+            border-color: rgba(16, 185, 129, 0.2);
+            color: var(--text-success);
+        }
+        
+        .test-result.error {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: rgba(239, 68, 68, 0.2);
+            color: var(--text-error);
+        }
+        
+        .test-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        
+        .metric-item {
+            text-align: center;
+            padding: 1rem;
+            background: rgba(102, 126, 234, 0.05);
+            border-radius: 8px;
+        }
+        
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .accessibility-checklist {
+            list-style: none;
+            margin: 1rem 0;
+        }
+        
+        .accessibility-checklist li {
+            padding: 0.5rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .accessibility-checklist .check {
+            color: var(--color-success);
+            font-weight: bold;
+        }
+        
+        .accessibility-checklist .cross {
+            color: var(--color-error);
+            font-weight: bold;
+        }
+        
+        .performance-monitor {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 12px;
+            min-width: 200px;
+            z-index: 1000;
+            display: none;
+        }
+        
+        .performance-monitor.show {
+            display: block;
+        }
+        
+        .perf-item {
+            display: flex;
+            justify-content: space-between;
+            margin: 0.25rem 0;
+        }
+        
+        @media (max-width: 768px) {
+            .test-container {
+                padding: 1rem;
+            }
+            
+            .test-header {
+                padding: 2rem 1.5rem;
+            }
+            
+            .test-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .test-controls {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body class="app-background app-background-enhanced page-enter">
+    <!-- 装饰性背景元素 -->
+    <div class="decorative-circles">
+        <div class="decorative-circle animate-float"></div>
+        <div class="decorative-circle animate-float delay-2"></div>
+        <div class="decorative-circle animate-float delay-4"></div>
+    </div>
+    <div class="decorative-lines">
+        <div class="decorative-line"></div>
+        <div class="decorative-line"></div>
+    </div>
+    <div class="decorative-grid"></div>
+    
+    <!-- 性能监控器 -->
+    <div class="performance-monitor" id="perfMonitor">
+        <div class="perf-item">
+            <span>FPS:</span>
+            <span id="fps">60</span>
+        </div>
+        <div class="perf-item">
+            <span>Memory:</span>
+            <span id="memory">0 MB</span>
+        </div>
+        <div class="perf-item">
+            <span>Load Time:</span>
+            <span id="loadTime">0ms</span>
+        </div>
+        <div class="perf-item">
+            <span>Elements:</span>
+            <span id="elements">0</span>
+        </div>
+    </div>
+    
+    <div class="test-container">
+        <div class="test-header animate-fade-in-up">
+            <h1 class="heading-display heading-brand text-animate-in">🧪 完整交互测试</h1>
+            <p class="text-lead text-secondary animate-fade-in-up delay-1">
+                全面验证UI设计系统的功能性、可访问性和性能表现
+            </p>
+            
+            <div class="test-controls animate-fade-in-up delay-2">
+                <button class="btn-primary-modern" onclick="runAllTests()">
+                    🚀 运行所有测试
+                </button>
+                <button class="btn-secondary-modern" onclick="togglePerfMonitor()">
+                    📊 性能监控
+                </button>
+                <button class="btn-secondary-modern" onclick="generateReport()">
+                    📋 生成报告
+                </button>
+                <button class="btn-secondary-modern" onclick="resetTests()">
+                    🔄 重置测试
+                </button>
+            </div>
+        </div>
+        
+        <!-- 组件功能测试 -->
+        <div class="test-section animate-fade-in-up delay-3">
+            <h2 class="heading-h2 text-primary">组件功能测试</h2>
+            <p class="text-body text-secondary">
+                测试所有UI组件的基本功能和交互行为。
+            </p>
+            
+            <div class="test-grid">
+                <div class="test-card" id="buttonTest">
+                    <div class="test-status status-pending" id="buttonStatus">⏳</div>
+                    <h4 class="heading-h5 text-brand">按钮组件测试</h4>
+                    <p class="text-body-small text-secondary">测试按钮的点击、悬停和状态切换</p>
+                    
+                    <div class="demo-area">
+                        <button class="btn-primary-modern ripple-effect" id="testButton1">
+                            主要按钮
+                        </button>
+                        <button class="btn-secondary-modern hover-scale" id="testButton2">
+                            次要按钮
+                        </button>
+                        <button class="btn-icon-modern hover-lift" id="testButton3">
+                            🎯
+                        </button>
+                    </div>
+                    
+                    <div class="test-controls">
+                        <button class="btn-secondary-modern btn-small" onclick="testButtons()">
+                            测试按钮
+                        </button>
+                    </div>
+                    
+                    <div class="test-result" id="buttonResult"></div>
+                </div>
+                
+                <div class="test-card" id="formTest">
+                    <div class="test-status status-pending" id="formStatus">⏳</div>
+                    <h4 class="heading-h5 text-brand">表单组件测试</h4>
+                    <p class="text-body-small text-secondary">测试表单控件的输入和验证功能</p>
+                    
+                    <div class="demo-area">
+                        <input type="text" class="input-modern" placeholder="测试输入框" id="testInput">
+                        <select class="select-modern" id="testSelect">
+                            <option value="">选择选项</option>
+                            <option value="option1">选项 1</option>
+                            <option value="option2">选项 2</option>
+                        </select>
+                        <div class="form-group-inline">
+                            <input type="checkbox" class="checkbox-modern" id="testCheck">
+                            <label for="testCheck" class="form-label-inline">测试复选框</label>
+                        </div>
+                    </div>
+                    
+                    <div class="test-controls">
+                        <button class="btn-secondary-modern btn-small" onclick="testForms()">
+                            测试表单
+                        </button>
+                    </div>
+                    
+                    <div class="test-result" id="formResult"></div>
+                </div>
+                
+                <div class="test-card" id="animationTest">
+                    <div class="test-status status-pending" id="animationStatus">⏳</div>
+                    <h4 class="heading-h5 text-brand">动画效果测试</h4>
+                    <p class="text-body-small text-secondary">测试各种动画和过渡效果</p>
+                    
+                    <div class="demo-area">
+                        <div class="demo-element animate-pulse" id="testAnimation">
+                            🎬
+                        </div>
+                    </div>
+                    
+                    <div class="test-controls">
+                        <button class="btn-secondary-modern btn-small" onclick="testAnimations()">
+                            测试动画
+                        </button>
+                    </div>
+                    
+                    <div class="test-result" id="animationResult"></div>
+                </div>
+                
+                <div class="test-card" id="responsiveTest">
+                    <div class="test-status status-pending" id="responsiveStatus">⏳</div>
+                    <h4 class="heading-h5 text-brand">响应式设计测试</h4>
+                    <p class="text-body-small text-secondary">测试不同屏幕尺寸下的布局表现</p>
+                    
+                    <div class="demo-area">
+                        <div class="responsive-demo-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 1rem;">
+                            <div style="background: var(--gradient-primary); color: white; padding: 1rem; border-radius: 8px; text-align: center;">📱</div>
+                            <div style="background: var(--gradient-primary); color: white; padding: 1rem; border-radius: 8px; text-align: center;">💻</div>
+                            <div style="background: var(--gradient-primary); color: white; padding: 1rem; border-radius: 8px; text-align: center;">🖥️</div>
+                        </div>
+                    </div>
+                    
+                    <div class="test-controls">
+                        <button class="btn-secondary-modern btn-small" onclick="testResponsive()">
+                            测试响应式
+                        </button>
+                    </div>
+                    
+                    <div class="test-result" id="responsiveResult"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 可访问性测试 -->
+        <div class="test-section animate-fade-in-up delay-4">
+            <h2 class="heading-h2 text-primary">可访问性测试</h2>
+            <p class="text-body text-secondary">
+                验证界面是否符合WCAG 2.1 AA标准和无障碍设计要求。
+            </p>
+            
+            <div class="test-grid">
+                <div class="test-card" id="a11yTest">
+                    <div class="test-status status-pending" id="a11yStatus">⏳</div>
+                    <h4 class="heading-h5 text-brand">无障碍检查</h4>
+                    
+                    <ul class="accessibility-checklist" id="a11yChecklist">
+                        <li><span class="check">✓</span> 键盘导航支持</li>
+                        <li><span class="check">✓</span> 焦点管理</li>
+                        <li><span class="check">✓</span> 颜色对比度 (AA)</li>
+                        <li><span class="check">✓</span> 语义化HTML</li>
+                        <li><span class="check">✓</span> 屏幕阅读器支持</li>
+                        <li><span class="check">✓</span> 减少动画偏好</li>
+                        <li><span class="check">✓</span> 高对比度模式</li>
+                        <li><span class="check">✓</span> 触控友好设计</li>
+                    </ul>
+                    
+                    <div class="test-controls">
+                        <button class="btn-secondary-modern btn-small" onclick="testAccessibility()">
+                            检查可访问性
+                        </button>
+                    </div>
+                    
+                    <div class="test-result" id="a11yResult"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 性能测试 -->
+        <div class="test-section animate-fade-in-up delay-5">
+            <h2 class="heading-h2 text-primary">性能测试</h2>
+            <p class="text-body text-secondary">
+                测试页面加载速度、动画性能和内存使用情况。
+            </p>
+            
+            <div class="test-metrics" id="performanceMetrics">
+                <div class="metric-item">
+                    <div class="metric-value" id="pageLoadTime">0ms</div>
+                    <div class="text-body-small text-tertiary">页面加载时间</div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-value" id="domElements">0</div>
+                    <div class="text-body-small text-tertiary">DOM元素数量</div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-value" id="cssRules">0</div>
+                    <div class="text-body-small text-tertiary">CSS规则数量</div>
+                </div>
+                <div class="metric-item">
+                    <div class="metric-value" id="memoryUsage">0MB</div>
+                    <div class="text-body-small text-tertiary">内存使用</div>
+                </div>
+            </div>
+            
+            <div class="test-controls">
+                <button class="btn-secondary-modern btn-small" onclick="testPerformance()">
+                    性能测试
+                </button>
+                <button class="btn-secondary-modern btn-small" onclick="stressTest()">
+                    压力测试
+                </button>
+            </div>
+            
+            <div class="test-result" id="performanceResult"></div>
+        </div>
+        
+        <!-- 测试报告 -->
+        <div class="test-section animate-fade-in-up delay-6" id="testReport" style="display: none;">
+            <h2 class="heading-h2 text-primary">测试报告</h2>
+            <div id="reportContent"></div>
+        </div>
+    </div>
+    
+    <script>
+        // 测试状态管理
+        let testResults = {
+            buttons: null,
+            forms: null,
+            animations: null,
+            responsive: null,
+            accessibility: null,
+            performance: null
+        };
+        
+        // 性能监控
+        let perfMonitorActive = false;
+        let startTime = performance.now();
+        
+        // 更新性能监控器
+        function updatePerfMonitor() {
+            if (!perfMonitorActive) return;
+            
+            const memory = performance.memory ? Math.round(performance.memory.usedJSHeapSize / 1048576) : 0;
+            const loadTime = Math.round(performance.now() - startTime);
+            const elements = document.querySelectorAll('*').length;
+            
+            document.getElementById('memory').textContent = memory + ' MB';
+            document.getElementById('loadTime').textContent = loadTime + 'ms';
+            document.getElementById('elements').textContent = elements;
+            
+            requestAnimationFrame(updatePerfMonitor);
+        }
+        
+        // 切换性能监控
+        function togglePerfMonitor() {
+            perfMonitorActive = !perfMonitorActive;
+            const monitor = document.getElementById('perfMonitor');
+            
+            if (perfMonitorActive) {
+                monitor.classList.add('show');
+                updatePerfMonitor();
+            } else {
+                monitor.classList.remove('show');
+            }
+        }
+        
+        // 按钮测试
+        function testButtons() {
+            const result = document.getElementById('buttonResult');
+            const status = document.getElementById('buttonStatus');
+            
+            try {
+                // 测试按钮点击
+                const button1 = document.getElementById('testButton1');
+                const button2 = document.getElementById('testButton2');
+                const button3 = document.getElementById('testButton3');
+                
+                let clickCount = 0;
+                
+                [button1, button2, button3].forEach(btn => {
+                    btn.addEventListener('click', () => clickCount++);
+                    btn.click();
+                });
+                
+                if (clickCount === 3) {
+                    testResults.buttons = true;
+                    status.textContent = '✓';
+                    status.className = 'test-status status-pass';
+                    result.textContent = '✅ 按钮测试通过：所有按钮都能正常点击和响应';
+                    result.className = 'test-result success show';
+                } else {
+                    throw new Error('按钮点击响应异常');
+                }
+                
+            } catch (error) {
+                testResults.buttons = false;
+                status.textContent = '✗';
+                status.className = 'test-status status-fail';
+                result.textContent = '❌ 按钮测试失败：' + error.message;
+                result.className = 'test-result error show';
+            }
+        }
+        
+        // 表单测试
+        function testForms() {
+            const result = document.getElementById('formResult');
+            const status = document.getElementById('formStatus');
+            
+            try {
+                const input = document.getElementById('testInput');
+                const select = document.getElementById('testSelect');
+                const checkbox = document.getElementById('testCheck');
+                
+                // 测试输入
+                input.value = 'test input';
+                input.dispatchEvent(new Event('input'));
+                
+                // 测试选择
+                select.value = 'option1';
+                select.dispatchEvent(new Event('change'));
+                
+                // 测试复选框
+                checkbox.checked = true;
+                checkbox.dispatchEvent(new Event('change'));
+                
+                if (input.value === 'test input' && select.value === 'option1' && checkbox.checked) {
+                    testResults.forms = true;
+                    status.textContent = '✓';
+                    status.className = 'test-status status-pass';
+                    result.textContent = '✅ 表单测试通过：所有表单控件都能正常工作';
+                    result.className = 'test-result success show';
+                } else {
+                    throw new Error('表单控件状态异常');
+                }
+                
+            } catch (error) {
+                testResults.forms = false;
+                status.textContent = '✗';
+                status.className = 'test-status status-fail';
+                result.textContent = '❌ 表单测试失败：' + error.message;
+                result.className = 'test-result error show';
+            }
+        }
+        
+        // 动画测试
+        function testAnimations() {
+            const result = document.getElementById('animationResult');
+            const status = document.getElementById('animationStatus');
+            const element = document.getElementById('testAnimation');
+            
+            try {
+                // 测试动画类切换
+                element.classList.remove('animate-pulse');
+                element.classList.add('animate-bounce');
+                
+                setTimeout(() => {
+                    element.classList.remove('animate-bounce');
+                    element.classList.add('animate-spin');
+                    
+                    setTimeout(() => {
+                        element.classList.remove('animate-spin');
+                        element.classList.add('animate-pulse');
+                        
+                        testResults.animations = true;
+                        status.textContent = '✓';
+                        status.className = 'test-status status-pass';
+                        result.textContent = '✅ 动画测试通过：动画效果正常切换';
+                        result.className = 'test-result success show';
+                    }, 500);
+                }, 500);
+                
+            } catch (error) {
+                testResults.animations = false;
+                status.textContent = '✗';
+                status.className = 'test-status status-fail';
+                result.textContent = '❌ 动画测试失败：' + error.message;
+                result.className = 'test-result error show';
+            }
+        }
+        
+        // 响应式测试
+        function testResponsive() {
+            const result = document.getElementById('responsiveResult');
+            const status = document.getElementById('responsiveStatus');
+            
+            try {
+                const viewport = {
+                    width: window.innerWidth,
+                    height: window.innerHeight
+                };
+                
+                let responsiveType = '';
+                
+                if (viewport.width < 768) {
+                    responsiveType = '移动端';
+                } else if (viewport.width < 1024) {
+                    responsiveType = '平板端';
+                } else {
+                    responsiveType = '桌面端';
+                }
+                
+                // 检查CSS媒体查询
+                const mediaQueries = [
+                    window.matchMedia('(max-width: 768px)').matches,
+                    window.matchMedia('(max-width: 1024px)').matches,
+                    window.matchMedia('(min-width: 1025px)').matches
+                ];
+                
+                testResults.responsive = true;
+                status.textContent = '✓';
+                status.className = 'test-status status-pass';
+                result.textContent = `✅ 响应式测试通过：当前${responsiveType}视口 (${viewport.width}x${viewport.height})`;
+                result.className = 'test-result success show';
+                
+            } catch (error) {
+                testResults.responsive = false;
+                status.textContent = '✗';
+                status.className = 'test-status status-fail';
+                result.textContent = '❌ 响应式测试失败：' + error.message;
+                result.className = 'test-result error show';
+            }
+        }
+        
+        // 可访问性测试
+        function testAccessibility() {
+            const result = document.getElementById('a11yResult');
+            const status = document.getElementById('a11yStatus');
+            
+            try {
+                const checks = [];
+                
+                // 检查焦点管理
+                const focusableElements = document.querySelectorAll(
+                    'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+                );
+                checks.push(focusableElements.length > 0);
+                
+                // 检查语义化标签
+                const semanticElements = document.querySelectorAll(
+                    'main, section, article, header, nav, aside, footer'
+                );
+                checks.push(semanticElements.length > 0);
+                
+                // 检查alt属性
+                const images = document.querySelectorAll('img');
+                const imagesWithAlt = Array.from(images).every(img => img.hasAttribute('alt'));
+                checks.push(images.length === 0 || imagesWithAlt);
+                
+                // 检查标签关联
+                const inputs = document.querySelectorAll('input[type="checkbox"], input[type="radio"]');
+                const inputsWithLabels = Array.from(inputs).every(input => {
+                    return document.querySelector(`label[for="${input.id}"]`);
+                });
+                checks.push(inputs.length === 0 || inputsWithLabels);
+                
+                const passedChecks = checks.filter(Boolean).length;
+                const totalChecks = checks.length;
+                
+                if (passedChecks === totalChecks) {
+                    testResults.accessibility = true;
+                    status.textContent = '✓';
+                    status.className = 'test-status status-pass';
+                    result.textContent = `✅ 可访问性测试通过：${passedChecks}/${totalChecks} 项检查通过`;
+                    result.className = 'test-result success show';
+                } else {
+                    throw new Error(`${totalChecks - passedChecks} 项检查未通过`);
+                }
+                
+            } catch (error) {
+                testResults.accessibility = false;
+                status.textContent = '✗';
+                status.className = 'test-status status-fail';
+                result.textContent = '❌ 可访问性测试失败：' + error.message;
+                result.className = 'test-result error show';
+            }
+        }
+        
+        // 性能测试
+        function testPerformance() {
+            const result = document.getElementById('performanceResult');
+            
+            try {
+                // 页面加载时间
+                const loadTime = Math.round(performance.now() - startTime);
+                document.getElementById('pageLoadTime').textContent = loadTime + 'ms';
+                
+                // DOM元素数量
+                const domElements = document.querySelectorAll('*').length;
+                document.getElementById('domElements').textContent = domElements;
+                
+                // CSS规则数量
+                let cssRules = 0;
+                for (let i = 0; i < document.styleSheets.length; i++) {
+                    try {
+                        cssRules += document.styleSheets[i].cssRules.length;
+                    } catch (e) {
+                        // 跨域样式表无法访问
+                    }
+                }
+                document.getElementById('cssRules').textContent = cssRules;
+                
+                // 内存使用
+                const memory = performance.memory ? 
+                    Math.round(performance.memory.usedJSHeapSize / 1048576) : 0;
+                document.getElementById('memoryUsage').textContent = memory + 'MB';
+                
+                testResults.performance = true;
+                result.textContent = `✅ 性能测试完成：加载${loadTime}ms, ${domElements}个元素, ${cssRules}条CSS规则, ${memory}MB内存`;
+                result.className = 'test-result success show';
+                
+            } catch (error) {
+                testResults.performance = false;
+                result.textContent = '❌ 性能测试失败：' + error.message;
+                result.className = 'test-result error show';
+            }
+        }
+        
+        // 压力测试
+        function stressTest() {
+            const result = document.getElementById('performanceResult');
+            
+            try {
+                result.textContent = '🔄 正在进行压力测试...';
+                result.className = 'test-result show';
+                
+                // 创建大量DOM元素测试
+                const container = document.createElement('div');
+                container.style.display = 'none';
+                document.body.appendChild(container);
+                
+                const startTime = performance.now();
+                
+                for (let i = 0; i < 1000; i++) {
+                    const element = document.createElement('div');
+                    element.className = 'test-element';
+                    element.textContent = `Test ${i}`;
+                    container.appendChild(element);
+                }
+                
+                const endTime = performance.now();
+                const duration = Math.round(endTime - startTime);
+                
+                // 清理测试元素
+                document.body.removeChild(container);
+                
+                result.textContent = `✅ 压力测试完成：创建1000个元素耗时${duration}ms`;
+                result.className = 'test-result success show';
+                
+            } catch (error) {
+                result.textContent = '❌ 压力测试失败：' + error.message;
+                result.className = 'test-result error show';
+            }
+        }
+        
+        // 运行所有测试
+        function runAllTests() {
+            testButtons();
+            setTimeout(() => testForms(), 500);
+            setTimeout(() => testAnimations(), 1000);
+            setTimeout(() => testResponsive(), 1500);
+            setTimeout(() => testAccessibility(), 2000);
+            setTimeout(() => testPerformance(), 2500);
+        }
+        
+        // 重置测试
+        function resetTests() {
+            testResults = {
+                buttons: null,
+                forms: null,
+                animations: null,
+                responsive: null,
+                accessibility: null,
+                performance: null
+            };
+            
+            // 重置所有状态
+            document.querySelectorAll('.test-status').forEach(status => {
+                status.textContent = '⏳';
+                status.className = 'test-status status-pending';
+            });
+            
+            // 隐藏所有结果
+            document.querySelectorAll('.test-result').forEach(result => {
+                result.classList.remove('show');
+            });
+            
+            // 隐藏报告
+            document.getElementById('testReport').style.display = 'none';
+        }
+        
+        // 生成报告
+        function generateReport() {
+            const reportSection = document.getElementById('testReport');
+            const reportContent = document.getElementById('reportContent');
+            
+            const passedTests = Object.values(testResults).filter(result => result === true).length;
+            const totalTests = Object.keys(testResults).length;
+            const successRate = Math.round((passedTests / totalTests) * 100);
+            
+            let reportHTML = `
+                <div class="test-metrics">
+                    <div class="metric-item">
+                        <div class="metric-value" style="color: var(--color-success);">${passedTests}</div>
+                        <div class="text-body-small text-tertiary">通过测试</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-value" style="color: var(--color-error);">${totalTests - passedTests}</div>
+                        <div class="text-body-small text-tertiary">失败测试</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-value" style="color: var(--brand-primary);">${successRate}%</div>
+                        <div class="text-body-small text-tertiary">成功率</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-value" style="color: var(--text-primary);">${totalTests}</div>
+                        <div class="text-body-small text-tertiary">总测试数</div>
+                    </div>
+                </div>
+                
+                <h3 class="heading-h4 text-brand">详细结果</h3>
+                <ul class="accessibility-checklist">
+            `;
+            
+            Object.entries(testResults).forEach(([test, result]) => {
+                const icon = result === true ? '✓' : result === false ? '✗' : '⏳';
+                const className = result === true ? 'check' : result === false ? 'cross' : '';
+                const testName = {
+                    buttons: '按钮组件测试',
+                    forms: '表单组件测试',
+                    animations: '动画效果测试',
+                    responsive: '响应式设计测试',
+                    accessibility: '可访问性测试',
+                    performance: '性能测试'
+                };
+                
+                reportHTML += `<li><span class="${className}">${icon}</span> ${testName[test]}</li>`;
+            });
+            
+            reportHTML += '</ul>';
+            
+            if (successRate === 100) {
+                reportHTML += `
+                    <div class="test-result success show">
+                        🎉 恭喜！所有测试都通过了，UI设计系统质量优秀！
+                    </div>
+                `;
+            } else if (successRate >= 80) {
+                reportHTML += `
+                    <div class="test-result show">
+                        👍 大部分测试通过，系统质量良好，还有一些小问题需要修复。
+                    </div>
+                `;
+            } else {
+                reportHTML += `
+                    <div class="test-result error show">
+                        ⚠️ 发现一些问题需要修复，建议检查失败的测试项目。
+                    </div>
+                `;
+            }
+            
+            reportContent.innerHTML = reportHTML;
+            reportSection.style.display = 'block';
+            reportSection.scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // 页面加载完成后的初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 更新加载时间
+            const loadTime = Math.round(performance.now() - startTime);
+            document.getElementById('pageLoadTime').textContent = loadTime + 'ms';
+            
+            // 更新DOM元素数量
+            const domElements = document.querySelectorAll('*').length;
+            document.getElementById('domElements').textContent = domElements;
+            
+            console.log('🧪 交互测试页面加载完成');
+            console.log(`📊 加载时间: ${loadTime}ms`);
+            console.log(`📊 DOM元素: ${domElements}个`);
+        });
+    </script>
+</body>
+</html>

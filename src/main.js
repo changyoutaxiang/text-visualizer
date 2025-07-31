@@ -36,6 +36,7 @@ class TextVisualizerApp {
         });
         
         this.init();
+        this.initAnimations();
     }
 
     async init() {
@@ -222,6 +223,7 @@ class TextVisualizerApp {
                 this.storage.saveLastResult(result, format);
                 console.log('可视化生成成功');
                 this.showLoading(false);
+                this.showNotification('🎉 可视化生成成功！', 'success');
             }, 300);
             
         } catch (error) {
@@ -236,7 +238,7 @@ class TextVisualizerApp {
                 errorMessage = 'AI服务暂时不可用，请稍后重试';
             }
             
-            alert('生成失败: ' + errorMessage);
+            this.showNotification('生成失败: ' + errorMessage, 'error');
         }
     }
 
@@ -306,6 +308,137 @@ class TextVisualizerApp {
                 progressFill.style.width = '0%';
             }
         }
+    }
+
+    // 初始化动画效果
+    initAnimations() {
+        // 添加涟漪效果
+        this.initRippleEffect();
+        
+        // 初始化滚动动画
+        this.initScrollAnimations();
+        
+        // 添加通知系统
+        this.initNotifications();
+    }
+
+    // 涟漪效果
+    initRippleEffect() {
+        document.addEventListener('click', (e) => {
+            if (!e.target.classList.contains('ripple-effect')) return;
+            
+            const ripple = document.createElement('span');
+            const rect = e.target.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            const x = e.clientX - rect.left - size / 2;
+            const y = e.clientY - rect.top - size / 2;
+            
+            ripple.classList.add('ripple-wave');
+            ripple.style.width = ripple.style.height = size + 'px';
+            ripple.style.left = x + 'px';
+            ripple.style.top = y + 'px';
+            
+            e.target.appendChild(ripple);
+            
+            setTimeout(() => {
+                ripple.remove();
+            }, 600);
+        });
+    }
+
+    // 滚动动画
+    initScrollAnimations() {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-fade-in-up');
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+
+        // 观察需要动画的元素
+        document.querySelectorAll('.card-input, .card-preview').forEach(element => {
+            observer.observe(element);
+        });
+    }
+
+    // 通知系统
+    initNotifications() {
+        this.notifications = [];
+    }
+
+    // 显示通知
+    showNotification(message, type = 'info', duration = 3000) {
+        const notification = document.createElement('div');
+        notification.className = 'notification-toast';
+        notification.innerHTML = `
+            <div class="notification-content">
+                <span class="notification-icon">${this.getNotificationIcon(type)}</span>
+                <span class="notification-message">${message}</span>
+            </div>
+        `;
+        
+        // 设置样式
+        notification.style.cssText = `
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            background: ${this.getNotificationColor(type)};
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+            font-weight: 500;
+            transform: translateX(100%);
+            opacity: 0;
+            transition: all 0.3s ease;
+            max-width: 300px;
+            word-wrap: break-word;
+        `;
+
+        document.body.appendChild(notification);
+
+        // 动画入场
+        setTimeout(() => {
+            notification.style.transform = 'translateX(0)';
+            notification.style.opacity = '1';
+        }, 100);
+
+        // 自动移除
+        setTimeout(() => {
+            notification.style.transform = 'translateX(100%)';
+            notification.style.opacity = '0';
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 300);
+        }, duration);
+
+        return notification;
+    }
+
+    getNotificationIcon(type) {
+        const icons = {
+            success: '✅',
+            error: '❌',
+            warning: '⚠️',
+            info: 'ℹ️'
+        };
+        return icons[type] || icons.info;
+    }
+
+    getNotificationColor(type) {
+        const colors = {
+            success: 'var(--color-success)',
+            error: 'var(--color-error)',
+            warning: 'var(--color-warning)',
+            info: 'var(--brand-primary)'
+        };
+        return colors[type] || colors.info;
     }
 }
 

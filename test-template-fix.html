@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>模板修复测试</title>
+    <style>
+        body {
+            font-family: 'PingFang SC', sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+        }
+        .success { border-color: #10b981; background: #f0fdf4; }
+        .error { border-color: #ef4444; background: #fef2f2; }
+        .info { border-color: #3b82f6; background: #eff6ff; }
+        pre {
+            background: #f8fafc;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+        button {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #2563eb;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔧 模板修复测试页面</h1>
+    
+    <div class="test-section info">
+        <h2>测试说明</h2>
+        <p>这个页面用于测试修复后的模板加载和文本替换功能。</p>
+        <p><strong>问题描述：</strong>用户输入的文本和生成的HTML结果不匹配，怀疑输入内容和提示词没有被正确调用。</p>
+    </div>
+
+    <div class="test-section">
+        <h2>🧪 测试步骤</h2>
+        <button onclick="testTemplateLoading()">1. 测试模板加载</button>
+        <button onclick="testTextReplacement()">2. 测试文本替换</button>
+        <button onclick="testFullWorkflow()">3. 测试完整流程</button>
+        <div id="testResults"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>📝 手动测试</h2>
+        <p>请在主应用中进行以下测试：</p>
+        <ol>
+            <li>输入测试文本："苹果销量100个，香蕉销量80个，橙子销量60个"</li>
+            <li>选择"数据分析图表"模板</li>
+            <li>点击生成</li>
+            <li>检查生成的结果是否包含输入的具体数据</li>
+        </ol>
+        <a href="/" target="_blank" style="display: inline-block; margin-top: 10px; padding: 10px 20px; background: #10b981; color: white; text-decoration: none; border-radius: 6px;">打开主应用测试</a>
+    </div>
+
+    <script type="module">
+        import { MarkdownPromptLoader } from './src/services/MarkdownPromptLoader.js';
+        import { TemplateSelector } from './src/components/TemplateSelector.js';
+
+        window.testTemplateLoading = async function() {
+            const resultsDiv = document.getElementById('testResults');
+            resultsDiv.innerHTML = '<h3>🔄 正在测试模板加载...</h3>';
+            
+            try {
+                const loader = new MarkdownPromptLoader();
+                const templates = await loader.getAvailableTemplates();
+                
+                let html = '<div class="test-section success"><h3>✅ 模板加载成功</h3>';
+                html += `<p>找到 ${templates.length} 个模板：</p><ul>`;
+                
+                for (const template of templates) {
+                    html += `<li><strong>${template.name}</strong> (${template.filename})</li>`;
+                }
+                
+                html += '</ul></div>';
+                resultsDiv.innerHTML = html;
+                
+            } catch (error) {
+                resultsDiv.innerHTML = `<div class="test-section error"><h3>❌ 模板加载失败</h3><pre>${error.message}</pre></div>`;
+            }
+        };
+
+        window.testTextReplacement = async function() {
+            const resultsDiv = document.getElementById('testResults');
+            resultsDiv.innerHTML = '<h3>🔄 正在测试文本替换...</h3>';
+            
+            try {
+                const loader = new MarkdownPromptLoader();
+                const template = await loader.loadTemplate('数据分析图表.md');
+                
+                const testText = '苹果销量100个，香蕉销量80个，橙子销量60个';
+                const prompt = template.template.replace(/\{text\}/g, testText);
+                
+                let html = '<div class="test-section success"><h3>✅ 文本替换成功</h3>';
+                html += '<h4>原始模板：</h4>';
+                html += `<pre>${template.template.substring(0, 200)}...</pre>`;
+                html += '<h4>替换后的提示词：</h4>';
+                html += `<pre>${prompt.substring(0, 300)}...</pre>`;
+                html += `<p><strong>检查：</strong>提示词中${prompt.includes(testText) ? '✅ 包含' : '❌ 不包含'}测试文本</p>`;
+                html += '</div>';
+                
+                resultsDiv.innerHTML = html;
+                
+            } catch (error) {
+                resultsDiv.innerHTML = `<div class="test-section error"><h3>❌ 文本替换失败</h3><pre>${error.message}</pre></div>`;
+            }
+        };
+
+        window.testFullWorkflow = async function() {
+            const resultsDiv = document.getElementById('testResults');
+            resultsDiv.innerHTML = '<h3>🔄 正在测试完整流程...</h3>';
+            
+            try {
+                // 模拟完整的工作流程
+                const selector = new TemplateSelector();
+                await selector.init();
+                
+                // 模拟选择模板
+                const templates = await selector.loader.getAvailableTemplates();
+                if (templates.length > 0) {
+                    const firstTemplate = await selector.loader.loadTemplate(templates[0].filename);
+                    selector.currentTemplate = firstTemplate;
+                    
+                    const testText = '苹果销量100个，香蕉销量80个，橙子销量60个';
+                    const finalPrompt = selector.getPromptText(testText);
+                    
+                    let html = '<div class="test-section success"><h3>✅ 完整流程测试成功</h3>';
+                    html += `<p><strong>选择的模板：</strong>${firstTemplate.name}</p>`;
+                    html += `<p><strong>测试文本：</strong>${testText}</p>`;
+                    html += '<h4>最终生成的提示词：</h4>';
+                    html += `<pre>${finalPrompt.substring(0, 400)}...</pre>`;
+                    html += `<p><strong>验证：</strong>最终提示词中${finalPrompt.includes(testText) ? '✅ 包含' : '❌ 不包含'}用户输入的文本</p>`;
+                    html += '</div>';
+                    
+                    resultsDiv.innerHTML = html;
+                } else {
+                    throw new Error('没有找到可用的模板');
+                }
+                
+            } catch (error) {
+                resultsDiv.innerHTML = `<div class="test-section error"><h3>❌ 完整流程测试失败</h3><pre>${error.message}\n${error.stack}</pre></div>`;
+            }
+        };
+    </script>
+</body>
+</html>

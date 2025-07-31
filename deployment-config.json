@@ -1,0 +1,159 @@
+{
+  "environments": {
+    "development": {
+      "platform": "local",
+      "url": "http://localhost:3000",
+      "branch": "develop",
+      "autoDeploy": false,
+      "features": {
+        "hotReload": true,
+        "sourceMap": true,
+        "debug": true,
+        "mockData": true
+      },
+      "monitoring": {
+        "errorReporting": false,
+        "performanceTracking": false,
+        "analytics": false
+      },
+      "security": {
+        "csp": false,
+        "rateLimit": false,
+        "https": false
+      }
+    },
+    "staging": {
+      "platform": "vercel",
+      "url": "https://staging.text-visualizer.vercel.app",
+      "branch": "develop",
+      "autoDeploy": true,
+      "features": {
+        "hotReload": false,
+        "sourceMap": true,
+        "debug": true,
+        "mockData": false
+      },
+      "monitoring": {
+        "errorReporting": true,
+        "performanceTracking": true,
+        "analytics": false
+      },
+      "security": {
+        "csp": true,
+        "rateLimit": true,
+        "https": true
+      }
+    },
+    "production": {
+      "platform": "vercel",
+      "url": "https://text-visualizer.vercel.app",
+      "branch": "main",
+      "autoDeploy": true,
+      "features": {
+        "hotReload": false,
+        "sourceMap": false,
+        "debug": false,
+        "mockData": false
+      },
+      "monitoring": {
+        "errorReporting": true,
+        "performanceTracking": true,
+        "analytics": true
+      },
+      "security": {
+        "csp": true,
+        "rateLimit": true,
+        "https": true
+      }
+    }
+  },
+  "platforms": {
+    "vercel": {
+      "type": "serverless",
+      "regions": ["hkg1", "sin1", "nrt1"],
+      "buildCommand": "npm run build",
+      "outputDirectory": "dist",
+      "installCommand": "npm ci",
+      "devCommand": "npm run dev",
+      "framework": "vite",
+      "nodeVersion": "18.x"
+    },
+    "netlify": {
+      "type": "static",
+      "buildCommand": "npm run build",
+      "publishDirectory": "dist",
+      "functionsDirectory": "netlify/functions",
+      "plugins": [
+        "@netlify/plugin-lighthouse",
+        "netlify-plugin-submit-sitemap"
+      ]
+    },
+    "aws": {
+      "type": "server",
+      "service": "s3",
+      "region": "ap-southeast-1",
+      "bucket": "text-visualizer-prod",
+      "cloudfront": {
+        "distributionId": "your-distribution-id",
+        "cacheBehaviors": {
+          "static": 31536000,
+          "api": 300,
+          "html": 3600
+        }
+      }
+    },
+    "docker": {
+      "type": "container",
+      "baseImage": "node:18-alpine",
+      "port": 3000,
+      "healthCheck": {
+        "path": "/health",
+        "interval": 30,
+        "timeout": 10
+      }
+    }
+  },
+  "deployment": {
+    "strategy": "blue-green",
+    "healthCheck": {
+      "path": "/health",
+      "timeout": 30000,
+      "retries": 3
+    },
+    "rollback": {
+      "enabled": true,
+      "strategy": "immediate",
+      "timeout": 300000
+    },
+    "notifications": {
+      "slack": {
+        "webhook": "${SLACK_WEBHOOK}",
+        "channel": "#deployments"
+      },
+      "email": {
+        "recipients": ["team@yourcompany.com"],
+        "template": "deployment-success"
+      }
+    }
+  },
+  "variables": {
+    "development": {
+      "VITE_API_BASE_URL": "http://localhost:3001",
+      "VITE_ENV": "development",
+      "VITE_DEBUG": "true"
+    },
+    "staging": {
+      "VITE_API_BASE_URL": "https://api-staging.text-visualizer.app",
+      "VITE_ENV": "staging",
+      "VITE_DEBUG": "false",
+      "VITE_SENTRY_DSN": "${SENTRY_DSN_STAGING}"
+    },
+    "production": {
+      "VITE_API_BASE_URL": "https://api.text-visualizer.app",
+      "VITE_ENV": "production",
+      "VITE_DEBUG": "false",
+      "VITE_SENTRY_DSN": "${SENTRY_DSN_PRODUCTION}",
+      "VITE_GA_TRACKING_ID": "${GA_TRACKING_ID}"
+    }
+  }
+}

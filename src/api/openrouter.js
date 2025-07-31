@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { API_CONFIG, MODEL_CONFIGS, SYSTEM_PROMPTS } from '../utils/constants.js';
 import { cacheManager } from '../utils/cache.js';
+import { errorHandler } from '../utils/errorHandler.js';
 
 export class OpenRouterAPI {
     constructor() {
@@ -88,6 +89,9 @@ export class OpenRouterAPI {
 
     async generateVisualization(prompt, model, format) {
         const apiKey = import.meta.env.VITE_OPENROUTER_API_KEY;
+        
+
+        
         if (!apiKey) {
             throw new Error('API密钥未配置，请检查环境变量 VITE_OPENROUTER_API_KEY');
         }
@@ -174,20 +178,47 @@ export class OpenRouterAPI {
                 return result;
             } catch (error) {
                 if (attempt === maxRetries) {
-                    if (error.response?.status === 401) {
-                        throw new Error('API密钥无效或已过期');
-                    } else if (error.response?.status === 400) {
-                        throw new Error('请求参数错误，可能是输入文本过长或格式不正确。建议缩短文本内容或尝试其他模型。');
-                    } else if (error.response?.status === 429) {
-                        throw new Error('API调用频率限制，请稍后再试');
-                    } else if (error.code === 'ECONNABORTED') {
-                        throw new Error('请求超时，可能是图表较复杂。建议：1) 缩短输入文本 2) 切换到SVG格式 3) 使用更快的模型');
-                    } else {
-                        throw new Error(`API调用失败: ${error.message}`);
+                    // 使用错误处理器统一处理
+                    const errorInfo = {
+                        status: error.response?.status,
+                        message: error.message,
+                        code: error.code
+                    };
+
+                    let userMessage = 'API调用失败';
+                    
+                    switch (error.response?.status) {
+                        case 401:
+                            userMessage = 'API密钥无效或已过期';
+                            break;
+                        case 400:
+                            userMessage = '请求参数错误，可能是输入文本过长或格式不正确。建议缩短文本内容或尝试其他模型。';
+                            break;
+                        case 429:
+                            userMessage = 'API调用频率限制，请稍后再试';
+                            break;
+                        case 500:
+                            userMessage = '服务器内部错误，请稍后重试';
+                            break;
+                        case 502:
+                        case 503:
+                            userMessage = '服务暂时不可用，请稍后重试';
+                            break;
+                        default:
+                            if (error.code === 'ECONNABORTED') {
+                                userMessage = '请求超时，可能是图表较复杂。建议：1) 缩短输入文本 2) 切换到SVG格式 3) 使用更快的模型';
+                            } else {
+                                userMessage = `操作失败: ${error.message}`;
+                            }
                     }
+
+                    throw new Error(userMessage);
                 }
                 
-                await new Promise(resolve => setTimeout(resolve, retryDelay * attempt));
+                // 指数退避重试
+                const delay = retryDelay * Math.pow(2, attempt - 1);
+                console.log(`⏳ 第${attempt}次重试，等待${delay}ms...`);
+                await new Promise(resolve => setTimeout(resolve, delay));
             }
         }
     }

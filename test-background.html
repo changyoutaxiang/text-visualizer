@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>背景系统测试 - 阶段2</title>
+    <link rel="stylesheet" href="./src/styles/design-tokens.css">
+    <link rel="stylesheet" href="./src/styles/background-system.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'PingFang SC', sans-serif;
+            color: var(--text-primary);
+            line-height: 1.6;
+            position: relative;
+        }
+        
+        .test-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .test-header {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            padding: 2rem;
+            border-radius: 16px;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            text-align: center;
+        }
+        
+        .test-title {
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        .test-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 
+                0 8px 32px 0 rgba(31, 38, 135, 0.15),
+                0 2px 4px 0 rgba(31, 38, 135, 0.08);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .test-section:hover {
+            box-shadow: 
+                0 12px 40px 0 rgba(31, 38, 135, 0.2),
+                0 4px 8px 0 rgba(31, 38, 135, 0.1);
+            border-color: rgba(102, 126, 234, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+        }
+        
+        .form-test {
+            display: grid;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .input-modern {
+            padding: 0.75rem;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(102, 126, 234, 0.1);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            transition: all 0.2s ease-in-out;
+        }
+        
+        .input-modern:focus {
+            outline: none;
+            border-color: var(--brand-primary);
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+            background: rgba(255, 255, 255, 1);
+        }
+        
+        .textarea-modern {
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(102, 126, 234, 0.1);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            resize: vertical;
+            transition: all 0.2s ease-in-out;
+            line-height: 1.6;
+            min-height: 120px;
+        }
+        
+        .btn-modern {
+            background: var(--gradient-primary);
+            color: var(--text-inverse);
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 14px 0 rgba(102, 126, 234, 0.4);
+            transition: all 0.2s ease-in-out;
+            margin: 0.5rem;
+        }
+        
+        .btn-modern:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px 0 rgba(102, 126, 234, 0.6);
+        }
+        
+        .responsive-test {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .readability-test {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 1rem 0;
+        }
+        
+        .device-preview {
+            border: 2px solid rgba(102, 126, 234, 0.2);
+            border-radius: 12px;
+            padding: 1rem;
+            text-align: center;
+            transition: all 0.2s ease-in-out;
+        }
+        
+        .device-preview:hover {
+            border-color: var(--brand-primary);
+            transform: scale(1.02);
+        }
+        
+        .performance-indicator {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin: 0.25rem;
+        }
+        
+        .indicator-good {
+            background: var(--color-success-light);
+            color: var(--text-success);
+        }
+        
+        .indicator-warning {
+            background: var(--color-warning-light);
+            color: var(--text-warning);
+        }
+        
+        @media (max-width: 768px) {
+            .test-container {
+                padding: 1rem;
+            }
+            
+            .test-title {
+                font-size: 2rem;
+            }
+            
+            .responsive-test {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body class="app-background app-background-enhanced">
+    <!-- 装饰性背景元素 -->
+    <div class="decorative-circles">
+        <div class="decorative-circle"></div>
+        <div class="decorative-circle"></div>
+        <div class="decorative-circle"></div>
+    </div>
+    <div class="decorative-lines">
+        <div class="decorative-line"></div>
+        <div class="decorative-line"></div>
+    </div>
+    <div class="decorative-grid"></div>
+    
+    <div class="test-container">
+        <div class="test-header">
+            <h1 class="test-title">🌈 背景系统升级测试</h1>
+            <p style="color: var(--text-secondary); font-size: 1.1rem;">
+                现代化背景设计 + 毛玻璃效果 + 装饰性元素
+            </p>
+        </div>
+        
+        <div class="test-section">
+            <h2 style="color: var(--text-primary); margin-bottom: 1rem;">背景效果展示</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 1rem;">
+                页面采用了多层渐变背景、浮动装饰圆形、几何线条和微妙网格的组合设计。
+            </p>
+            
+            <div class="responsive-test">
+                <div class="glass-card">
+                    <h3 style="color: var(--text-brand-primary); margin-bottom: 0.5rem;">毛玻璃卡片</h3>
+                    <p style="color: var(--text-secondary);">
+                        85% 透明度白色背景 + 20px 高斯模糊 + 微妙边框
+                    </p>
+                </div>
+                <div class="glass-card">
+                    <h3 style="color: var(--text-brand-primary); margin-bottom: 0.5rem;">深度阴影</h3>
+                    <p style="color: var(--text-secondary);">
+                        多层阴影系统营造立体感和层次感
+                    </p>
+                </div>
+                <div class="glass-card">
+                    <h3 style="color: var(--text-brand-primary); margin-bottom: 0.5rem;">动态装饰</h3>
+                    <p style="color: var(--text-secondary);">
+                        浮动动画的装饰元素，20秒周期缓动
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h2 style="color: var(--text-primary); margin-bottom: 1rem;">表单控件可读性测试</h2>
+            <div class="form-test">
+                <input 
+                    type="text" 
+                    class="input-modern" 
+                    placeholder="现代化输入框 - 90% 白色背景 + 模糊效果"
+                >
+                <select class="input-modern">
+                    <option>选择器控件 - 确保在背景下清晰可见</option>
+                    <option>选项1</option>
+                    <option>选项2</option>
+                </select>
+                <textarea 
+                    class="textarea-modern" 
+                    placeholder="多行文本输入框
+测试在复杂背景下的文字可读性...
+字体：等宽字体
+行高：1.6
+背景：90% 白色透明 + 10px 模糊效果"
+                ></textarea>
+            </div>
+            
+            <div style="text-align: center; margin-top: 1rem;">
+                <button class="btn-modern">主要操作按钮</button>
+                <button class="btn-modern">次要操作按钮</button>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h2 style="color: var(--text-primary); margin-bottom: 1rem;">可读性对比测试</h2>
+            <div class="responsive-test">
+                <div class="readability-test">
+                    <h4 style="color: var(--text-primary); margin-bottom: 0.5rem;">主要文字</h4>
+                    <p style="color: var(--text-primary); font-weight: 600;">
+                        这是主要文字内容，采用最深的灰色(#111827)确保在任何背景下都有足够的对比度。
+                    </p>
+                </div>
+                <div class="readability-test">
+                    <h4 style="color: var(--text-secondary); margin-bottom: 0.5rem;">次要文字</h4>
+                    <p style="color: var(--text-secondary);">
+                        这是次要文字内容，采用中等灰色(#374151)用于辅助信息显示。
+                    </p>
+                </div>
+                <div class="readability-test">
+                    <h4 style="color: var(--text-tertiary); margin-bottom: 0.5rem;">三级文字</h4>
+                    <p style="color: var(--text-tertiary);">
+                        这是三级文字内容，采用浅灰色(#6b7280)用于标签和提示信息。
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h2 style="color: var(--text-primary); margin-bottom: 1rem;">响应式设备适配</h2>
+            <div class="responsive-test">
+                <div class="device-preview">
+                    <h4 style="color: var(--text-success); margin-bottom: 0.5rem;">💻 桌面端</h4>
+                    <p style="color: var(--text-secondary); font-size: 0.875rem;">
+                        完整背景效果 + 所有装饰元素
+                    </p>
+                    <div class="performance-indicator indicator-good">性能优异</div>
+                </div>
+                <div class="device-preview">
+                    <h4 style="color: var(--text-warning); margin-bottom: 0.5rem;">📱 移动端</h4>
+                    <p style="color: var(--text-secondary); font-size: 0.875rem;">
+                        简化背景 + 隐藏装饰圆形
+                    </p>
+                    <div class="performance-indicator indicator-good">优化良好</div>
+                </div>
+                <div class="device-preview">
+                    <h4 style="color: var(--text-error); margin-bottom: 0.5rem;">⌚ 小屏设备</h4>
+                    <p style="color: var(--text-secondary); font-size: 0.875rem;">
+                        最小化装饰 + 减少模糊效果
+                    </p>
+                    <div class="performance-indicator indicator-warning">性能优先</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="test-section" style="text-align: center;">
+            <h3 style="color: var(--text-success); margin-bottom: 1rem;">✅ 阶段2完成</h3>
+            <p style="color: var(--text-secondary); margin-bottom: 1rem;">
+                背景系统重构完成，界面告别纯白背景，具备现代化的视觉深度。
+            </p>
+            <div style="margin-top: 1rem;">
+                <div class="performance-indicator indicator-good">背景渐变 ✓</div>
+                <div class="performance-indicator indicator-good">装饰元素 ✓</div>
+                <div class="performance-indicator indicator-good">毛玻璃效果 ✓</div>
+                <div class="performance-indicator indicator-good">响应式适配 ✓</div>
+                <div class="performance-indicator indicator-good">可读性保证 ✓</div>
+            </div>
+            <p style="color: var(--text-tertiary); margin-top: 1rem; font-size: 0.875rem;">
+                下一步：阶段3 - 卡片系统升级
+            </p>
+        </div>
+    </div>
+</body>
+</html>

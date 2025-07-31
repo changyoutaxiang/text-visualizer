@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>动画和微交互测试 - 阶段7</title>
+    <link rel="stylesheet" href="./src/styles/design-tokens.css">
+    <link rel="stylesheet" href="./src/styles/background-system.css">
+    <link rel="stylesheet" href="./src/styles/modern-cards.css">
+    <link rel="stylesheet" href="./src/styles/modern-buttons.css">
+    <link rel="stylesheet" href="./src/styles/typography-system.css">
+    <link rel="stylesheet" href="./src/styles/form-controls.css">
+    <link rel="stylesheet" href="./src/styles/animations.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-sans);
+            color: var(--text-primary);
+            line-height: 1.6;
+            position: relative;
+        }
+        
+        .test-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .test-header {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            padding: 3rem 2rem;
+            border-radius: 20px;
+            margin-bottom: 3rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            text-align: center;
+        }
+        
+        .demo-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 
+                0 8px 32px 0 rgba(31, 38, 135, 0.15),
+                0 2px 4px 0 rgba(31, 38, 135, 0.08);
+        }
+        
+        .animation-showcase {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .animation-demo {
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(102, 126, 234, 0.1);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .animation-controls {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin: 1.5rem 0;
+            flex-wrap: wrap;
+        }
+        
+        .demo-element {
+            width: 80px;
+            height: 80px;
+            background: var(--gradient-primary);
+            border-radius: 12px;
+            margin: 1rem auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-inverse);
+            font-size: 2rem;
+            cursor: pointer;
+        }
+        
+        .interactive-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .interactive-item {
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(102, 126, 234, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .loading-demos {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: center;
+            align-items: center;
+            margin: 2rem 0;
+        }
+        
+        .loading-item {
+            background: rgba(102, 126, 234, 0.05);
+            border: 1px solid rgba(102, 126, 234, 0.1);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            min-width: 200px;
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin: 0.25rem;
+        }
+        
+        .status-excellent {
+            background: var(--color-success-light);
+            color: var(--text-success);
+        }
+        
+        .status-good {
+            background: var(--color-info-light);
+            color: var(--text-info);
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .feature-item {
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(102, 126, 234, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+        
+        .feature-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+        }
+        
+        .special-effects-demo {
+            background: rgba(118, 75, 162, 0.05);
+            border: 2px dashed rgba(118, 75, 162, 0.2);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+        
+        .text-effects {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            align-items: center;
+            margin: 2rem 0;
+        }
+        
+        .notification-demo {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            background: var(--gradient-primary);
+            color: var(--text-inverse);
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+            z-index: 1000;
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        
+        .notification-demo.show {
+            animation: notification-slide-in 0.3s ease-out forwards;
+        }
+        
+        .notification-demo.hide {
+            animation: notification-slide-out 0.3s ease-out forwards;
+        }
+        
+        @media (max-width: 768px) {
+            .test-container {
+                padding: 1rem;
+            }
+            
+            .test-header {
+                padding: 2rem 1.5rem;
+            }
+            
+            .animation-showcase {
+                grid-template-columns: 1fr;
+            }
+            
+            .animation-controls {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .loading-demos {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body class="app-background app-background-enhanced page-enter">
+    <!-- 装饰性背景元素 -->
+    <div class="decorative-circles">
+        <div class="decorative-circle animate-float"></div>
+        <div class="decorative-circle animate-float delay-2"></div>
+        <div class="decorative-circle animate-float delay-4"></div>
+    </div>
+    <div class="decorative-lines">
+        <div class="decorative-line"></div>
+        <div class="decorative-line"></div>
+    </div>
+    <div class="decorative-grid"></div>
+    
+    <div class="test-container">
+        <div class="test-header animate-fade-in-up">
+            <h1 class="heading-display heading-brand text-animate-in">🎬 动画和微交互</h1>
+            <p class="text-lead text-secondary animate-fade-in-up delay-1">
+                为界面注入生动的动画效果和精致的微交互体验
+            </p>
+        </div>
+        
+        <div class="demo-section animate-fade-in-up delay-2">
+            <h2 class="heading-h2 text-primary">入场动画效果</h2>
+            <p class="text-body text-secondary">
+                多种元素入场动画，让页面内容优雅地呈现给用户。
+            </p>
+            
+            <div class="animation-showcase">
+                <div class="animation-demo">
+                    <h4 class="heading-h5 text-brand">淡入上升</h4>
+                    <div class="demo-element animate-fade-in-up" id="fadeUpDemo">📤</div>
+                    <div class="animation-controls">
+                        <button class="btn-secondary-modern btn-small" onclick="replayAnimation('fadeUpDemo', 'animate-fade-in-up')">
+                            🔄 重播
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="animation-demo">
+                    <h4 class="heading-h5 text-brand">缩放淡入</h4>
+                    <div class="demo-element animate-scale-in delay-1" id="scaleDemo">📈</div>
+                    <div class="animation-controls">
+                        <button class="btn-secondary-modern btn-small" onclick="replayAnimation('scaleDemo', 'animate-scale-in')">
+                            🔄 重播
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="animation-demo">
+                    <h4 class="heading-h5 text-brand">弹跳入场</h4>
+                    <div class="demo-element animate-bounce-in delay-2" id="bounceDemo">🏀</div>
+                    <div class="animation-controls">
+                        <button class="btn-secondary-modern btn-small" onclick="replayAnimation('bounceDemo', 'animate-bounce-in')">
+                            🔄 重播
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="animation-demo">
+                    <h4 class="heading-h5 text-brand">旋转淡入</h4>
+                    <div class="demo-element animate-rotate-in delay-3" id="rotateDemo">🌟</div>
+                    <div class="animation-controls">
+                        <button class="btn-secondary-modern btn-small" onclick="replayAnimation('rotateDemo', 'animate-rotate-in')">
+                            🔄 重播
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="animation-demo">
+                    <h4 class="heading-h5 text-brand">左滑淡入</h4>
+                    <div class="demo-element animate-fade-in-left delay-4" id="leftDemo">👈</div>
+                    <div class="animation-controls">
+                        <button class="btn-secondary-modern btn-small" onclick="replayAnimation('leftDemo', 'animate-fade-in-left')">
+                            🔄 重播
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="animation-demo">
+                    <h4 class="heading-h5 text-brand">右滑淡入</h4>
+                    <div class="demo-element animate-fade-in-right delay-5" id="rightDemo">👉</div>
+                    <div class="animation-controls">
+                        <button class="btn-secondary-modern btn-small" onclick="replayAnimation('rightDemo', 'animate-fade-in-right')">
+                            🔄 重播
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="demo-section animate-fade-in-up delay-3">
+            <h2 class="heading-h2 text-primary">微交互效果</h2>
+            <p class="text-body text-secondary">
+                鼠标悬停和点击时的精致微交互，提升用户体验。
+            </p>
+            
+            <div class="interactive-gallery">
+                <div class="interactive-item hover-scale ripple-effect">
+                    <div class="demo-element">🔍</div>
+                    <h5 class="heading-h6 text-primary">悬停缩放</h5>
+                    <p class="text-caption text-tertiary">鼠标悬停时放大</p>
+                </div>
+                
+                <div class="interactive-item hover-lift ripple-effect">
+                    <div class="demo-element">⬆️</div>
+                    <h5 class="heading-h6 text-primary">悬停上升</h5>
+                    <p class="text-caption text-tertiary">鼠标悬停时上升</p>
+                </div>
+                
+                <div class="interactive-item hover-glow ripple-effect">
+                    <div class="demo-element">✨</div>
+                    <h5 class="heading-h6 text-primary">悬停发光</h5>
+                    <p class="text-caption text-tertiary">鼠标悬停时发光</p>
+                </div>
+                
+                <div class="interactive-item hover-rotate ripple-effect">
+                    <div class="demo-element">🔄</div>
+                    <h5 class="heading-h6 text-primary">悬停旋转</h5>
+                    <p class="text-caption text-tertiary">鼠标悬停时旋转</p>
+                </div>
+                
+                <div class="interactive-item card-hover-effect ripple-effect">
+                    <div class="demo-element">🃏</div>
+                    <h5 class="heading-h6 text-primary">卡片效果</h5>
+                    <p class="text-caption text-tertiary">组合悬停效果</p>
+                </div>
+                
+                <div class="interactive-item button-click-effect ripple-effect">
+                    <div class="demo-element">👆</div>
+                    <h5 class="heading-h6 text-primary">点击反馈</h5>
+                    <p class="text-caption text-tertiary">点击时缩放反馈</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="demo-section animate-fade-in-up delay-4">
+            <h2 class="heading-h2 text-primary">Loading状态动画</h2>
+            <p class="text-body text-secondary">
+                各种加载状态的动画效果，让等待过程更加友好。
+            </p>
+            
+            <div class="loading-demos">
+                <div class="loading-item">
+                    <h5 class="heading-h6 text-brand">旋转加载</h5>
+                    <div class="demo-element animate-spin">⚙️</div>
+                    <p class="text-caption text-tertiary">持续旋转动画</p>
+                </div>
+                
+                <div class="loading-item">
+                    <h5 class="heading-h6 text-brand">脉冲动画</h5>
+                    <div class="demo-element animate-pulse">💗</div>
+                    <p class="text-caption text-tertiary">呼吸式脉冲</p>
+                </div>
+                
+                <div class="loading-item">
+                    <h5 class="heading-h6 text-brand">弹跳加载</h5>
+                    <div class="demo-element animate-bounce">⚽</div>
+                    <p class="text-caption text-tertiary">上下弹跳动画</p>
+                </div>
+                
+                <div class="loading-item">
+                    <h5 class="heading-h6 text-brand">点状加载</h5>
+                    <div style="height: 80px; display: flex; align-items: center; justify-content: center;">
+                        <span class="text-body text-brand dots-loading">加载中</span>
+                    </div>
+                    <p class="text-caption text-tertiary">点状文字动画</p>
+                </div>
+                
+                <div class="loading-item">
+                    <h5 class="heading-h6 text-brand">进度条</h5>
+                    <div class="progress-indeterminate" style="margin: 2rem 0;"></div>
+                    <p class="text-caption text-tertiary">不定进度条</p>
+                </div>
+                
+                <div class="loading-item">
+                    <h5 class="heading-h6 text-brand">闪烁效果</h5>
+                    <div class="demo-element animate-shimmer" style="background: var(--gray-200);">📱</div>
+                    <p class="text-caption text-tertiary">骨架屏效果</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="demo-section animate-fade-in-up delay-5">
+            <h2 class="heading-h2 text-primary">特殊效果动画</h2>
+            <p class="text-body text-secondary">
+                创意十足的特殊动画效果，为界面增添趣味性。
+            </p>
+            
+            <div class="special-effects-demo">
+                <div class="text-effects">
+                    <div>
+                        <h4 class="heading-h5 text-brand" style="margin-bottom: 1rem;">打字机效果</h4>
+                        <p class="text-body typewriter" id="typewriterText" style="width: 0; margin: 0 auto;">
+                            欢迎来到现代化UI设计世界！
+                        </p>
+                    </div>
+                    
+                    <div style="text-align: center;">
+                        <h4 class="heading-h5 text-brand" style="margin-bottom: 1rem;">渐变动画</h4>
+                        <div class="demo-element animate-gradient" style="background: linear-gradient(-45deg, #667eea, #764ba2, #667eea, #f093fb);">
+                            🌈
+                        </div>
+                    </div>
+                    
+                    <div style="text-align: center;">
+                        <h4 class="heading-h5 text-brand" style="margin-bottom: 1rem;">浮动动画</h4>
+                        <div class="demo-element animate-float">☁️</div>
+                    </div>
+                </div>
+                
+                <div class="animation-controls">
+                    <button class="btn-primary-modern" onclick="startTypewriter()">
+                        🔄 重新打字
+                    </button>
+                    <button class="btn-secondary-modern" onclick="showNotification()">
+                        📢 显示通知
+                    </button>
+                    <button class="btn-success-modern" onclick="triggerSuccess()">
+                        ✅ 成功动画
+                    </button>
+                    <button class="btn-danger-modern" onclick="triggerError()">
+                        ❌ 错误动画
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="demo-section animate-fade-in-up delay-6">
+            <h2 class="heading-h2 text-primary">性能优化特性</h2>
+            <p class="text-body text-secondary">
+                GPU加速、减少动画偏好支持等现代化优化特性。
+            </p>
+            
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <h4 class="heading-h5 text-brand">🚀 GPU加速</h4>
+                    <p class="text-body-small text-secondary">使用transform3d和will-change优化</p>
+                    <div class="status-indicator status-excellent">高性能</div>
+                </div>
+                
+                <div class="feature-item">
+                    <h4 class="heading-h5 text-brand">♿ 可访问性</h4>
+                    <p class="text-body-small text-secondary">支持减少动画偏好设置</p>
+                    <div class="status-indicator status-excellent">无障碍</div>
+                </div>
+                
+                <div class="feature-item">
+                    <h4 class="heading-h5 text-brand">⚡ 优化缓动</h4>
+                    <p class="text-body-small text-secondary">精心调试的缓动函数</p>
+                    <div class="status-indicator status-excellent">自然流畅</div>
+                </div>
+                
+                <div class="feature-item">
+                    <h4 class="heading-h5 text-brand">🎛️ 灵活控制</h4>
+                    <p class="text-body-small text-secondary">动画播放状态控制</p>
+                    <div class="status-indicator status-good">可控性强</div>
+                </div>
+                
+                <div class="feature-item">
+                    <h4 class="heading-h5 text-brand">📱 响应式</h4>
+                    <p class="text-body-small text-secondary">移动端优化适配</p>
+                    <div class="status-indicator status-excellent">跨平台</div>
+                </div>
+                
+                <div class="feature-item">
+                    <h4 class="heading-h5 text-brand">🎨 丰富效果</h4>
+                    <p class="text-body-small text-secondary">50+动画效果类型</p>
+                    <div class="status-indicator status-excellent">种类丰富</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="demo-section animate-fade-in-up delay-7" style="text-align: center; margin-top: 3rem;">
+            <h3 class="heading-h3 text-success">✅ 阶段7完成</h3>
+            <p class="text-lead text-secondary" style="margin-bottom: 2rem;">
+                动画和微交互系统完成，界面变得生动有趣且用户体验优秀
+            </p>
+            
+            <div class="feature-grid">
+                <div class="feature-item card-hover-effect">
+                    <h4 class="heading-h5 text-brand">🎬 入场动画</h4>
+                    <p class="text-body-small text-secondary">6种入场动画效果</p>
+                    <div class="status-indicator status-excellent">优雅呈现</div>
+                </div>
+                
+                <div class="feature-item card-hover-effect">
+                    <h4 class="heading-h5 text-brand">👆 微交互</h4>
+                    <p class="text-body-small text-secondary">悬停、点击反馈效果</p>
+                    <div class="status-indicator status-excellent">体感流畅</div>
+                </div>
+                
+                <div class="feature-item card-hover-effect">
+                    <h4 class="heading-h5 text-brand">⏳ Loading动画</h4>
+                    <p class="text-body-small text-secondary">多种加载状态动画</p>
+                    <div class="status-indicator status-excellent">等待友好</div>
+                </div>
+                
+                <div class="feature-item card-hover-effect">
+                    <h4 class="heading-h5 text-brand">✨ 特殊效果</h4>
+                    <p class="text-body-small text-secondary">打字机、渐变、浮动等</p>
+                    <div class="status-indicator status-excellent">创意丰富</div>
+                </div>
+                
+                <div class="feature-item card-hover-effect">
+                    <h4 class="heading-h5 text-brand">🚀 性能优化</h4>
+                    <p class="text-body-small text-secondary">GPU加速、减少动画支持</p>
+                    <div class="status-indicator status-excellent">高性能</div>
+                </div>
+                
+                <div class="feature-item card-hover-effect">
+                    <h4 class="heading-h5 text-brand">🎮 交互反馈</h4>
+                    <p class="text-body-small text-secondary">成功、错误、警告动画</p>
+                    <div class="status-indicator status-excellent">反馈清晰</div>
+                </div>
+            </div>
+            
+            <div style="margin-top: 2rem;">
+                <button class="btn-success-modern btn-large btn-glow card-hover-effect">
+                    🎉 继续下一阶段
+                </button>
+            </div>
+            
+            <p class="text-caption text-tertiary" style="margin-top: 1rem;">
+                下一步：阶段8 - 整体优化和测试
+            </p>
+        </div>
+    </div>
+    
+    <!-- 通知演示 -->
+    <div class="notification-demo" id="notificationDemo">
+        🎉 动画效果很棒！
+    </div>
+    
+    <script>
+        // 重播动画函数
+        function replayAnimation(elementId, animationClass) {
+            const element = document.getElementById(elementId);
+            element.classList.remove(animationClass);
+            
+            // 强制重流
+            element.offsetHeight;
+            
+            setTimeout(() => {
+                element.classList.add(animationClass);
+            }, 50);
+        }
+        
+        // 打字机效果
+        function startTypewriter() {
+            const element = document.getElementById('typewriterText');
+            element.style.width = '0';
+            element.classList.remove('typewriter');
+            
+            setTimeout(() => {
+                element.classList.add('typewriter');
+                element.style.width = '100%';
+            }, 100);
+        }
+        
+        // 显示通知
+        function showNotification() {
+            const notification = document.getElementById('notificationDemo');
+            notification.classList.remove('hide');
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+                notification.classList.add('hide');
+            }, 3000);
+        }
+        
+        // 成功动画
+        function triggerSuccess() {
+            // 创建成功提示
+            const successEl = document.createElement('div');
+            successEl.innerHTML = '✅ 操作成功！';
+            successEl.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: var(--color-success);
+                color: white;
+                padding: 1rem 2rem;
+                border-radius: 12px;
+                font-weight: 600;
+                z-index: 1000;
+                animation: bounce-in 0.5s ease-out;
+            `;
+            
+            document.body.appendChild(successEl);
+            
+            setTimeout(() => {
+                successEl.style.animation = 'fade-in-up 0.3s ease-out reverse';
+                setTimeout(() => {
+                    document.body.removeChild(successEl);
+                }, 300);
+            }, 2000);
+        }
+        
+        // 错误动画
+        function triggerError() {
+            // 找一个元素来摇摆
+            const demoElements = document.querySelectorAll('.demo-element');
+            const randomElement = demoElements[Math.floor(Math.random() * demoElements.length)];
+            
+            randomElement.classList.add('animate-shake');
+            
+            setTimeout(() => {
+                randomElement.classList.remove('animate-shake');
+            }, 500);
+        }
+        
+        // 添加涟漪效果
+        document.addEventListener('click', function(e) {
+            if (!e.target.classList.contains('ripple-effect')) return;
+            
+            const ripple = document.createElement('span');
+            const rect = e.target.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            const x = e.clientX - rect.left - size / 2;
+            const y = e.clientY - rect.top - size / 2;
+            
+            ripple.classList.add('ripple-wave');
+            ripple.style.width = ripple.style.height = size + 'px';
+            ripple.style.left = x + 'px';
+            ripple.style.top = y + 'px';
+            
+            e.target.appendChild(ripple);
+            
+            setTimeout(() => {
+                ripple.remove();
+            }, 600);
+        });
+        
+        // 页面加载完成后启动初始动画
+        document.addEventListener('DOMContentLoaded', function() {
+            // 延迟启动打字机效果
+            setTimeout(() => {
+                startTypewriter();
+            }, 2000);
+        });
+        
+        // 添加滚动动画触发
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-fade-in-up');
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+        
+        // 观察所有demo-section
+        document.querySelectorAll('.demo-section').forEach(section => {
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>

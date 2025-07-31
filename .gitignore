@@ -79,3 +79,9 @@ jspm_packages/
 
 # API 密钥（如果有配置文件）
 config/secrets.js
+
+# 安全相关文件
+security-report.json
+audit-report.json
+.env.*
+!.env.example

@@ -1,0 +1,348 @@
+/**
+ * 背景系统 - 现代化背景设计
+ * 为界面添加深度感和视觉趣味，同时确保内容可读性
+ */
+
+/* ========================================
+   主要背景系统
+   ======================================== */
+
+/* 页面主背景 - 微妙渐变 */
+.app-background {
+  background: var(--gradient-bg-primary);
+  min-height: 100vh;
+  position: relative;
+}
+
+/* 增强版页面背景 */
+.app-background-enhanced {
+  background: 
+    radial-gradient(circle at 20% 80%, rgba(102, 126, 234, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(118, 75, 162, 0.06) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(16, 185, 129, 0.04) 0%, transparent 50%),
+    linear-gradient(135deg, rgba(102, 126, 234, 0.02) 0%, rgba(118, 75, 162, 0.03) 100%);
+  background-attachment: fixed;
+}
+
+/* ========================================
+   装饰性几何元素
+   ======================================== */
+
+/* 浮动装饰圆形 */
+.decorative-circles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.decorative-circle {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(102, 126, 234, 0.1) 0%, transparent 70%);
+  animation: float 20s ease-in-out infinite;
+}
+
+.decorative-circle:nth-child(1) {
+  width: 300px;
+  height: 300px;
+  top: 10%;
+  left: 10%;
+  animation-delay: 0s;
+}
+
+.decorative-circle:nth-child(2) {
+  width: 200px;
+  height: 200px;
+  top: 60%;
+  right: 15%;
+  background: radial-gradient(circle, rgba(118, 75, 162, 0.08) 0%, transparent 70%);
+  animation-delay: -7s;
+}
+
+.decorative-circle:nth-child(3) {
+  width: 150px;
+  height: 150px;
+  bottom: 20%;
+  left: 20%;
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.06) 0%, transparent 70%);
+  animation-delay: -14s;
+}
+
+/* 几何装饰线条 */
+.decorative-lines {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.decorative-line {
+  position: absolute;
+  background: linear-gradient(45deg, transparent 0%, rgba(102, 126, 234, 0.1) 50%, transparent 100%);
+  border-radius: 2px;
+}
+
+.decorative-line:nth-child(1) {
+  width: 200px;
+  height: 2px;
+  top: 25%;
+  right: 20%;
+  transform: rotate(45deg);
+}
+
+.decorative-line:nth-child(2) {
+  width: 150px;
+  height: 1px;
+  bottom: 35%;
+  left: 25%;
+  transform: rotate(-30deg);
+  background: linear-gradient(45deg, transparent 0%, rgba(118, 75, 162, 0.08) 50%, transparent 100%);
+}
+
+/* 网格装饰背景 */
+.decorative-grid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.03;
+  background-image: 
+    linear-gradient(rgba(102, 126, 234, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(102, 126, 234, 0.1) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ========================================
+   卡片背景增强
+   ======================================== */
+
+/* 现代化卡片背景 */
+.card-background-modern {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 
+    0 8px 32px 0 rgba(31, 38, 135, 0.1),
+    0 2px 4px 0 rgba(31, 38, 135, 0.05);
+}
+
+/* 毛玻璃效果卡片 */
+.card-glass {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+}
+
+/* 渐变边框卡片 */
+.card-gradient-border {
+  background: var(--bg-light);
+  position: relative;
+  border-radius: 16px;
+  padding: 2px;
+}
+
+.card-gradient-border::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  padding: 2px;
+  background: var(--gradient-primary-light);
+  border-radius: inherit;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: xor;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+}
+
+.card-gradient-border .card-content {
+  background: var(--bg-light);
+  border-radius: 14px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ========================================
+   特殊背景效果
+   ======================================== */
+
+/* 动态光效背景 */
+.background-glow {
+  position: relative;
+}
+
+.background-glow::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: 
+    radial-gradient(circle at 30% 20%, rgba(102, 126, 234, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 70% 80%, rgba(118, 75, 162, 0.1) 0%, transparent 50%);
+  animation: glow-move 15s ease-in-out infinite;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* 粒子效果背景 */
+.particle-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: rgba(102, 126, 234, 0.3);
+  border-radius: 50%;
+  animation: particle-float 25s linear infinite;
+}
+
+.particle:nth-child(odd) {
+  background: rgba(118, 75, 162, 0.25);
+  animation-duration: 30s;
+}
+
+/* ========================================
+   响应式背景适配
+   ======================================== */
+
+@media (max-width: 768px) {
+  .app-background-enhanced {
+    background: 
+      radial-gradient(circle at 20% 80%, rgba(102, 126, 234, 0.06) 0%, transparent 30%),
+      radial-gradient(circle at 80% 20%, rgba(118, 75, 162, 0.04) 0%, transparent 30%),
+      linear-gradient(135deg, rgba(102, 126, 234, 0.02) 0%, rgba(118, 75, 162, 0.02) 100%);
+    background-attachment: scroll; /* 移动端优化 */
+  }
+  
+  .decorative-circle {
+    display: none; /* 移动端隐藏装饰元素以提升性能 */
+  }
+  
+  .decorative-grid {
+    background-size: 40px 40px;
+    opacity: 0.02;
+  }
+}
+
+@media (max-width: 480px) {
+  .decorative-lines,
+  .particle-background {
+    display: none; /* 小屏幕设备隐藏复杂装饰 */
+  }
+  
+  .card-background-modern {
+    backdrop-filter: blur(5px); /* 减少模糊效果以提升性能 */
+  }
+}
+
+/* ========================================
+   动画定义
+   ======================================== */
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+    opacity: 0.7;
+  }
+  33% {
+    transform: translateY(-30px) rotate(120deg);
+    opacity: 0.9;
+  }
+  66% {
+    transform: translateY(-60px) rotate(240deg);
+    opacity: 0.5;
+  }
+}
+
+@keyframes glow-move {
+  0%, 100% {
+    transform: translateX(0) translateY(0);
+  }
+  25% {
+    transform: translateX(20px) translateY(-20px);
+  }
+  50% {
+    transform: translateX(-10px) translateY(10px);
+  }
+  75% {
+    transform: translateX(-20px) translateY(-10px);
+  }
+}
+
+@keyframes particle-float {
+  0% {
+    transform: translateY(100vh) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100px) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* ========================================
+   高对比度模式支持
+   ======================================== */
+
+@media (prefers-contrast: high) {
+  .app-background-enhanced,
+  .decorative-circles,
+  .decorative-grid {
+    display: none;
+  }
+  
+  .app-background {
+    background: var(--bg-light);
+  }
+  
+  .card-background-modern,
+  .card-glass {
+    background: var(--bg-light);
+    border: 2px solid var(--gray-300);
+    backdrop-filter: none;
+  }
+}
+
+/* ========================================
+   减少动画偏好支持
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .decorative-circle,
+  .background-glow::before,
+  .particle {
+    animation: none;
+  }
+  
+  .decorative-circle {
+    opacity: 0.5;
+  }
+}

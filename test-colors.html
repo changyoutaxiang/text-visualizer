@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>色彩系统测试 - 阶段1</title>
+    <link rel="stylesheet" href="./src/styles/design-tokens.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'PingFang SC', sans-serif;
+            background: var(--gradient-bg-primary);
+            padding: 2rem;
+            line-height: 1.6;
+        }
+        
+        .test-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .test-section {
+            background: var(--bg-light);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        .gradient-title {
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .color-card {
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            color: var(--text-inverse);
+            font-weight: 500;
+        }
+        
+        .color-primary { background: var(--color-primary); }
+        .color-secondary { background: var(--color-secondary); }
+        .color-accent { background: var(--color-accent); }
+        .color-success { background: var(--color-success); }
+        .color-warning { background: var(--color-warning); }
+        .color-error { background: var(--color-error); }
+        
+        .gradient-card {
+            padding: 2rem;
+            border-radius: 16px;
+            text-align: center;
+            color: var(--text-inverse);
+            font-weight: 600;
+            margin: 1rem 0;
+        }
+        
+        .gradient-primary { background: var(--gradient-primary); }
+        .gradient-success { background: var(--gradient-success); }
+        .gradient-warning { background: var(--gradient-warning); }
+        .gradient-error { background: var(--gradient-error); }
+        .gradient-aurora { background: var(--gradient-aurora); }
+        
+        .text-samples {
+            background: var(--bg-light-alt);
+            padding: 2rem;
+            border-radius: 12px;
+        }
+        
+        .text-primary { color: var(--text-primary); }
+        .text-secondary { color: var(--text-secondary); }
+        .text-tertiary { color: var(--text-tertiary); }
+        .text-muted { color: var(--text-muted); }
+        .text-brand { color: var(--text-brand-primary); }
+        .text-success { color: var(--text-success); }
+        .text-warning { color: var(--text-warning); }
+        .text-error { color: var(--text-error); }
+        
+        .btn-test {
+            background: var(--gradient-primary);
+            color: var(--text-inverse);
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 14px 0 rgba(102, 126, 234, 0.4);
+            transition: all 0.2s ease-in-out;
+            margin: 0.5rem;
+        }
+        
+        .btn-test:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px 0 rgba(102, 126, 234, 0.6);
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1 class="gradient-title">🎨 色彩系统升级测试</h1>
+        
+        <div class="test-section">
+            <h2 style="color: var(--text-primary); margin-bottom: 1rem;">基础色彩系统</h2>
+            <div class="color-grid">
+                <div class="color-card color-primary">主色 Primary</div>
+                <div class="color-card color-secondary">次色 Secondary</div>
+                <div class="color-card color-accent">强调 Accent</div>
+                <div class="color-card color-success">成功 Success</div>
+                <div class="color-card color-warning">警告 Warning</div>
+                <div class="color-card color-error">错误 Error</div>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h2 style="color: var(--text-primary); margin-bottom: 1rem;">渐变色系统</h2>
+            <div class="gradient-card gradient-primary">主品牌渐变 - Primary Gradient</div>
+            <div class="gradient-card gradient-success">成功渐变 - Success Gradient</div>
+            <div class="gradient-card gradient-warning">警告渐变 - Warning Gradient</div>
+            <div class="gradient-card gradient-error">错误渐变 - Error Gradient</div>
+            <div class="gradient-card gradient-aurora">极光渐变 - Aurora Gradient</div>
+        </div>
+        
+        <div class="test-section">
+            <h2 style="color: var(--text-primary); margin-bottom: 1rem;">文字颜色对比度测试</h2>
+            <div class="text-samples">
+                <p class="text-primary" style="font-size: 1.25rem; margin-bottom: 0.5rem;">主要文字 - 确保最佳可读性</p>
+                <p class="text-secondary" style="font-size: 1.125rem; margin-bottom: 0.5rem;">次要文字 - 用于辅助信息</p>
+                <p class="text-tertiary" style="margin-bottom: 0.5rem;">三级文字 - 用于标签和提示</p>
+                <p class="text-muted" style="margin-bottom: 1rem;">弱化文字 - 用于不重要信息</p>
+                
+                <p class="text-brand" style="font-weight: 600; margin-bottom: 0.5rem;">品牌色文字 - 用于重要链接</p>
+                <p class="text-success" style="margin-bottom: 0.5rem;">✅ 成功状态文字</p>
+                <p class="text-warning" style="margin-bottom: 0.5rem;">⚠️ 警告状态文字</p>
+                <p class="text-error" style="margin-bottom: 0.5rem;">❌ 错误状态文字</p>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h2 style="color: var(--text-primary); margin-bottom: 1rem;">按钮样式测试</h2>
+            <button class="btn-test">生成可视化</button>
+            <button class="btn-test">下载文件</button>
+            <button class="btn-test">保存作品</button>
+        </div>
+        
+        <div class="test-section" style="text-align: center;">
+            <h3 style="color: var(--text-success); margin-bottom: 1rem;">✅ 阶段1完成</h3>
+            <p style="color: var(--text-secondary);">
+                色彩系统已升级完成，包含现代化渐变、高对比度文字和品牌色彩系统。
+                <br>
+                下一步：阶段2 - 背景系统重构
+            </p>
+        </div>
+    </div>
+</body>
+</html>

@@ -6,8 +6,22 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:analyze": "ANALYZE=true npm run build",
     "preview": "vite preview",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "test:unit": "vitest",
+    "test:e2e": "playwright test",
+    "test:e2e:ci": "playwright test --reporter=html",
+    "lint": "eslint src --ext .js,.ts,.jsx,.tsx --fix",
+    "type-check": "tsc --noEmit",
+    "security-scan": "node scripts/security-scan.js",
+    "cost-check": "node scripts/cost-monitor.js",
+    "rollback": "node scripts/rollback.js",
+    "deploy": "node scripts/deploy.js deploy",
+    "deploy:staging": "NODE_ENV=staging npm run deploy",
+    "deploy:production": "NODE_ENV=production npm run deploy",
+    "docker:build": "node scripts/deploy.js docker && docker build -t text-visualizer .",
+    "docker:run": "docker run -p 3000:3000 text-visualizer"
   },
   "keywords": [],
   "author": "",
@@ -25,6 +39,8 @@
     "vite": "^7.0.6"
   },
   "devDependencies": {
-    "terser": "^5.43.1"
+    "rollup-plugin-visualizer": "^5.14.0",
+    "terser": "^5.43.1",
+    "vite-plugin-compression": "^0.5.1"
   }
 }

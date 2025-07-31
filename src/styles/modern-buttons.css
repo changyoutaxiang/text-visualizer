@@ -1,0 +1,562 @@
+/**
+ * 现代化按钮系统 - 立体感与交互性设计
+ * 从单调按钮升级为具有吸引力和交互性的现代化设计
+ */
+
+/* ========================================
+   按钮基础重置
+   ======================================== */
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ========================================
+   主要按钮 - 最高视觉层次
+   ======================================== */
+
+.btn-primary-modern {
+  background: var(--gradient-primary);
+  color: var(--text-inverse);
+  padding: 1rem 2rem;
+  border-radius: 14px;
+  font-size: 1rem;
+  font-weight: 600;
+  
+  /* 立体阴影系统 */
+  box-shadow: 
+    0 2px 4px 0 rgba(102, 126, 234, 0.2),
+    0 8px 16px -4px rgba(102, 126, 234, 0.3),
+    0 16px 24px -8px rgba(102, 126, 234, 0.15),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
+  
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.btn-primary-modern::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.5s ease;
+}
+
+.btn-primary-modern:hover {
+  transform: translateY(-2px) scale(1.02);
+  
+  box-shadow: 
+    0 4px 8px 0 rgba(102, 126, 234, 0.25),
+    0 12px 20px -4px rgba(102, 126, 234, 0.4),
+    0 20px 32px -8px rgba(102, 126, 234, 0.2),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.3);
+}
+
+.btn-primary-modern:hover::before {
+  left: 100%;
+}
+
+.btn-primary-modern:active {
+  transform: translateY(-1px) scale(1.01);
+  transition-duration: 0.1s;
+  
+  box-shadow: 
+    0 2px 4px 0 rgba(102, 126, 234, 0.3),
+    0 6px 12px -2px rgba(102, 126, 234, 0.4),
+    0 12px 20px -4px rgba(102, 126, 234, 0.2),
+    inset 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+}
+
+/* ========================================
+   次要按钮 - 中等视觉层次
+   ======================================== */
+
+.btn-secondary-modern {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  color: var(--text-primary);
+  padding: 1rem 2rem;
+  border-radius: 14px;
+  font-size: 1rem;
+  font-weight: 600;
+  border: 2px solid rgba(102, 126, 234, 0.15);
+  
+  box-shadow: 
+    0 2px 4px 0 rgba(0, 0, 0, 0.05),
+    0 4px 8px -2px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.5);
+}
+
+.btn-secondary-modern:hover {
+  transform: translateY(-2px);
+  background: var(--gradient-primary);
+  color: var(--text-inverse);
+  border-color: transparent;
+  
+  box-shadow: 
+    0 4px 8px 0 rgba(102, 126, 234, 0.2),
+    0 8px 16px -4px rgba(102, 126, 234, 0.3),
+    0 16px 24px -8px rgba(102, 126, 234, 0.15);
+}
+
+.btn-secondary-modern:active {
+  transform: translateY(-1px);
+  transition-duration: 0.1s;
+}
+
+/* ========================================
+   图标按钮 - 紧凑型设计
+   ======================================== */
+
+.btn-icon-modern {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  color: var(--text-secondary);
+  padding: 0.75rem;
+  border-radius: 12px;
+  font-size: 0.875rem;
+  border: 1px solid rgba(102, 126, 234, 0.1);
+  min-width: 44px; /* 触控友好 */
+  min-height: 44px;
+  
+  box-shadow: 
+    0 1px 2px 0 rgba(0, 0, 0, 0.05),
+    0 2px 4px -1px rgba(0, 0, 0, 0.1);
+}
+
+.btn-icon-modern:hover {
+  transform: translateY(-1px) scale(1.05);
+  background: var(--gradient-primary);
+  color: var(--text-inverse);
+  border-color: transparent;
+  
+  box-shadow: 
+    0 2px 4px 0 rgba(102, 126, 234, 0.2),
+    0 4px 8px -2px rgba(102, 126, 234, 0.3),
+    0 8px 12px -4px rgba(102, 126, 234, 0.15);
+}
+
+.btn-icon-modern:active {
+  transform: translateY(0) scale(1.02);
+  transition-duration: 0.1s;
+}
+
+/* ========================================
+   危险按钮 - 警告和删除操作
+   ======================================== */
+
+.btn-danger-modern {
+  background: linear-gradient(135deg, #fc466b 0%, #3f5efb 100%);
+  color: var(--text-inverse);
+  padding: 1rem 2rem;
+  border-radius: 14px;
+  font-size: 1rem;
+  font-weight: 600;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  
+  box-shadow: 
+    0 2px 4px 0 rgba(252, 70, 107, 0.2),
+    0 8px 16px -4px rgba(252, 70, 107, 0.3),
+    0 16px 24px -8px rgba(252, 70, 107, 0.15),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
+}
+
+.btn-danger-modern:hover {
+  transform: translateY(-2px) scale(1.02);
+  
+  box-shadow: 
+    0 4px 8px 0 rgba(252, 70, 107, 0.25),
+    0 12px 20px -4px rgba(252, 70, 107, 0.4),
+    0 20px 32px -8px rgba(252, 70, 107, 0.2);
+}
+
+.btn-danger-modern:active {
+  transform: translateY(-1px) scale(1.01);
+  transition-duration: 0.1s;
+}
+
+/* ========================================
+   成功按钮 - 确认和提交操作
+   ======================================== */
+
+.btn-success-modern {
+  background: var(--gradient-success);
+  color: var(--text-inverse);
+  padding: 1rem 2rem;
+  border-radius: 14px;
+  font-size: 1rem;
+  font-weight: 600;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  
+  box-shadow: 
+    0 2px 4px 0 rgba(17, 153, 142, 0.2),
+    0 8px 16px -4p rgba(17, 153, 142, 0.3),
+    0 16px 24px -8px rgba(17, 153, 142, 0.15),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
+}
+
+.btn-success-modern:hover {
+  transform: translateY(-2px) scale(1.02);
+  
+  box-shadow: 
+    0 4px 8px 0 rgba(17, 153, 142, 0.25),
+    0 12px 20px -4px rgba(17, 153, 142, 0.4),
+    0 20px 32px -8px rgba(17, 153, 142, 0.2);
+}
+
+.btn-success-modern:active {
+  transform: translateY(-1px) scale(1.01);
+  transition-duration: 0.1s;
+}
+
+/* ========================================
+   按钮尺寸变体
+   ======================================== */
+
+.btn-large {
+  padding: 1.25rem 2.5rem;
+  font-size: 1.125rem;
+  border-radius: 16px;
+}
+
+.btn-small {
+  padding: 0.75rem 1.5rem;
+  font-size: 0.875rem;
+  border-radius: 10px;
+}
+
+.btn-tiny {
+  padding: 0.5rem 1rem;
+  font-size: 0.75rem;
+  border-radius: 8px;
+}
+
+/* ========================================
+   按钮状态样式
+   ======================================== */
+
+.btn-loading {
+  position: relative;
+  color: transparent !important;
+  pointer-events: none;
+}
+
+.btn-loading::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: 2px solid transparent;
+  border-top: 2px solid currentColor;
+  border-radius: 50%;
+  animation: btn-spin 1s linear infinite;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--text-inverse);
+}
+
+.btn-disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  pointer-events: none;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* ========================================
+   按钮组合布局
+   ======================================== */
+
+.btn-group {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.btn-group-vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: stretch;
+}
+
+.btn-group-attached {
+  display: flex;
+}
+
+.btn-group-attached button {
+  border-radius: 0;
+  border-right: 1px solid rgba(102, 126, 234, 0.2);
+}
+
+.btn-group-attached button:first-child {
+  border-radius: 14px 0 0 14px;
+}
+
+.btn-group-attached button:last-child {
+  border-radius: 0 14px 14px 0;
+  border-right: none;
+}
+
+.btn-group-attached button:only-child {
+  border-radius: 14px;
+  border-right: none;
+}
+
+/* ========================================
+   浮动动作按钮 (FAB)
+   ======================================== */
+
+.btn-fab {
+  background: var(--gradient-primary);
+  color: var(--text-inverse);
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 100;
+  
+  box-shadow: 
+    0 4px 8px 0 rgba(102, 126, 234, 0.3),
+    0 8px 16px -4px rgba(102, 126, 234, 0.4),
+    0 16px 24px -8px rgba(102, 126, 234, 0.2);
+}
+
+.btn-fab:hover {
+  transform: scale(1.1);
+  
+  box-shadow: 
+    0 6px 12px 0 rgba(102, 126, 234, 0.4),
+    0 12px 20px -4px rgba(102, 126, 234, 0.5),
+    0 20px 32px -8px rgba(102, 126, 234, 0.3);
+}
+
+.btn-fab:active {
+  transform: scale(1.05);
+  transition-duration: 0.1s;
+}
+
+/* ========================================
+   响应式按钮设计
+   ======================================== */
+
+@media (max-width: 768px) {
+  .btn-primary-modern,
+  .btn-secondary-modern,
+  .btn-danger-modern,
+  .btn-success-modern {
+    padding: 0.875rem 1.75rem;
+    font-size: 0.9rem;
+  }
+  
+  .btn-large {
+    padding: 1rem 2rem;
+    font-size: 1rem;
+  }
+  
+  .btn-group {
+    justify-content: center;
+  }
+  
+  .btn-group-attached {
+    flex-direction: column;
+  }
+  
+  .btn-group-attached button {
+    border-radius: 0;
+    border-right: none;
+    border-bottom: 1px solid rgba(102, 126, 234, 0.2);
+  }
+  
+  .btn-group-attached button:first-child {
+    border-radius: 14px 14px 0 0;
+  }
+  
+  .btn-group-attached button:last-child {
+    border-radius: 0 0 14px 14px;
+    border-bottom: none;
+  }
+  
+  .btn-fab {
+    width: 56px;
+    height: 56px;
+    font-size: 1.25rem;
+    bottom: 1.5rem;
+    right: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .btn-primary-modern,
+  .btn-secondary-modern,
+  .btn-danger-modern,
+  .btn-success-modern {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.875rem;
+    width: 100%;
+  }
+  
+  .btn-group {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .btn-group button {
+    width: 100%;
+  }
+}
+
+/* ========================================
+   动画定义
+   ======================================== */
+
+@keyframes btn-spin {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+@keyframes btn-pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.btn-pulse {
+  animation: btn-pulse 2s infinite;
+}
+
+/* ========================================
+   特殊效果按钮
+   ======================================== */
+
+.btn-glow {
+  position: relative;
+}
+
+.btn-glow::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: inherit;
+  background: inherit;
+  filter: blur(20px);
+  opacity: 0;
+  z-index: -1;
+  transition: opacity 0.3s ease;
+}
+
+.btn-glow:hover::after {
+  opacity: 0.5;
+}
+
+/* ========================================
+   高对比度和可访问性支持
+   ======================================== */
+
+@media (prefers-contrast: high) {
+  .btn-primary-modern,
+  .btn-secondary-modern,
+  .btn-danger-modern,
+  .btn-success-modern {
+    background: var(--text-primary);
+    color: var(--text-inverse);
+    border: 2px solid var(--text-primary);
+    backdrop-filter: none;
+  }
+  
+  .btn-secondary-modern {
+    background: var(--bg-light);
+    color: var(--text-primary);
+    border: 2px solid var(--text-primary);
+  }
+  
+  .btn-icon-modern {
+    background: var(--bg-light);
+    border: 2px solid var(--text-primary);
+    backdrop-filter: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  button {
+    transition: none;
+  }
+  
+  .btn-primary-modern:hover,
+  .btn-secondary-modern:hover,
+  .btn-icon-modern:hover,
+  .btn-danger-modern:hover,
+  .btn-success-modern:hover,
+  .btn-fab:hover {
+    transform: none;
+  }
+  
+  .btn-loading::after {
+    animation: none;
+  }
+  
+  .btn-pulse {
+    animation: none;
+  }
+  
+  .btn-primary-modern::before {
+    display: none;
+  }
+}
+
+/* ========================================
+   焦点状态 - 键盘导航
+   ======================================== */
+
+button:focus-visible {
+  outline: 2px solid var(--brand-primary);
+  outline-offset: 2px;
+}
+
+.btn-primary-modern:focus-visible {
+  outline-color: var(--text-inverse);
+}
+
+.btn-danger-modern:focus-visible {
+  outline-color: #fc466b;
+}
+
+.btn-success-modern:focus-visible {
+  outline-color: #11998e;
+}

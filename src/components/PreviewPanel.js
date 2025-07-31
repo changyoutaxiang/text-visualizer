@@ -11,18 +11,35 @@ export class PreviewPanel {
     }
 
     setupEventListeners() {
-        document.addEventListener('formatChanged', (e) => {
+        // 存储绑定的事件处理函数，便于清理
+        this.boundFormatChanged = (e) => {
             this.currentFormat = e.detail.format;
             if (this.currentResult) {
                 this.displayResult(this.currentResult, this.currentFormat);
             }
-        });
+        };
 
-        document.addEventListener('keydown', (e) => {
+        this.boundKeydown = (e) => {
             if (e.key === 'Escape' && this.isFullscreen) {
                 this.exitFullscreen();
             }
-        });
+        };
+
+        this.boundFullscreenChange = this.handleFullscreenChange.bind(this);
+
+        document.addEventListener('formatChanged', this.boundFormatChanged);
+        document.addEventListener('keydown', this.boundKeydown);
+    }
+
+    cleanup() {
+        // 清理所有事件监听器，防止内存泄漏
+        document.removeEventListener('formatChanged', this.boundFormatChanged);
+        document.removeEventListener('keydown', this.boundKeydown);
+        
+        // 清理全屏事件监听器
+        document.removeEventListener('fullscreenchange', this.boundFullscreenChange);
+        document.removeEventListener('webkitfullscreenchange', this.boundFullscreenChange);
+        document.removeEventListener('MSFullscreenChange', this.boundFullscreenChange);
     }
 
     displayResult(result, format) {
@@ -65,6 +82,9 @@ export class PreviewPanel {
 
     displayHTML(htmlCode) {
         try {
+            // 1. 清理HTML内容，移除潜在恶意代码
+            const cleanHTML = this.sanitizeHTML(htmlCode);
+            
             const iframe = document.createElement('iframe');
             iframe.style.width = '100%';
             iframe.style.height = '600px';
@@ -76,7 +96,32 @@ export class PreviewPanel {
 
             const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
             iframeDoc.open();
-            iframeDoc.write(htmlCode);
+            iframeDoc.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline' 'self'; img-src 'self' data: https:; font-src 'self' data:;">
+                    <style>
+                        body { 
+                            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; 
+                            margin: 20px;
+                            line-height: 1.6;
+                            color: #374151;
+                        }
+                        * { box-sizing: border-box; }
+                        img { max-width: 100%; height: auto; }
+                        table { border-collapse: collapse; width: 100%; }
+                        th, td { border: 1px solid #d1d5db; padding: 8px; text-align: left; }
+                        th { background-color: #f3f4f6; }
+                    </style>
+                </head>
+                <body>
+                    ${cleanHTML}
+                </body>
+                </html>
+            `);
             iframeDoc.close();
 
             iframe.onload = () => {
@@ -144,9 +189,10 @@ export class PreviewPanel {
         this.isFullscreen = true;
         container.classList.add('fullscreen');
         
-        document.addEventListener('fullscreenchange', this.handleFullscreenChange.bind(this));
-        document.addEventListener('webkitfullscreenchange', this.handleFullscreenChange.bind(this));
-        document.addEventListener('MSFullscreenChange', this.handleFullscreenChange.bind(this));
+        // 添加全屏事件监听
+        document.addEventListener('fullscreenchange', this.boundFullscreenChange);
+        document.addEventListener('webkitfullscreenchange', this.boundFullscreenChange);
+        document.addEventListener('MSFullscreenChange', this.boundFullscreenChange);
     }
 
     exitFullscreen() {
@@ -168,6 +214,47 @@ export class PreviewPanel {
             container.classList.remove('fullscreen');
             this.isFullscreen = false;
         }
+    }
+
+    sanitizeHTML(html) {
+        // 创建临时div来清理HTML
+        const div = document.createElement('div');
+        div.innerHTML = html;
+        
+        // 移除所有script标签
+        const scripts = div.querySelectorAll('script');
+        scripts.forEach(script => script.remove());
+        
+        // 移除危险属性
+        const dangerousAttributes = [
+            'onload', 'onerror', 'onclick', 'onmouseover', 'onmouseout',
+            'onmousedown', 'onmouseup', 'onkeydown', 'onkeyup', 'onkeypress',
+            'onfocus', 'onblur', 'onsubmit', 'onreset', 'onchange'
+        ];
+        
+        const allElements = div.querySelectorAll('*');
+        allElements.forEach(element => {
+            dangerousAttributes.forEach(attr => {
+                if (element.hasAttribute(attr)) {
+                    element.removeAttribute(attr);
+                }
+            });
+            
+            // 清理javascript:协议的href
+            if (element.hasAttribute('href')) {
+                const href = element.getAttribute('href');
+                if (href && href.toLowerCase().startsWith('javascript:')) {
+                    element.removeAttribute('href');
+                }
+            }
+            
+            // 清理iframe的srcdoc属性
+            if (element.tagName === 'IFRAME') {
+                element.removeAttribute('srcdoc');
+            }
+        });
+        
+        return div.innerHTML;
     }
 
     showError(message) {
